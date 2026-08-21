@@ -1,0 +1,41 @@
+/*-- scss:defaults --*/
+$primary: #1e4d7b;
+$navbar-bg: #1e4d7b;
+$link-color: #0d6e8a;
+$sidebar-bg: #f8f9fa;
+$sidebar-fg: #1e4d7b;
+
+/*-- scss:rules --*/
+.sidebar-logo {
+  max-width: 180px;
+}
+
+.quarto-title-banner {
+  margin-bottom: 1rem;
+}
+
+.navbar-title {
+  font-weight: 600;
+}
+
+/* Keep the top navbar always visible (headroom hides it on scroll). */
+header#quarto-header.headroom {
+  transform: translate3d(0, 0, 0) !important;
+  z-index: 1050;
+}
+
+header#quarto-header .navbar {
+  background-color: $navbar-bg !important;
+  min-height: 3.5rem;
+}
+
+@media (min-width: 992px) {
+  #navbarCollapse.collapse {
+    display: flex !important;
+    visibility: visible !important;
+  }
+
+  nav#quarto-sidebar.sidebar.docked {
+    visibility: visible !important;
+  }
+}

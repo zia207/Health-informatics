@@ -1,0 +1,108 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - index.qmd
+    - "Notebooks/**/*.ipynb"
+
+website:
+  title: "Health Informatics in Python"
+  site-url: https://zia207.github.io/Health-informatics/
+  description: "From health data standards to FHIR, OMOP, privacy, claims, and emerging AI — 4 parts, 16 modules."
+  repo-url: https://github.com/zia207/Health-informatics
+  repo-actions: [edit, issue]
+  page-navigation: true
+  favicon: Image/chapter_logo_health_informatics.png
+  search:
+    location: navbar
+    type: overlay
+  navbar:
+    background: primary
+    foreground: light
+    pinned: true
+    left:
+      - href: index.qmd
+        text: Home
+    right:
+      - icon: github
+        href: https://github.com/zia207/Health-informatics
+      - icon: linkedin
+        href: https://www.linkedin.com/in/zia-ahmed207
+      - text: "zia207@gmail.com"
+        href: mailto:zia207@gmail.com
+  sidebar:
+    logo: Image/chapter_logo_health_informatics.png
+    style: docked
+    search: true
+    collapse-level: 1
+    contents:
+      - section: "**Health Informatics in Python**"
+        contents:
+          - index.qmd
+      - section: "**Part I — Foundations** (Beginner)"
+        contents:
+          - href: "Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.ipynb"
+            text: "01 · What Health Informatics Is"
+          - href: "Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.ipynb"
+            text: "02 · Health Data Types and Structure"
+          - href: "Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.ipynb"
+            text: "03 · Clinical Terminologies"
+          - href: "Notebooks/Part I - Foundations (Beginner)/04_health_data_standards_and_formats.ipynb"
+            text: "04 · Standards and Formats"
+      - section: "**Part II — Interoperability & Data Engineering**"
+        contents:
+          - href: "Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/05_fhir_in_depth.ipynb"
+            text: "05 · FHIR in Depth"
+          - href: "Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/06_data_ingestion_etl.ipynb"
+            text: "06 · Data Ingestion and ETL"
+          - href: "Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/07_omop_common_data_model.ipynb"
+            text: "07 · OMOP Common Data Model"
+          - href: "Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/08_data_quality_and_validation.ipynb"
+            text: "08 · Data Quality and Validation"
+      - section: "**Part III — Privacy, Text & Applied Informatics**"
+        contents:
+          - href: "Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.ipynb"
+            text: "09 · Privacy and De-identification"
+          - href: "Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.ipynb"
+            text: "10 · Clinical NLP"
+          - href: "Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/11_clinical_decision_support.ipynb"
+            text: "11 · Clinical Decision Support"
+      - section: "**Part IV — Advanced Topics**"
+        contents:
+          - href: "Notebooks/Part IV -  Advanced Topics/12_population_public_health.ipynb"
+            text: "12 · Public Health Informatics"
+          - href: "Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.ipynb"
+            text: "13 · Claims Data Analysis"
+          - href: "Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.ipynb"
+            text: "14 · Clinical Data Warehousing"
+          - href: "Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.ipynb"
+            text: "15 · Interoperability at Scale"
+          - href: "Notebooks/Part IV -  Advanced Topics/16_emerging_directions.ipynb"
+            text: "16 · Emerging Directions"
+  page-footer:
+    left: "© CC-By Zia Ahmed, Upatta Analytics, 2026"
+    right: "Built with [Quarto](https://quarto.org/)"
+
+title-block-banner: true
+
+format:
+  html:
+    theme:
+      - cosmo
+      - _quarto.scss
+    toc: true
+    toc-depth: 3
+    code-copy: true
+    code-overflow: wrap
+    smooth-scroll: true
+    grid:
+      sidebar-width: 300px
+      body-width: 900px
+      margin-width: 200px
+
+execute:
+  enabled: false
+  freeze: auto
+
+resources:
+  - Image/*.png

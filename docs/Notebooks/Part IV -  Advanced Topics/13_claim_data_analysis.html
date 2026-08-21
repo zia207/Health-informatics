@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>claim_data_analysis – Health Informatics in Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.html" rel="next">
+<link href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html" rel="prev">
+<link href="../../Image/chapter_logo_health_informatics.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c5c3ec5290bf6b57b4a42a3553f76d36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Health Informatics in Python</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/zia207/Health-informatics"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/zia-ahmed207"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="mailto:zia207@gmail.com"> 
+<span class="menu-text">zia207@gmail.com</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html"><strong>Part IV — Advanced Topics</strong></a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.html">13 · Claims Data Analysis</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html"><strong>Part IV — Advanced Topics</strong></a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.html">13 · Claims Data Analysis</a></li></ol></nav></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Health Informatics in Python</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Health Informatics in Python</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part I — Foundations</strong> (Beginner)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 · What Health Informatics Is</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Health Data Types and Structure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Clinical Terminologies</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/04_health_data_standards_and_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Standards and Formats</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part II — Interoperability &amp; Data Engineering</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/05_fhir_in_depth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · FHIR in Depth</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/06_data_ingestion_etl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 · Data Ingestion and ETL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/07_omop_common_data_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 · OMOP Common Data Model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/08_data_quality_and_validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 · Data Quality and Validation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part III — Privacy, Text &amp; Applied Informatics</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">09 · Privacy and De-identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">10 · Clinical NLP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/11_clinical_decision_support.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">11 · Clinical Decision Support</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part IV — Advanced Topics</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">12 · Public Health Informatics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">13 · Claims Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">14 · Clinical Data Warehousing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">15 · Interoperability at Scale</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/16_emerging_directions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">16 · Emerging Directions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#module-13-claims-data-analysis" id="toc-module-13-claims-data-analysis" class="nav-link active" data-scroll-target="#module-13-claims-data-analysis">Module 13: Claims Data Analysis</a>
+  <ul class="collapse">
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#what-claim-data-is-and-is-not" id="toc-what-claim-data-is-and-is-not" class="nav-link" data-scroll-target="#what-claim-data-is-and-is-not">13.1 What claim data is (and is not)</a></li>
+  <li><a href="#anatomy-of-a-claim-line" id="toc-anatomy-of-a-claim-line" class="nav-link" data-scroll-target="#anatomy-of-a-claim-line">13.2 Anatomy of a claim line</a></li>
+  <li><a href="#classification-tools-on-claims" id="toc-classification-tools-on-claims" class="nav-link" data-scroll-target="#classification-tools-on-claims">13.3 Classification tools on claims</a></li>
+  <li><a href="#cleaning-and-validating-claims" id="toc-cleaning-and-validating-claims" class="nav-link" data-scroll-target="#cleaning-and-validating-claims">13.4 Cleaning and validating claims</a></li>
+  <li><a href="#member-level-features-pmpm-hcc-utilization" id="toc-member-level-features-pmpm-hcc-utilization" class="nav-link" data-scroll-target="#member-level-features-pmpm-hcc-utilization">13.5 Member-level features: PMPM, HCC, utilization</a>
+  <ul class="collapse">
+  <li><a href="#milestone-1-risk-stratification" id="toc-milestone-1-risk-stratification" class="nav-link" data-scroll-target="#milestone-1-risk-stratification">Milestone 1 — risk stratification</a></li>
+  </ul></li>
+  <li><a href="#quality-measures-and-care-gaps-hedis-like" id="toc-quality-measures-and-care-gaps-hedis-like" class="nav-link" data-scroll-target="#quality-measures-and-care-gaps-hedis-like">13.6 Quality measures and care gaps (HEDIS-like)</a></li>
+  <li><a href="#claims-next-to-the-ehr" id="toc-claims-next-to-the-ehr" class="nav-link" data-scroll-target="#claims-next-to-the-ehr">13.7 Claims next to the EHR</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key takeaways</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Image/chapter-banner.png" class="img-fluid figure-img"></p>
+<figcaption>Health-Informatics: A Python Tutorial</figcaption>
+</figure>
+</div>
+<section id="module-13-claims-data-analysis" class="level1">
+<h1>Module 13: Claims Data Analysis</h1>
+<p><strong>Health Informatics in Python</strong> · Part IV: Advanced Topics · Module 13 of 16</p>
+<hr>
+<p>Clinical informatics records <em>care</em>. <strong>Claims data</strong> records <em>payment</em> — the structured bills providers send payers after a visit, stay, or fill. This module treats claims as an informatics data type: what they contain, how they are coded and classified, how to clean them, and how to roll them up into <strong>member-level</strong> cost, risk, and quality measures.</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this module you will be able to:</p>
+<ol type="1">
+<li>Describe a <strong>claim</strong> (who, what, why, where, how much) and how it differs from an EHR.</li>
+<li>Map claim codes to <strong>classification systems</strong> (ICD-10, CPT, HCC, DRG).</li>
+<li><strong>Clean</strong> raw claims: duplicates, adjudication status, financial integrity.</li>
+<li>Build <strong>member-level features</strong>: PMPM, HCC risk score, Charlson index, utilization.</li>
+<li><strong>Risk-stratify</strong> a population and compute a simple <strong>care-gap</strong> (HEDIS-like) measure.</li>
+</ol>
+</section>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
+<p>A synthetic <strong>Medicare Advantage–style book</strong>: an <strong>eligibility</strong> file (members) and a <strong>claims</strong> file (service-level rows with ICD-10, CPT, place of service, and billed / allowed / paid amounts). We inject duplicate claims and a few dirty values so the cleaning step has something to do. No real patients or payers.</p>
+<div id="70f89f54" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Self-contained synthetic claims generator ---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_synthetic_claims(n_members<span class="op">=</span><span class="dv">400</span>, n_claims<span class="op">=</span><span class="dv">2400</span>, seed<span class="op">=</span><span class="dv">42</span>):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Eligibility file + service-level claims for a fake MA-style plan."""</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Member eligibility (who is covered, and for how many months)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    members <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"member_id"</span>: [<span class="ss">f"M</span><span class="sc">{</span><span class="dv">1000</span><span class="op">+</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_members)],</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"age"</span>: rng.integers(<span class="dv">45</span>, <span class="dv">90</span>, size<span class="op">=</span>n_members),</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"sex"</span>: rng.choice([<span class="st">"male"</span>, <span class="st">"female"</span>], size<span class="op">=</span>n_members, p<span class="op">=</span>[<span class="fl">0.47</span>, <span class="fl">0.53</span>]),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"region"</span>: rng.choice([<span class="st">"Northeast"</span>, <span class="st">"Southeast"</span>, <span class="st">"Midwest"</span>, <span class="st">"West"</span>], size<span class="op">=</span>n_members),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"plan_type"</span>: rng.choice([<span class="st">"HMO"</span>, <span class="st">"PPO"</span>, <span class="st">"PFFS"</span>], size<span class="op">=</span>n_members, p<span class="op">=</span>[<span class="fl">0.50</span>, <span class="fl">0.35</span>, <span class="fl">0.15</span>]),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"enroll_months"</span>: rng.integers(<span class="dv">6</span>, <span class="dv">13</span>, size<span class="op">=</span>n_members),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Chronic flags with roughly realistic prevalence (used to bias claim codes)</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    members[<span class="st">"has_diabetes"</span>]     <span class="op">=</span> rng.binomial(<span class="dv">1</span>, <span class="fl">0.22</span>, n_members)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    members[<span class="st">"has_chf"</span>]          <span class="op">=</span> rng.binomial(<span class="dv">1</span>, <span class="fl">0.10</span>, n_members)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    members[<span class="st">"has_copd"</span>]         <span class="op">=</span> rng.binomial(<span class="dv">1</span>, <span class="fl">0.12</span>, n_members)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    members[<span class="st">"has_ckd"</span>]          <span class="op">=</span> rng.binomial(<span class="dv">1</span>, <span class="fl">0.14</span>, n_members)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    members[<span class="st">"has_depression"</span>]   <span class="op">=</span> rng.binomial(<span class="dv">1</span>, <span class="fl">0.16</span>, n_members)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    members[<span class="st">"has_hypertension"</span>] <span class="op">=</span> rng.binomial(<span class="dv">1</span>, <span class="fl">0.45</span>, n_members)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    members[<span class="st">"has_cancer"</span>]       <span class="op">=</span> rng.binomial(<span class="dv">1</span>, <span class="fl">0.06</span>, n_members)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Inject a few dirty eligibility values (~4%)</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    bad <span class="op">=</span> rng.choice(n_members, size<span class="op">=</span><span class="bu">max</span>(<span class="dv">8</span>, n_members <span class="op">//</span> <span class="dv">25</span>), replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    members.loc[bad[: <span class="bu">len</span>(bad)<span class="op">//</span><span class="dv">2</span>], <span class="st">"age"</span>] <span class="op">=</span> np.nan</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    members.loc[bad[<span class="bu">len</span>(bad)<span class="op">//</span><span class="dv">2</span> :], <span class="st">"sex"</span>] <span class="op">=</span> <span class="st">"U"</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. Code dictionaries: diagnosis (why) and procedure (what)</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    icd <span class="op">=</span> {</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">"E11.9"</span>: <span class="st">"Type 2 diabetes without complications"</span>,</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="st">"I50.32"</span>: <span class="st">"Chronic systolic heart failure"</span>,</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="st">"J44.9"</span>: <span class="st">"COPD, unspecified"</span>,</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">"N18.3"</span>: <span class="st">"CKD stage 3"</span>,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">"F32.9"</span>: <span class="st">"Major depressive disorder, unspecified"</span>,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="st">"I10"</span>: <span class="st">"Essential hypertension"</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Z12.11"</span>: <span class="st">"Encounter for screening for malignant neoplasm of colon"</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        <span class="st">"M54.5"</span>: <span class="st">"Low back pain"</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        <span class="st">"J06.9"</span>: <span class="st">"Acute upper respiratory infection"</span>,</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Z00.00"</span>: <span class="st">"Encounter for general adult medical examination"</span>,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    cpt <span class="op">=</span> {</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>        <span class="st">"99213"</span>: (<span class="st">"Office visit, established"</span>, <span class="dv">150</span>),</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        <span class="st">"99214"</span>: (<span class="st">"Office visit, moderate complexity"</span>, <span class="dv">250</span>),</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>        <span class="st">"99283"</span>: (<span class="st">"ED visit, moderate"</span>, <span class="dv">1200</span>),</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        <span class="st">"99285"</span>: (<span class="st">"ED visit, high severity"</span>, <span class="dv">2500</span>),</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>        <span class="st">"99232"</span>: (<span class="st">"Subsequent hospital care"</span>, <span class="dv">180</span>),</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>        <span class="st">"93306"</span>: (<span class="st">"Echocardiogram"</span>, <span class="dv">800</span>),</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        <span class="st">"71046"</span>: (<span class="st">"Chest X-ray, 2 views"</span>, <span class="dv">300</span>),</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>        <span class="st">"82947"</span>: (<span class="st">"Glucose, quantitative"</span>, <span class="dv">50</span>),</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>        <span class="st">"36415"</span>: (<span class="st">"Venipuncture"</span>, <span class="dv">25</span>),</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>        <span class="st">"27447"</span>: (<span class="st">"Total knee arthroplasty"</span>, <span class="dv">15000</span>),</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    pos <span class="op">=</span> {<span class="st">"11"</span>: <span class="st">"Office"</span>, <span class="st">"21"</span>: <span class="st">"Inpatient hospital"</span>,</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>           <span class="st">"23"</span>: <span class="st">"Emergency room"</span>, <span class="st">"22"</span>: <span class="st">"Outpatient hospital"</span>, <span class="st">"81"</span>: <span class="st">"Laboratory"</span>}</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Condition → likely primary ICD (so coded claims track the member flags)</span></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    cond_icd <span class="op">=</span> {</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>        <span class="st">"has_diabetes"</span>: <span class="st">"E11.9"</span>, <span class="st">"has_chf"</span>: <span class="st">"I50.32"</span>, <span class="st">"has_copd"</span>: <span class="st">"J44.9"</span>,</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        <span class="st">"has_ckd"</span>: <span class="st">"N18.3"</span>, <span class="st">"has_depression"</span>: <span class="st">"F32.9"</span>,</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>        <span class="st">"has_hypertension"</span>: <span class="st">"I10"</span>, <span class="st">"has_cancer"</span>: <span class="st">"Z12.11"</span>,</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>    icd_keys, cpt_keys, pos_keys <span class="op">=</span> <span class="bu">list</span>(icd), <span class="bu">list</span>(cpt), <span class="bu">list</span>(pos)</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> pick_icd(mid):</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>        row <span class="op">=</span> members.loc[members[<span class="st">"member_id"</span>] <span class="op">==</span> mid].iloc[<span class="dv">0</span>]</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>        coded <span class="op">=</span> [code <span class="cf">for</span> flag, code <span class="kw">in</span> cond_icd.items() <span class="cf">if</span> row[flag] <span class="op">==</span> <span class="dv">1</span>]</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> coded <span class="kw">and</span> rng.random() <span class="op">&lt;</span> <span class="fl">0.65</span>:</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> rng.choice(coded)</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> rng.choice(icd_keys)</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. Service-level claims</span></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>    member_ids <span class="op">=</span> rng.choice(members[<span class="st">"member_id"</span>], size<span class="op">=</span>n_claims)</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    cpt_drawn <span class="op">=</span> rng.choice(cpt_keys, size<span class="op">=</span>n_claims)</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>    billed <span class="op">=</span> np.array([cpt[c][<span class="dv">1</span>] <span class="cf">for</span> c <span class="kw">in</span> cpt_drawn]) <span class="op">*</span> rng.uniform(<span class="fl">0.85</span>, <span class="fl">1.40</span>, n_claims)</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>    allowed <span class="op">=</span> billed <span class="op">*</span> rng.uniform(<span class="fl">0.55</span>, <span class="fl">0.80</span>, n_claims)</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>    paid <span class="op">=</span> allowed <span class="op">*</span> rng.uniform(<span class="fl">0.70</span>, <span class="fl">0.95</span>, n_claims)</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> pd.Timestamp(<span class="st">"2023-01-01"</span>)</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>    svc <span class="op">=</span> [start <span class="op">+</span> pd.Timedelta(days<span class="op">=</span><span class="bu">int</span>(d)) <span class="cf">for</span> d <span class="kw">in</span> rng.integers(<span class="dv">0</span>, <span class="dv">364</span>, n_claims)]</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>    claims <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>        <span class="st">"claim_id"</span>: [<span class="ss">f"CLM</span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">:06d}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_claims)],</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>        <span class="st">"member_id"</span>: member_ids,</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>        <span class="st">"service_date"</span>: svc,</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>        <span class="st">"icd10_primary"</span>: [pick_icd(m) <span class="cf">for</span> m <span class="kw">in</span> member_ids],</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cpt_code"</span>: cpt_drawn,</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>        <span class="st">"place_of_service"</span>: rng.choice(pos_keys, size<span class="op">=</span>n_claims, p<span class="op">=</span>[<span class="fl">0.45</span>, <span class="fl">0.12</span>, <span class="fl">0.12</span>, <span class="fl">0.18</span>, <span class="fl">0.13</span>]),</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>        <span class="st">"billed_amount"</span>: billed.<span class="bu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>        <span class="st">"allowed_amount"</span>: allowed.<span class="bu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>        <span class="st">"paid_amount"</span>: paid.<span class="bu">round</span>(<span class="dv">2</span>),</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>        <span class="st">"provider_npi"</span>: rng.integers(<span class="dv">1000000000</span>, <span class="dv">1999999999</span>, size<span class="op">=</span>n_claims),</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>        <span class="st">"claim_status"</span>: rng.choice([<span class="st">"Paid"</span>, <span class="st">"Denied"</span>, <span class="st">"Pending"</span>], size<span class="op">=</span>n_claims, p<span class="op">=</span>[<span class="fl">0.88</span>, <span class="fl">0.08</span>, <span class="fl">0.04</span>]),</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ~72% of diabetic members get at least one glucose test so the HEDIS-like gap is realistic</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> mid <span class="kw">in</span> members.loc[members[<span class="st">"has_diabetes"</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">"member_id"</span>]:</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> rng.random() <span class="op">&lt;</span> <span class="fl">0.72</span>:</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>            hit <span class="op">=</span> claims.index[claims[<span class="st">"member_id"</span>] <span class="op">==</span> mid]</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(hit):</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>                claims.loc[rng.choice(hit), <span class="st">"cpt_code"</span>] <span class="op">=</span> <span class="st">"82947"</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Inject ~3% duplicate submissions (same member / date / CPT / billed)</span></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>    dup_idx <span class="op">=</span> rng.choice(n_claims, size<span class="op">=</span><span class="bu">int</span>(<span class="fl">0.03</span> <span class="op">*</span> n_claims), replace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>    claims <span class="op">=</span> pd.concat([claims, claims.iloc[dup_idx]], ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>        <span class="st">"members"</span>: members,</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>        <span class="st">"claims"</span>: claims,</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>        <span class="st">"icd"</span>: icd,</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cpt"</span>: cpt,</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pos"</span>: pos,</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>book <span class="op">=</span> make_synthetic_claims()</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>members, claims <span class="op">=</span> book[<span class="st">"members"</span>], book[<span class="st">"claims"</span>]</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Tables:"</span>, <span class="ss">f"members (</span><span class="sc">{</span><span class="bu">len</span>(members)<span class="sc">}</span><span class="ss">), claims (</span><span class="sc">{</span><span class="bu">len</span>(claims)<span class="sc">}</span><span class="ss"> including duplicates)"</span>)</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Date range:"</span>, claims[<span class="st">"service_date"</span>].<span class="bu">min</span>().date(), <span class="st">"→"</span>, claims[<span class="st">"service_date"</span>].<span class="bu">max</span>().date())</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Claim statuses:"</span>, claims[<span class="st">"claim_status"</span>].value_counts().to_dict())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="what-claim-data-is-and-is-not" class="level2">
+<h2 class="anchored" data-anchor-id="what-claim-data-is-and-is-not">13.1 What claim data is (and is not)</h2>
+<p>A <strong>claim</strong> is the structured record a provider submits to a payer (commercial insurer, Medicare, Medicaid) to request <strong>reimbursement for services already delivered</strong>.</p>
+<pre><code>Patient receives care → provider submits a claim → payer adjudicates → claim is recorded</code></pre>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>What it captures</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Patient / member</strong></td>
+<td>ID, age, sex, geography, eligibility months</td>
+</tr>
+<tr class="even">
+<td><strong>Provider</strong></td>
+<td>NPI, specialty, facility</td>
+</tr>
+<tr class="odd">
+<td><strong>Clinical (coded)</strong></td>
+<td>ICD-10 <em>why</em>, CPT/HCPCS <em>what</em>, revenue codes</td>
+</tr>
+<tr class="even">
+<td><strong>Financial</strong></td>
+<td>Billed, allowed, paid, member cost-share</td>
+</tr>
+<tr class="odd">
+<td><strong>Context</strong></td>
+<td>Dates, place of service, claim status (paid / denied / pending)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Claim types.</strong> Professional (CMS-1500, office visits), institutional (UB-04, hospital stays), pharmacy (NCPDP), dental.</p>
+<p><strong>Why informatics cares.</strong> Claims are how ICD and CPT <em>travel</em> through the payment system (Module 3). They are also the main administrative feed into warehouses (Module 14), population programs (Module 12), and risk adjustment.</p>
+<p><strong>Limits.</strong> Claims are <strong>not</strong> the medical record. They lack vitals, labs, notes, and often secondary diagnoses. They are billing-driven, lagged (days to months), and sensitive to how providers code. Use them for <em>what was billed and paid</em>, not as a substitute for clinical truth.</p>
+</section>
+<section id="anatomy-of-a-claim-line" class="level2">
+<h2 class="anchored" data-anchor-id="anatomy-of-a-claim-line">13.2 Anatomy of a claim line</h2>
+<p>Each row below is one <strong>service line</strong>: a coded reason (ICD), a coded service (CPT), a setting (place of service), and three dollar amounts. Payers typically keep <strong>paid</strong> claims for analytics; denied and pending rows stay in operational queues.</p>
+<div id="6c63129f" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Peek at a few raw claim lines and decode CPT / POS for readability</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> claims.head(<span class="dv">8</span>).copy()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sample[<span class="st">"cpt_desc"</span>] <span class="op">=</span> sample[<span class="st">"cpt_code"</span>].<span class="bu">map</span>(<span class="kw">lambda</span> c: book[<span class="st">"cpt"</span>][c][<span class="dv">0</span>])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>sample[<span class="st">"pos_desc"</span>] <span class="op">=</span> sample[<span class="st">"place_of_service"</span>].<span class="bu">map</span>(book[<span class="st">"pos"</span>])</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">"claim_id"</span>, <span class="st">"member_id"</span>, <span class="st">"service_date"</span>, <span class="st">"icd10_primary"</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"cpt_code"</span>, <span class="st">"cpt_desc"</span>, <span class="st">"pos_desc"</span>, <span class="st">"billed_amount"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"allowed_amount"</span>, <span class="st">"paid_amount"</span>, <span class="st">"claim_status"</span>]</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sample[cols].to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="classification-tools-on-claims" class="level2">
+<h2 class="anchored" data-anchor-id="classification-tools-on-claims">13.3 Classification tools on claims</h2>
+<p>Claims do not store “this patient is high risk” as a field. Analysts <strong>group</strong> raw codes into payment and risk categories. Module 3 introduced the codes; here they become <em>groupers</em>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tool</th>
+<th>Setting</th>
+<th>Job on a claim</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ICD-10-CM</strong></td>
+<td>All</td>
+<td>Diagnosis / reason for visit</td>
+</tr>
+<tr class="even">
+<td><strong>CPT / HCPCS</strong></td>
+<td>Outpatient / professional</td>
+<td>Procedure / service billed</td>
+</tr>
+<tr class="odd">
+<td><strong>MS-DRG</strong></td>
+<td>Inpatient</td>
+<td>Bundled hospital payment per stay</td>
+</tr>
+<tr class="even">
+<td><strong>HCC</strong></td>
+<td>Medicare Advantage</td>
+<td>Risk-adjust capitation from diagnoses</td>
+</tr>
+<tr class="odd">
+<td><strong>CCI / LACE</strong></td>
+<td>All</td>
+<td>Comorbidity / readmission risk from codes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>HCC (Hierarchical Condition Categories)</strong> collapse related ICD codes into categories that predict next-year cost. A higher HCC score means a sicker member and, under Medicare Advantage, a higher payment to the plan. The weights below are <strong>educational approximations</strong>, not the CMS model.</p>
+<div id="2dbed22d" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Educational ICD-10 → HCC crosswalk (NOT the official CMS-HCC model)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>hcc_map <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"icd10"</span>: [<span class="st">"E11.9"</span>, <span class="st">"I10"</span>, <span class="st">"J44.9"</span>, <span class="st">"N18.3"</span>, <span class="st">"F32.9"</span>, <span class="st">"I50.32"</span>, <span class="st">"Z12.11"</span>, <span class="st">"J06.9"</span>],</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"description"</span>: [</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Type 2 diabetes without complications"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Essential hypertension"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"COPD, unspecified"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"CKD stage 3"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Major depression, unspecified"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Chronic systolic HF"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Colon cancer screening (no HCC)"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"Acute URI (acute — usually no HCC)"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hcc"</span>: [<span class="st">"HCC19"</span>, <span class="st">"HCC85"</span>, <span class="st">"HCC111"</span>, <span class="st">"HCC137"</span>, <span class="st">"HCC59"</span>, <span class="st">"HCC85"</span>, <span class="va">None</span>, <span class="va">None</span>],</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"weight"</span>: [<span class="fl">0.318</span>, <span class="fl">0.302</span>, <span class="fl">0.335</span>, <span class="fl">0.289</span>, <span class="fl">0.309</span>, <span class="fl">0.368</span>, <span class="va">None</span>, <span class="va">None</span>],</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ICD-10 codes on this book's claims, with a toy HCC mapping"</span>)</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hcc_map.to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="cleaning-and-validating-claims" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning-and-validating-claims">13.4 Cleaning and validating claims</h2>
+<p>Production claims are messy: <strong>duplicates</strong> (resubmits), <strong>reversals</strong>, mixed <strong>adjudication status</strong>, missing demographics, and amounts that violate <code>paid ≤ allowed ≤ billed</code>. Analytics almost always start from <strong>paid</strong> claims after those checks — the same data-quality instinct as Module 8, applied to administrative data.</p>
+<div id="3ed14317" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>raw_n <span class="op">=</span> <span class="bu">len</span>(claims)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Drop duplicate submissions (same member, date, CPT, billed amount)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>claims_clean <span class="op">=</span> claims.drop_duplicates(</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    subset<span class="op">=</span>[<span class="st">"member_id"</span>, <span class="st">"service_date"</span>, <span class="st">"cpt_code"</span>, <span class="st">"billed_amount"</span>]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>).copy()</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Duplicates removed: </span><span class="sc">{</span>raw_n <span class="op">-</span> <span class="bu">len</span>(claims_clean)<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Keep paid claims for cost / utilization analytics</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>claims_clean <span class="op">=</span> claims_clean[claims_clean[<span class="st">"claim_status"</span>] <span class="op">==</span> <span class="st">"Paid"</span>].copy()</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"After status filter (Paid only): </span><span class="sc">{</span><span class="bu">len</span>(claims_clean)<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Repair eligibility: numeric age, recode unknown sex</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>members_clean <span class="op">=</span> members.copy()</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>members_clean[<span class="st">"age"</span>] <span class="op">=</span> pd.to_numeric(members_clean[<span class="st">"age"</span>], errors<span class="op">=</span><span class="st">"coerce"</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>members_clean[<span class="st">"age"</span>] <span class="op">=</span> members_clean[<span class="st">"age"</span>].fillna(members_clean[<span class="st">"age"</span>].median()).clip(<span class="dv">0</span>, <span class="dv">110</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>members_clean[<span class="st">"sex"</span>] <span class="op">=</span> members_clean[<span class="st">"sex"</span>].replace(<span class="st">"U"</span>, <span class="st">"female"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Financial integrity: paid cannot exceed allowed</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>over <span class="op">=</span> claims_clean[<span class="st">"paid_amount"</span>] <span class="op">&gt;</span> claims_clean[<span class="st">"allowed_amount"</span>]</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>claims_clean.loc[over, <span class="st">"paid_amount"</span>] <span class="op">=</span> claims_clean.loc[over, <span class="st">"allowed_amount"</span>]</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Paid&gt;allowed rows capped: </span><span class="sc">{</span><span class="bu">int</span>(over.<span class="bu">sum</span>())<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>claims_clean <span class="op">=</span> claims_clean[claims_clean[<span class="st">"paid_amount"</span>] <span class="op">&gt;=</span> <span class="dv">0</span>]</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Clean claims: </span><span class="sc">{</span><span class="bu">len</span>(claims_clean)<span class="sc">:,}</span><span class="ss"> | clean members: </span><span class="sc">{</span><span class="bu">len</span>(members_clean)<span class="sc">:,}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="member-level-features-pmpm-hcc-utilization" class="level2">
+<h2 class="anchored" data-anchor-id="member-level-features-pmpm-hcc-utilization">13.5 Member-level features: PMPM, HCC, utilization</h2>
+<p>A claim is a <strong>transaction</strong>. Care management and risk models need a <strong>member</strong>. We aggregate paid claims to one row per member:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>PMPM</strong></td>
+<td>Paid amount ÷ enrollment months — the core actuarial unit</td>
+</tr>
+<tr class="even">
+<td><strong>HCC score</strong></td>
+<td>Age/sex baseline + weights for coded chronic conditions</td>
+</tr>
+<tr class="odd">
+<td><strong>CCI</strong></td>
+<td>Weighted comorbidity count (Charlson-style)</td>
+</tr>
+<tr class="even">
+<td><strong>Utilization</strong></td>
+<td>ER, inpatient, and office visits from place of service</td>
+</tr>
+</tbody>
+</table>
+<p>Normalizing HCC so the book average is <strong>1.0</strong> is how plans talk about “sicker than average” (score &gt; 1) versus “healthier” (score &lt; 1).</p>
+<div id="13f3d4a5" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Join paid claims to eligibility, then roll up to the member</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> claims_clean.merge(members_clean, on<span class="op">=</span><span class="st">"member_id"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>member_feat <span class="op">=</span> df.groupby(<span class="st">"member_id"</span>).agg(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    total_paid<span class="op">=</span>(<span class="st">"paid_amount"</span>, <span class="st">"sum"</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    n_claims<span class="op">=</span>(<span class="st">"claim_id"</span>, <span class="st">"count"</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    n_icd<span class="op">=</span>(<span class="st">"icd10_primary"</span>, <span class="st">"nunique"</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    n_providers<span class="op">=</span>(<span class="st">"provider_npi"</span>, <span class="st">"nunique"</span>),</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    er_visits<span class="op">=</span>(<span class="st">"place_of_service"</span>, <span class="kw">lambda</span> s: (s <span class="op">==</span> <span class="st">"23"</span>).<span class="bu">sum</span>()),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    ip_visits<span class="op">=</span>(<span class="st">"place_of_service"</span>, <span class="kw">lambda</span> s: (s <span class="op">==</span> <span class="st">"21"</span>).<span class="bu">sum</span>()),</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    office_visits<span class="op">=</span>(<span class="st">"place_of_service"</span>, <span class="kw">lambda</span> s: (s <span class="op">==</span> <span class="st">"11"</span>).<span class="bu">sum</span>()),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>).reset_index()</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>member_feat <span class="op">=</span> member_feat.merge(members_clean, on<span class="op">=</span><span class="st">"member_id"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"enroll_months"</span>] <span class="op">=</span> member_feat[<span class="st">"enroll_months"</span>].clip(lower<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"pmpm"</span>] <span class="op">=</span> (member_feat[<span class="st">"total_paid"</span>] <span class="op">/</span> member_feat[<span class="st">"enroll_months"</span>]).<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Toy HCC: age/sex factor + condition weights (educational, not CMS)</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>hcc_w <span class="op">=</span> {</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"has_diabetes"</span>: <span class="fl">0.318</span>, <span class="st">"has_chf"</span>: <span class="fl">0.368</span>, <span class="st">"has_copd"</span>: <span class="fl">0.335</span>,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"has_ckd"</span>: <span class="fl">0.289</span>, <span class="st">"has_depression"</span>: <span class="fl">0.309</span>, <span class="st">"has_hypertension"</span>: <span class="fl">0.118</span>,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"has_cancer"</span>: <span class="fl">0.450</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> age_sex_factor(row):</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    base <span class="op">=</span> <span class="fl">0.28</span> <span class="op">+</span> row[<span class="st">"age"</span>] <span class="op">*</span> <span class="fl">0.007</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row[<span class="st">"sex"</span>] <span class="op">==</span> <span class="st">"female"</span> <span class="kw">and</span> row[<span class="st">"age"</span>] <span class="op">&gt;=</span> <span class="dv">65</span>:</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        base <span class="op">+=</span> <span class="fl">0.04</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(base, <span class="dv">3</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"age_sex"</span>] <span class="op">=</span> member_feat.<span class="bu">apply</span>(age_sex_factor, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"hcc_raw"</span>] <span class="op">=</span> (</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    member_feat[<span class="st">"age_sex"</span>] <span class="op">+</span> <span class="bu">sum</span>(member_feat[c] <span class="op">*</span> w <span class="cf">for</span> c, w <span class="kw">in</span> hcc_w.items())</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"hcc"</span>] <span class="op">=</span> (member_feat[<span class="st">"hcc_raw"</span>] <span class="op">/</span> member_feat[<span class="st">"hcc_raw"</span>].mean()).<span class="bu">round</span>(<span class="dv">3</span>)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Simplified Charlson weights on the same flags</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>cci_w <span class="op">=</span> {<span class="st">"has_diabetes"</span>: <span class="dv">1</span>, <span class="st">"has_chf"</span>: <span class="dv">1</span>, <span class="st">"has_copd"</span>: <span class="dv">1</span>, <span class="st">"has_ckd"</span>: <span class="dv">2</span>, <span class="st">"has_cancer"</span>: <span class="dv">2</span>}</span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"cci"</span>] <span class="op">=</span> <span class="bu">sum</span>(member_feat[c] <span class="op">*</span> w <span class="cf">for</span> c, w <span class="kw">in</span> cci_w.items())</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>cond_cols <span class="op">=</span> <span class="bu">list</span>(hcc_w)</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"n_chronic"</span>] <span class="op">=</span> member_feat[cond_cols].<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Members with claims: </span><span class="sc">{</span><span class="bu">len</span>(member_feat)<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean PMPM: $</span><span class="sc">{</span>member_feat[<span class="st">'pmpm'</span>]<span class="sc">.</span>mean()<span class="sc">:,.2f}</span><span class="ss">"</span>)</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean HCC (normalized): </span><span class="sc">{</span>member_feat[<span class="st">'hcc'</span>]<span class="sc">.</span>mean()<span class="sc">:.3f}</span><span class="ss">  (1.0 = book average)"</span>)</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean CCI: </span><span class="sc">{</span>member_feat[<span class="st">'cci'</span>]<span class="sc">.</span>mean()<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total ER visits: </span><span class="sc">{</span>member_feat[<span class="st">'er_visits'</span>]<span class="sc">.</span><span class="bu">sum</span>()<span class="sc">:,}</span><span class="ss">"</span>)</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(member_feat[[<span class="st">"member_id"</span>, <span class="st">"age"</span>, <span class="st">"pmpm"</span>, <span class="st">"hcc"</span>, <span class="st">"cci"</span>, <span class="st">"n_chronic"</span>]].head().to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="milestone-1-risk-stratification" class="level3">
+<h3 class="anchored" data-anchor-id="milestone-1-risk-stratification">Milestone 1 — risk stratification</h3>
+<p>Care programs do not treat every member the same. A simple <strong>rule engine</strong> combines HCC, inpatient use, and ER use into four tiers — the same pattern as the CDS rule engine in Module 11, now at <strong>population</strong> scale.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tier</th>
+<th>Rule of thumb</th>
+<th>Typical action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4 Critical</td>
+<td>HCC ≥ 1.8 or IP ≥ 3 or ER ≥ 4</td>
+<td>Intensive case management</td>
+</tr>
+<tr class="even">
+<td>3 High</td>
+<td>HCC ≥ 1.2 or IP ≥ 1 or ER ≥ 2</td>
+<td>Care-manager outreach</td>
+</tr>
+<tr class="odd">
+<td>2 Rising</td>
+<td>HCC ≥ 0.9 or 2+ chronic conditions</td>
+<td>Prevention / coaching</td>
+</tr>
+<tr class="even">
+<td>1 Low</td>
+<td>Everyone else</td>
+<td>Wellness</td>
+</tr>
+</tbody>
+</table>
+<div id="bec56ed2" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> assign_tier(row):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    hcc, er, ip <span class="op">=</span> row[<span class="st">"hcc"</span>], row[<span class="st">"er_visits"</span>], row[<span class="st">"ip_visits"</span>]</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> hcc <span class="op">&gt;=</span> <span class="fl">1.8</span> <span class="kw">or</span> ip <span class="op">&gt;=</span> <span class="dv">3</span> <span class="kw">or</span> er <span class="op">&gt;=</span> <span class="dv">4</span>:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"4 - Critical"</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> hcc <span class="op">&gt;=</span> <span class="fl">1.2</span> <span class="kw">or</span> ip <span class="op">&gt;=</span> <span class="dv">1</span> <span class="kw">or</span> er <span class="op">&gt;=</span> <span class="dv">2</span>:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"3 - High"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> hcc <span class="op">&gt;=</span> <span class="fl">0.9</span> <span class="kw">or</span> row[<span class="st">"n_chronic"</span>] <span class="op">&gt;=</span> <span class="dv">2</span>:</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"2 - Rising"</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"1 - Low"</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"risk_tier"</span>] <span class="op">=</span> member_feat.<span class="bu">apply</span>(assign_tier, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Disease registries from the same flags (claims-derived cohorts)</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"registry_diabetes"</span>] <span class="op">=</span> member_feat[<span class="st">"has_diabetes"</span>] <span class="op">==</span> <span class="dv">1</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"registry_chf"</span>] <span class="op">=</span> member_feat[<span class="st">"has_chf"</span>] <span class="op">==</span> <span class="dv">1</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>member_feat[<span class="st">"registry_copd"</span>] <span class="op">=</span> member_feat[<span class="st">"has_copd"</span>] <span class="op">==</span> <span class="dv">1</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>tier <span class="op">=</span> (member_feat.groupby(<span class="st">"risk_tier"</span>)</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>        .agg(members<span class="op">=</span>(<span class="st">"member_id"</span>, <span class="st">"count"</span>),</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>             total_paid<span class="op">=</span>(<span class="st">"total_paid"</span>, <span class="st">"sum"</span>),</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>             mean_pmpm<span class="op">=</span>(<span class="st">"pmpm"</span>, <span class="st">"mean"</span>))</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>        .reset_index())</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>tier[<span class="st">"cost_share_pct"</span>] <span class="op">=</span> (tier[<span class="st">"total_paid"</span>] <span class="op">/</span> tier[<span class="st">"total_paid"</span>].<span class="bu">sum</span>() <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">1</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Risk-tier distribution"</span>)</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tier.to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Registries: diabetes"</span>, <span class="bu">int</span>(member_feat[<span class="st">"registry_diabetes"</span>].<span class="bu">sum</span>()),</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>      <span class="st">"| CHF"</span>, <span class="bu">int</span>(member_feat[<span class="st">"registry_chf"</span>].<span class="bu">sum</span>()),</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>      <span class="st">"| COPD"</span>, <span class="bu">int</span>(member_feat[<span class="st">"registry_copd"</span>].<span class="bu">sum</span>()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="11868013" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">3.6</span>))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>order <span class="op">=</span> [<span class="st">"1 - Low"</span>, <span class="st">"2 - Rising"</span>, <span class="st">"3 - High"</span>, <span class="st">"4 - Critical"</span>]</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> [<span class="st">"#55A868"</span>, <span class="st">"#4C72B0"</span>, <span class="st">"#DD8452"</span>, <span class="st">"#C44E52"</span>]</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> member_feat[<span class="st">"risk_tier"</span>].value_counts().reindex(order).fillna(<span class="dv">0</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].barh(order, counts.values, color<span class="op">=</span>colors)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"members"</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Members by risk tier"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>paid <span class="op">=</span> member_feat.groupby(<span class="st">"risk_tier"</span>)[<span class="st">"total_paid"</span>].<span class="bu">sum</span>().reindex(order).fillna(<span class="dv">0</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].pie(paid, labels<span class="op">=</span>order, colors<span class="op">=</span>colors, autopct<span class="op">=</span><span class="st">"%1.0f</span><span class="sc">%%</span><span class="st">"</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>            textprops<span class="op">=</span>{<span class="st">"fontsize"</span>: <span class="dv">8</span>})</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"Share of paid amount"</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+</section>
+<section id="quality-measures-and-care-gaps-hedis-like" class="level2">
+<h2 class="anchored" data-anchor-id="quality-measures-and-care-gaps-hedis-like">13.6 Quality measures and care gaps (HEDIS-like)</h2>
+<p><strong>HEDIS</strong>-style measures ask: of the members who <em>should</em> have received a service, what share <em>did</em>? Numerators and denominators are built from claims (and sometimes pharmacy or labs). Members in the denominator but not the numerator are a <strong>care gap</strong> — an outreach list.</p>
+<p>Here the denominator is members with diabetes on file; the numerator is those with at least one <strong>glucose test (CPT 82947)</strong> in the year — a simplified stand-in for HbA1c testing, not a certified HEDIS engine.</p>
+<div id="14ac0f95" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Denominator: members flagged with diabetes</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>diabetics <span class="op">=</span> <span class="bu">set</span>(member_feat.loc[member_feat[<span class="st">"has_diabetes"</span>] <span class="op">==</span> <span class="dv">1</span>, <span class="st">"member_id"</span>])</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Numerator: at least one glucose test billed in the year</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>tested <span class="op">=</span> <span class="bu">set</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    claims_clean.loc[claims_clean[<span class="st">"cpt_code"</span>] <span class="op">==</span> <span class="st">"82947"</span>, <span class="st">"member_id"</span>]</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>tested_diabetics <span class="op">=</span> diabetics <span class="op">&amp;</span> tested</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>rate <span class="op">=</span> (<span class="bu">len</span>(tested_diabetics) <span class="op">/</span> <span class="bu">len</span>(diabetics)) <span class="cf">if</span> diabetics <span class="cf">else</span> <span class="bu">float</span>(<span class="st">"nan"</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>benchmark <span class="op">=</span> <span class="fl">0.80</span>  <span class="co"># illustrative national-style target, not a real HEDIS rate</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>gap <span class="op">=</span> rate <span class="op">-</span> benchmark</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Diabetes denominator: </span><span class="sc">{</span><span class="bu">len</span>(diabetics)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"With ≥1 glucose test (CPT 82947): </span><span class="sc">{</span><span class="bu">len</span>(tested_diabetics)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Testing rate: </span><span class="sc">{</span>rate<span class="sc">:.1%}</span><span class="ss">  |  benchmark: </span><span class="sc">{</span>benchmark<span class="sc">:.0%}</span><span class="ss">  |  gap: </span><span class="sc">{</span>gap<span class="sc">:+.1%}</span><span class="ss">"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>care_gap <span class="op">=</span> member_feat[</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    member_feat[<span class="st">"member_id"</span>].isin(diabetics <span class="op">-</span> tested)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>][[<span class="st">"member_id"</span>, <span class="st">"age"</span>, <span class="st">"pmpm"</span>, <span class="st">"hcc"</span>, <span class="st">"risk_tier"</span>]].sort_values(<span class="st">"pmpm"</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Care gap: </span><span class="sc">{</span><span class="bu">len</span>(care_gap)<span class="sc">}</span><span class="ss"> diabetic members with no glucose test on file"</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Highest-PMPM gaps (outreach priority):"</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(care_gap.head(<span class="dv">8</span>).to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="66873629" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visual: plan rate vs an illustrative benchmark</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">6.5</span>, <span class="fl">3.4</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>ax.bar([<span class="dv">0</span>], [rate <span class="op">*</span> <span class="dv">100</span>], width<span class="op">=</span><span class="fl">0.45</span>, color<span class="op">=</span><span class="st">"#4C72B0"</span>, label<span class="op">=</span><span class="st">"plan"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>ax.bar([<span class="fl">0.5</span>], [benchmark <span class="op">*</span> <span class="dv">100</span>], width<span class="op">=</span><span class="fl">0.45</span>, color<span class="op">=</span><span class="st">"#8C8C8C"</span>, label<span class="op">=</span><span class="st">"benchmark"</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>ax.axhline(benchmark <span class="op">*</span> <span class="dv">100</span>, color<span class="op">=</span><span class="st">"#C44E52"</span>, ls<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ax.set_xticks([<span class="dv">0</span>, <span class="fl">0.5</span>])</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels([<span class="st">"Plan (claims)"</span>, <span class="st">"Benchmark"</span>])</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"percent of diabetics tested"</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"HEDIS-like: glucose testing among members with diabetes"</span>)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="dv">100</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="claims-next-to-the-ehr" class="level2">
+<h2 class="anchored" data-anchor-id="claims-next-to-the-ehr">13.7 Claims next to the EHR</h2>
+<p>Claims and EHR data answer different questions. Informatics pipelines often <strong>join</strong> them (eligibility + claims + clinical) inside a warehouse — the subject of the next module.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Claims</th>
+<th>EHR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Unit</strong></td>
+<td>Billable service</td>
+<td>Clinical encounter / observation</td>
+</tr>
+<tr class="even">
+<td><strong>Strength</strong></td>
+<td>Complete for billed care; cost; population coverage</td>
+<td>Vitals, labs, notes, orders</td>
+</tr>
+<tr class="odd">
+<td><strong>Weakness</strong></td>
+<td>Billing-driven, lagged, thin clinically</td>
+<td>Incomplete across sites; not built for payment</td>
+</tr>
+<tr class="even">
+<td><strong>Typical use</strong></td>
+<td>PMPM, HCC, HEDIS, fraud, network</td>
+<td>CDS, quality of <em>documented</em> care, phenotyping</td>
+</tr>
+</tbody>
+</table>
+<p>The data-scientist workflow on a claims book is: <strong>acquire → clean → feature (PMPM, HCC, CCI) → classify / risk-stratify → quality gaps → action</strong>. This module ran the middle of that pipeline on synthetic data. Production work adds 837/835 EDI, pharmacy claims, official groupers, and actuarial sign-off.</p>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>Recompute <strong>PMPM using allowed amount</strong> instead of paid. How much does the book average move, and why would a plan care?</li>
+<li>Build an <strong>age-banded</strong> table of mean HCC and mean PMPM (a standard actuarial cut). Does cost rise smoothly with age in this synthetic book?</li>
+<li>Define a second care gap — e.g.&nbsp;members with hypertension (<code>I10</code>) and <strong>no office visit</strong> (POS <code>11</code>) — and list the highest-PMPM members in the gap.</li>
+</ol>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key takeaways</h2>
+<ul>
+<li><strong>Claims</strong> are the financial/administrative backbone of US healthcare, not a substitute for the EHR.</li>
+<li><strong>ICD, CPT, HCC, DRG</strong> are how a bill becomes a comparable, groupable record.</li>
+<li>Analytics run on <strong>cleaned paid claims</strong> rolled up to the <strong>member-month</strong>.</li>
+<li><strong>PMPM + HCC + utilization</strong> feed risk tiers, registries, and HEDIS-like gaps.</li>
+</ul>
+<hr>
+<p><em>Next: Module 14 - Clinical Data Warehousing and Analytics-Ready Data.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/zia207\.github\.io\/Health-informatics\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html" class="pagination-link" aria-label="12 · Public Health Informatics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">12 · Public Health Informatics</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.html" class="pagination-link" aria-label="14 · Clinical Data Warehousing">
+        <span class="nav-page-text">14 · Clinical Data Warehousing</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© CC-By Zia Ahmed, Upatta Analytics, 2026</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

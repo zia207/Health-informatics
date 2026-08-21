@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>health_data_types_and_structure – Health Informatics in Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.html" rel="next">
+<link href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html" rel="prev">
+<link href="../../Image/chapter_logo_health_informatics.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c5c3ec5290bf6b57b4a42a3553f76d36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Health Informatics in Python</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/zia207/Health-informatics"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/zia-ahmed207"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="mailto:zia207@gmail.com"> 
+<span class="menu-text">zia207@gmail.com</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html"><strong>Part I — Foundations</strong> (Beginner)</a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.html">02 · Health Data Types and Structure</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html"><strong>Part I — Foundations</strong> (Beginner)</a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.html">02 · Health Data Types and Structure</a></li></ol></nav></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Health Informatics in Python</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Health Informatics in Python</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part I — Foundations</strong> (Beginner)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 · What Health Informatics Is</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">02 · Health Data Types and Structure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Clinical Terminologies</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/04_health_data_standards_and_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Standards and Formats</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part II — Interoperability &amp; Data Engineering</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/05_fhir_in_depth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · FHIR in Depth</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/06_data_ingestion_etl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 · Data Ingestion and ETL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/07_omop_common_data_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 · OMOP Common Data Model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/08_data_quality_and_validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 · Data Quality and Validation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part III — Privacy, Text &amp; Applied Informatics</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">09 · Privacy and De-identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">10 · Clinical NLP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/11_clinical_decision_support.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">11 · Clinical Decision Support</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part IV — Advanced Topics</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">12 · Public Health Informatics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">13 · Claims Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">14 · Clinical Data Warehousing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">15 · Interoperability at Scale</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/16_emerging_directions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">16 · Emerging Directions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#module-2-health-data-types-and-structure" id="toc-module-2-health-data-types-and-structure" class="nav-link active" data-scroll-target="#module-2-health-data-types-and-structure">Module 2: Health Data Types and Structure</a>
+  <ul class="collapse">
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#three-kinds-of-health-data" id="toc-three-kinds-of-health-data" class="nav-link" data-scroll-target="#three-kinds-of-health-data">2.1 Three kinds of health data</a></li>
+  <li><a href="#the-core-clinical-entities" id="toc-the-core-clinical-entities" class="nav-link" data-scroll-target="#the-core-clinical-entities">2.2 The core clinical entities</a>
+  <ul class="collapse">
+  <li><a href="#milestone-1---the-encounter-as-the-hub-of-activity" id="toc-milestone-1---the-encounter-as-the-hub-of-activity" class="nav-link" data-scroll-target="#milestone-1---the-encounter-as-the-hub-of-activity">Milestone 1 - the encounter as the hub of activity</a></li>
+  </ul></li>
+  <li><a href="#longitudinal-time-stamped-data" id="toc-longitudinal-time-stamped-data" class="nav-link" data-scroll-target="#longitudinal-time-stamped-data">2.3 Longitudinal, time-stamped data</a></li>
+  <li><a href="#joining-tables-into-an-analysis-ready-view" id="toc-joining-tables-into-an-analysis-ready-view" class="nav-link" data-scroll-target="#joining-tables-into-an-analysis-ready-view">2.4 Joining tables into an analysis-ready view</a>
+  <ul class="collapse">
+  <li><a href="#milestone-2---a-simple-cohort-question" id="toc-milestone-2---a-simple-cohort-question" class="nav-link" data-scroll-target="#milestone-2---a-simple-cohort-question">Milestone 2 - a simple cohort question</a></li>
+  </ul></li>
+  <li><a href="#long-vs.-wide-format" id="toc-long-vs.-wide-format" class="nav-link" data-scroll-target="#long-vs.-wide-format">2.5 Long vs.&nbsp;wide format</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key takeaways</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Image/chapter-banner.png" class="img-fluid figure-img"></p>
+<figcaption>Health-Informatics: A Python Tutorial</figcaption>
+</figure>
+</div>
+<section id="module-2-health-data-types-and-structure" class="level1">
+<h1>Module 2: Health Data Types and Structure</h1>
+<p><strong>Health Informatics in Python</strong> · Part I: Foundations · Module 2 of 16</p>
+<hr>
+<p>Before you can standardize, exchange, or analyze health data, you have to understand its <strong>shape</strong>. This module dissects the core entities of an EHR and the difference between structured, unstructured, and semi-structured data.</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this module you will be able to:</p>
+<ol type="1">
+<li>Distinguish <strong>structured, unstructured, and semi-structured</strong> clinical data.</li>
+<li>Identify the <strong>core clinical entities</strong>: patients, encounters, observations, conditions, medications, procedures.</li>
+<li>Work with <strong>longitudinal, time-stamped</strong> data.</li>
+<li>Join the EHR tables into an <strong>analysis-ready</strong> patient view.</li>
+<li>Reshape observations between <strong>long and wide</strong> formats.</li>
+</ol>
+</section>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
+<p>We reuse the synthetic EHR from Module 1 — same generator, same seed — so the relational structure is identical. We add a small block of free-text clinical notes to illustrate unstructured data.</p>
+<div id="e6c82c9e" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Self-contained synthetic EHR generator (no external downloads) ---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This is the SAME generator from Module 1. We rebuild the fake hospital database</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># here so this notebook can run on its own. Nothing here is a real patient.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># This function generates a synthetic electronic health record (EHR) dataset.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># It creates mock tables for patients, encounters, observations, conditions, and medications,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># all with plausible structure, but not referencing any real patients or requiring external data.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_synthetic_ehr(n_patients<span class="op">=</span><span class="dv">200</span>, seed<span class="op">=</span><span class="dv">42</span>):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Generate a small, internally-consistent synthetic EHR dataset.</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns a dict of linked DataFrames: patients, encounters, observations,</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">    conditions, and medications. This is for illustrative, educational use.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)  <span class="co"># Ensures reproducibility: same seed =&gt; same fake people</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- patients table ---</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a DataFrame with n_patients patients, each with a name, sex, age, and calculated birth_year.</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    first <span class="op">=</span> [<span class="st">"Ava"</span>,<span class="st">"Liam"</span>,<span class="st">"Noah"</span>,<span class="st">"Mia"</span>,<span class="st">"Zoe"</span>,<span class="st">"Omar"</span>,<span class="st">"Ivan"</span>,<span class="st">"Sara"</span>,<span class="st">"Leo"</span>,<span class="st">"Nina"</span>,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Ruth"</span>,<span class="st">"Kai"</span>,<span class="st">"Yara"</span>,<span class="st">"Theo"</span>,<span class="st">"Ida"</span>,<span class="st">"Sam"</span>,<span class="st">"Ana"</span>,<span class="st">"Eli"</span>,<span class="st">"Rex"</span>,<span class="st">"Uma"</span>]</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    last  <span class="op">=</span> [<span class="st">"Khan"</span>,<span class="st">"Ortiz"</span>,<span class="st">"Chen"</span>,<span class="st">"Diaz"</span>,<span class="st">"Patel"</span>,<span class="st">"Ali"</span>,<span class="st">"Brown"</span>,<span class="st">"Nash"</span>,<span class="st">"Reed"</span>,<span class="st">"Vega"</span>,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Cole"</span>,<span class="st">"Frost"</span>,<span class="st">"Grant"</span>,<span class="st">"Hale"</span>,<span class="st">"Iqbal"</span>,<span class="st">"Jain"</span>,<span class="st">"Kerr"</span>,<span class="st">"Lund"</span>,<span class="st">"Mora"</span>,<span class="st">"Park"</span>]</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    sexes <span class="op">=</span> rng.choice([<span class="st">"male"</span>, <span class="st">"female"</span>], size<span class="op">=</span>n_patients, p<span class="op">=</span>[<span class="fl">0.49</span>, <span class="fl">0.51</span>])</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    ages  <span class="op">=</span> rng.integers(<span class="dv">18</span>, <span class="dv">90</span>, size<span class="op">=</span>n_patients)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This block creates a DataFrame called 'patients' with columns representing patient attributes.</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - "patient_id": Assigns a unique ID to each patient, e.g., "P1000", "P1001", etc.</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - "given_name": Randomly selects one of the first names for each patient.</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - "family_name": Randomly selects one of the last names for each patient.</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - "sex": The pre-generated array of male/female assignments.</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - "age": The pre-generated ages for each patient.</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - "birth_year": Calculates the year of birth based on the age, assuming a reference year of 2026.</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    patients <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">"patient_id"</span>: [<span class="ss">f"P</span><span class="sc">{</span><span class="dv">1000</span><span class="op">+</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_patients)],</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="st">"given_name"</span>: rng.choice(first, size<span class="op">=</span>n_patients),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="st">"family_name"</span>: rng.choice(last, size<span class="op">=</span>n_patients),</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">"sex"</span>: sexes,</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        <span class="st">"age"</span>: ages,</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="st">"birth_year"</span>: <span class="dv">2026</span> <span class="op">-</span> ages,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- encounters table ---</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The following block generates synthetic 'encounters' for each patient:</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - Each patient has between 1 and 4 encounters (randomly chosen).</span></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - Each encounter is assigned a type: 'ambulatory', 'emergency', 'inpatient', or 'wellness'.</span></span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   The probability of each type is respectively: 55% ambulatory, 15% emergency, 10% inpatient, and 20% wellness.</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - The encounter's date is randomly set within a 3-year window starting from Jan 1, 2023.</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># - Each encounter receives:</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     - A unique encounter_id (e.g., E00001, E00002, ...).</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     - The associated patient_id.</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="co">#     - The randomly assigned type and date.</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>    enc_rows <span class="op">=</span> []</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>    enc_types <span class="op">=</span> [<span class="st">"ambulatory"</span>, <span class="st">"emergency"</span>, <span class="st">"inpatient"</span>, <span class="st">"wellness"</span>]</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pid <span class="kw">in</span> patients[<span class="st">"patient_id"</span>]:</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Randomly determine how many encounters (between 1 and 4) this patient has</span></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(rng.integers(<span class="dv">1</span>, <span class="dv">5</span>)):</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>            <span class="co"># For each encounter, pick a random day offset within 3 years (0 to 1094)</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>            day <span class="op">=</span> rng.integers(<span class="dv">0</span>, <span class="dv">365</span><span class="op">*</span><span class="dv">3</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>            enc_rows.append({</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>                <span class="st">"encounter_id"</span>: <span class="ss">f"E</span><span class="sc">{</span><span class="bu">len</span>(enc_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:05d}</span><span class="ss">"</span>,</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>                <span class="st">"patient_id"</span>: pid,</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Assign encounter type with the specified probabilities</span></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>                <span class="st">"encounter_type"</span>: rng.choice(enc_types, p<span class="op">=</span>[<span class="fl">0.55</span>, <span class="fl">0.15</span>, <span class="fl">0.10</span>, <span class="fl">0.20</span>]),</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>                <span class="co"># Calculate the date of the encounter by adding day offset to Jan 1, 2023</span></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>                <span class="st">"date"</span>: (pd.Timestamp(<span class="st">"2023-01-01"</span>) <span class="op">+</span> pd.Timedelta(days<span class="op">=</span><span class="bu">int</span>(day))).date(),</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>            })</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Assemble all rows into a DataFrame</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    encounters <span class="op">=</span> pd.DataFrame(enc_rows)</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- observations table ---</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This block generates synthetic laboratory and vital sign results ("observations") for each encounter.</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>    <span class="co">#</span></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Define a set of different types of observations (e.g., height, blood pressure) with:</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    - A human-readable name</span></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    - The unit of measurement</span></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>    <span class="co">#    - A plausible lower and upper bound for values (lo, hi)</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>    obs_defs <span class="op">=</span> [</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"Body height"</span>, <span class="st">"cm"</span>, <span class="dv">150</span>, <span class="dv">195</span>),</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"Body weight"</span>, <span class="st">"kg"</span>, <span class="dv">50</span>, <span class="dv">110</span>),</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"Systolic blood pressure"</span>, <span class="st">"mmHg"</span>, <span class="dv">100</span>, <span class="dv">165</span>),</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"Heart rate"</span>, <span class="st">"/min"</span>, <span class="dv">55</span>, <span class="dv">100</span>),</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"Hemoglobin A1c"</span>, <span class="st">"%"</span>, <span class="fl">4.8</span>, <span class="fl">9.5</span>),</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>    obs_rows <span class="op">=</span> []</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. For every encounter (row in the encounters DataFrame):</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, e <span class="kw">in</span> encounters.iterrows():</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>        <span class="co"># 3. For each defined observation type, with 70% probability:</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name, unit, lo, hi <span class="kw">in</span> obs_defs:</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> rng.random() <span class="op">&lt;</span> <span class="fl">0.7</span>:  <span class="co"># 70% chance this observation is present in this encounter</span></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>                <span class="co"># 4. Generate a random value within the allowed range, rounded to 1 decimal.</span></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>                val <span class="op">=</span> <span class="bu">round</span>(<span class="bu">float</span>(rng.uniform(lo, hi)), <span class="dv">1</span>)</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>                <span class="co"># 5. Assemble observation fields:</span></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>                <span class="co">#    - Unique observation_id (zero-padded)</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>                <span class="co">#    - encounter_id and patient_id (from the current encounter)</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>                <span class="co">#    - observation name, value, unit, and date (from the encounter)</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>                obs_rows.append({</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"observation_id"</span>: <span class="ss">f"O</span><span class="sc">{</span><span class="bu">len</span>(obs_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:06d}</span><span class="ss">"</span>,</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"encounter_id"</span>: e[<span class="st">"encounter_id"</span>],</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"patient_id"</span>: e[<span class="st">"patient_id"</span>],</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"observation"</span>: name,</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"value"</span>: val,</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"unit"</span>: unit,</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"date"</span>: e[<span class="st">"date"</span>],</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>                })</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 6. Create a DataFrame (table) of all generated observations</span></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>    observations <span class="op">=</span> pd.DataFrame(obs_rows)</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- conditions table ---</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This block generates a table of medical conditions (diagnoses) assigned to each patient.</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>    <span class="co">#</span></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Steps:</span></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Define a list of possible conditions (diagnoses) that a patient might have, called cond_pool.</span></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>    cond_pool <span class="op">=</span> [<span class="st">"Essential hypertension"</span>, <span class="st">"Type 2 diabetes mellitus"</span>, <span class="st">"Asthma"</span>,</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Acute bronchitis"</span>, <span class="st">"Major depressive disorder"</span>, <span class="st">"Osteoarthritis"</span>,</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Chronic kidney disease"</span>, <span class="st">"Anemia"</span>]</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>    cond_rows <span class="op">=</span> []</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. For every patient, randomly assign them between 0 and 3 unique conditions from the pool.</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pid <span class="kw">in</span> patients[<span class="st">"patient_id"</span>]:</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>        <span class="co"># rng.integers(0, 4) generates the number of conditions to assign (0–3),</span></span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>        <span class="co"># and rng.choice picks that many unique conditions for that patient.</span></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> c <span class="kw">in</span> rng.choice(cond_pool, size<span class="op">=</span>rng.integers(<span class="dv">0</span>, <span class="dv">4</span>), replace<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 3. For each assigned condition, create a dictionary with:</span></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>            <span class="co">#   - a unique condition_id (zero-padded)</span></span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>            <span class="co">#   - the patient_id</span></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>            <span class="co">#   - the condition name</span></span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>            cond_rows.append({</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>                <span class="st">"condition_id"</span>: <span class="ss">f"C</span><span class="sc">{</span><span class="bu">len</span>(cond_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:05d}</span><span class="ss">"</span>,</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a>                <span class="st">"patient_id"</span>: pid,</span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>                <span class="st">"condition"</span>: c,</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>            })</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. Assemble all condition records into a DataFrame.</span></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>    conditions <span class="op">=</span> pd.DataFrame(cond_rows)</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- medications table ---</span></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This section generates a medications table, which records what medications each patient is taking.</span></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>    <span class="co">#</span></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Steps:</span></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. Define a list of possible medications, called med_pool, that could be assigned to any patient.</span></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>    med_pool <span class="op">=</span> [<span class="st">"Lisinopril"</span>, <span class="st">"Metformin"</span>, <span class="st">"Albuterol"</span>, <span class="st">"Atorvastatin"</span>,</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Sertraline"</span>, <span class="st">"Amoxicillin"</span>, <span class="st">"Ibuprofen"</span>, <span class="st">"Hydrochlorothiazide"</span>]</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>    med_rows <span class="op">=</span> []</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. For each patient in the patients DataFrame:</span></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pid <span class="kw">in</span> patients[<span class="st">"patient_id"</span>]:</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Randomly assign between 0 and 3 different medications to the patient.</span></span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>        <span class="co"># rng.integers(0, 4) picks how many meds the patient will get (can be zero).</span></span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a>        <span class="co"># rng.choice picks the medicines without replacement.</span></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> m <span class="kw">in</span> rng.choice(med_pool, size<span class="op">=</span>rng.integers(<span class="dv">0</span>, <span class="dv">4</span>), replace<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 3. For each assigned medication, create a dictionary that includes:</span></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>            <span class="co">#   - Unique medication_id (zero-padded)</span></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a>            <span class="co">#   - patient_id</span></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>            <span class="co">#   - medication name</span></span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>            med_rows.append({</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>                <span class="st">"medication_id"</span>: <span class="ss">f"M</span><span class="sc">{</span><span class="bu">len</span>(med_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:05d}</span><span class="ss">"</span>,</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>                <span class="st">"patient_id"</span>: pid,</span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>                <span class="st">"medication"</span>: m,</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>            })</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. Assemble all medication records into a DataFrame.</span></span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>    medications <span class="op">=</span> pd.DataFrame(med_rows)</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return a dictionary containing all generated synthetic EHR tables.</span></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>        <span class="st">"patients"</span>: patients,</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>        <span class="st">"encounters"</span>: encounters,</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>        <span class="st">"observations"</span>: observations,</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>        <span class="st">"conditions"</span>: conditions,</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>        <span class="st">"medications"</span>: medications,</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the synthetic EHR data by calling the make_synthetic_ehr() function.</span></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="co"># This returns a dictionary where each key is a table name (e.g., "patients", "encounters")</span></span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a><span class="co"># and each value is a pandas DataFrame with the data for that table.</span></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a>ehr <span class="op">=</span> make_synthetic_ehr()</span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a><span class="co"># Print out the names of each table along with the number of rows it contains,</span></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a><span class="co"># to provide a quick overview of the size of each synthetic EHR table.</span></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Tables:"</span>, <span class="st">", "</span>.join(<span class="ss">f"</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(v)<span class="sc">}</span><span class="ss"> rows)"</span> <span class="cf">for</span> k, v <span class="kw">in</span> ehr.items()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tables: patients (200 rows), encounters (511 rows), observations (1804 rows), conditions (304 rows), medications (276 rows)</code></pre>
+</div>
+</div>
+</section>
+<section id="three-kinds-of-health-data" class="level2">
+<h2 class="anchored" data-anchor-id="three-kinds-of-health-data">2.1 Three kinds of health data</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kind</th>
+<th>Example</th>
+<th>How it’s stored</th>
+<th>How you work with it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Structured</strong></td>
+<td>A1c = 7.2 %, coded diagnosis</td>
+<td>Rows &amp; columns, coded fields</td>
+<td><code>pandas</code>, SQL</td>
+</tr>
+<tr class="even">
+<td><strong>Unstructured</strong></td>
+<td>A progress note, radiology report</td>
+<td>Free text</td>
+<td>NLP (Module 10)</td>
+</tr>
+<tr class="odd">
+<td><strong>Semi-structured</strong></td>
+<td>HL7 / FHIR / CDA messages</td>
+<td>Nested key–value / XML / JSON</td>
+<td>Parsers (Module 4)</td>
+</tr>
+</tbody>
+</table>
+<p>Roughly <strong>80% of clinical information</strong> lives in unstructured text — which is why NLP is such a large part of applied informatics.</p>
+<div id="33f06c3b" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This cell shows the difference between STRUCTURED data and UNSTRUCTURED data.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Structured data lives in tables: every value sits in a named column (patient_id,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># observation, value, unit, date). A computer can count, filter, and join it easily.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Unstructured data is free text — a clinical note. A human can read it, but a</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># computer just sees a blob of characters until we use NLP (Module 10).</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"STRUCTURED — observations table:"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Pick a few useful columns so the printout is easy to read</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>display_cols <span class="op">=</span> [<span class="st">"patient_id"</span>, <span class="st">"observation"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span>, <span class="st">"date"</span>]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ehr["observations"] is the observations DataFrame from the generator above.</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co"># [display_cols] keeps only those five columns.</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># .head(4) means "show the first 4 rows".</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># .to_string(index=False) prints a clean table without the pandas row numbers.</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ehr[<span class="st">"observations"</span>][display_cols].head(<span class="dv">4</span>).to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">UNSTRUCTURED — a free-text clinical note:"</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># A fake progress note, written the way a clinician might type it:</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="co"># abbreviations (y/o, h/o, HTN, T2DM), mixed facts, no columns.</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>note <span class="op">=</span> (<span class="st">"58 y/o with h/o HTN and T2DM presents for routine follow-up. "</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"BP 148/88, denies chest pain. Continue lisinopril; recheck A1c in 3 months."</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(note)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>STRUCTURED — observations table:
+patient_id observation  value unit       date
+     P1000 Body height  158.5   cm 2025-03-17
+     P1000 Body weight   55.8   kg 2025-03-17
+     P1000  Heart rate   91.4 /min 2025-03-17
+     P1000 Body height  179.3   cm 2023-05-21
+
+UNSTRUCTURED — a free-text clinical note:
+58 y/o with h/o HTN and T2DM presents for routine follow-up. BP 148/88, denies chest pain. Continue lisinopril; recheck A1c in 3 months.</code></pre>
+</div>
+</div>
+</section>
+<section id="the-core-clinical-entities" class="level2">
+<h2 class="anchored" data-anchor-id="the-core-clinical-entities">2.2 The core clinical entities</h2>
+<p>An EHR is organized around a handful of recurring entities. In our synthetic model:</p>
+<ul>
+<li><strong>patients</strong> - the person (demographics)</li>
+<li><strong>encounters</strong> - a contact with the health system (a visit)</li>
+<li><strong>observations</strong> - measurements: vitals and labs</li>
+<li><strong>conditions</strong> - diagnoses / problems</li>
+<li><strong>medications</strong> - drugs prescribed or administered</li>
+</ul>
+<p>Real systems add <strong>procedures, allergies, immunizations, orders, and results</strong>, but these five carry most teaching examples.</p>
+<div id="78856c27" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This loop peeks at every EHR table so you can see what each one looks like.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ehr is a dictionary: keys are table names, values are pandas DataFrames.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># For each table we print:</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   - a header with the table name</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   - the first 2 rows (just enough to see the columns and a sample of values)</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name <span class="kw">in</span> [<span class="st">"patients"</span>, <span class="st">"encounters"</span>, <span class="st">"observations"</span>, <span class="st">"conditions"</span>, <span class="st">"medications"</span>]:</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> ehr[name]  <span class="co"># pull that table out of the dictionary</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"=== </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> ==="</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(df.head(<span class="dv">2</span>).to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()  <span class="co"># blank line between tables so the output is easier to scan</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>=== patients ===
+patient_id given_name family_name    sex  age  birth_year
+     P1000       Yara        Khan female   89        1937
+     P1001        Sam       Brown   male   73        1953
+
+=== encounters ===
+encounter_id patient_id encounter_type       date
+      E00001      P1000       wellness 2025-03-17
+      E00002      P1000     ambulatory 2023-05-21
+
+=== observations ===
+observation_id encounter_id patient_id observation  value unit       date
+       O000001       E00001      P1000 Body height  158.5   cm 2025-03-17
+       O000002       E00001      P1000 Body weight   55.8   kg 2025-03-17
+
+=== conditions ===
+condition_id patient_id      condition
+      C00001      P1000 Osteoarthritis
+      C00002      P1000         Anemia
+
+=== medications ===
+medication_id patient_id          medication
+       M00001      P1000 Hydrochlorothiazide
+       M00002      P1000          Sertraline
+</code></pre>
+</div>
+</div>
+<section id="milestone-1---the-encounter-as-the-hub-of-activity" class="level3">
+<h3 class="anchored" data-anchor-id="milestone-1---the-encounter-as-the-hub-of-activity">Milestone 1 - the encounter as the hub of activity</h3>
+<p>In an EHR (Electronic Health Record), the encounter acts as the central point or “hub” of clinical activity. Most events—like measurements, diagnoses, orders, and treatments—are linked to a specific visit or encounter, making it the key connector for organizing and analyzing patient data over time.</p>
+<div id="0e196899" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This cell treats the encounter as the "hub" of clinical activity:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># almost every measurement, diagnosis, and order hangs off a visit.</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: pull the encounters table out of the ehr dictionary.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>enc <span class="op">=</span> ehr[<span class="st">"encounters"</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: count how many encounters of each type we have.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># value_counts() looks at one column and says "how many times does each value appear?"</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Example output: ambulatory 280, wellness 100, emergency 80, inpatient 51.</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Encounter types:"</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(enc[<span class="st">"encounter_type"</span>].value_counts())</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>()</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: for each patient, count their encounters, then summarize that distribution.</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co"># groupby("patient_id").size() = "how many rows (visits) does each patient have?"</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># describe() then gives count / mean / min / max of those per-patient counts.</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Encounters per patient (distribution):"</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(enc.groupby(<span class="st">"patient_id"</span>).size().describe().<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Encounter types:
+encounter_type
+ambulatory    293
+wellness      103
+emergency      60
+inpatient      55
+Name: count, dtype: int64
+
+Encounters per patient (distribution):
+count    200.00
+mean       2.56
+std        1.06
+min        1.00
+25%        2.00
+50%        3.00
+75%        3.00
+max        4.00
+dtype: float64</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="longitudinal-time-stamped-data" class="level2">
+<h2 class="anchored" data-anchor-id="longitudinal-time-stamped-data">2.3 Longitudinal, time-stamped data</h2>
+<p>Health data is intrinsically tied to time—meaning that many clinical measurements are collected repeatedly for a single patient across different visits or stages of life. This forms a longitudinal record, where values like blood pressure, weight, or lab results are tracked over intervals ranging from days to years. Analyzing these time-stamped data points allows us to observe trends, detect changes (such as improvement or deterioration), and assess how a patient’s health evolves rather than relying on just a single measurement. For example, by following one patient’s sequence of blood pressure readings, we can better understand their cardiovascular risk over time or see the effects of a new medication.</p>
+<div id="83e3322c" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Health data is time-stamped: the SAME measurement (blood pressure) is taken</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># again and again. This cell follows ONE patient's systolic BP over time.</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># .copy() makes a separate copy of the observations table so we can edit it</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># without changing the original ehr["observations"] table.</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>obs <span class="op">=</span> ehr[<span class="st">"observations"</span>].copy()</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Dates currently look like 2023-05-12 but they are stored as plain date objects.</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># pd.to_datetime() converts them to pandas timestamps so we can sort and plot them.</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>obs[<span class="st">"date"</span>] <span class="op">=</span> pd.to_datetime(obs[<span class="st">"date"</span>])</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Keep only the rows where the observation name is "Systolic blood pressure".</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># This is a filter: obs["observation"] == "..." is True/False for every row;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># wrapping obs[...] keeps only the True rows.</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>sbp <span class="op">=</span> obs[obs[<span class="st">"observation"</span>] <span class="op">==</span> <span class="st">"Systolic blood pressure"</span>]</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Count how many SBP readings each patient has, then sort highest-first.</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># We pick the patient with the MOST readings so the time series is interesting.</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> sbp.groupby(<span class="st">"patient_id"</span>).size().sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>pid <span class="op">=</span> counts.index[<span class="dv">0</span>]  <span class="co"># the patient_id at the top of that ranked list</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Pull that one patient's SBP rows and sort them by date (oldest -&gt; newest).</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>track <span class="op">=</span> sbp[sbp[<span class="st">"patient_id"</span>] <span class="op">==</span> pid].sort_values(<span class="st">"date"</span>)</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Patient </span><span class="sc">{</span>pid<span class="sc">}</span><span class="ss"> — systolic BP over time:"</span>)</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(track[[<span class="st">"date"</span>, <span class="st">"value"</span>, <span class="st">"unit"</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Patient P1043 — systolic BP over time:
+      date  value unit
+2023-01-28  154.0 mmHg
+2023-11-24  133.9 mmHg
+2025-03-23  155.5 mmHg
+2025-12-13  147.3 mmHg</code></pre>
+</div>
+</div>
+<div id="3d03a9d1" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This code draws a line chart of the one patient's systolic BP over time.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># The shaded bands are a visual reminder of "normal" vs "elevated" ranges —</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># they are teaching overlays, not a clinical diagnosis.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create one plot (1 figure, 1 set of axes) of a given width and height in inches</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">3.5</span>))</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot date on the x-axis and BP value on the y-axis.</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co"># marker="o" puts a dot on each reading so you can see individual visits.</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>ax.plot(track[<span class="st">"date"</span>], track[<span class="st">"value"</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"#C44E52"</span>)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># axhspan draws a horizontal shaded band between two y-values.</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Green band: roughly "normal" systolic BP (&lt;120).</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Red band: roughly "elevated" (&gt;=130). Alpha makes the bands see-through.</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>ax.axhspan(<span class="dv">90</span>, <span class="dv">120</span>, color<span class="op">=</span><span class="st">"#55A868"</span>, alpha<span class="op">=</span><span class="fl">0.15</span>, label<span class="op">=</span><span class="st">"normal (&lt;120)"</span>)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>ax.axhspan(<span class="dv">130</span>, <span class="dv">180</span>, color<span class="op">=</span><span class="st">"#C44E52"</span>, alpha<span class="op">=</span><span class="fl">0.10</span>, label<span class="op">=</span><span class="st">"elevated (&gt;=130)"</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="ss">f"Longitudinal systolic BP — patient </span><span class="sc">{</span>pid<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"mmHg"</span>)</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"upper right"</span>, fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="co"># tight_layout() stops titles/labels from overlapping; show() displays the figure</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="02_health_data_types_and_structure_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="joining-tables-into-an-analysis-ready-view" class="level2">
+<h2 class="anchored" data-anchor-id="joining-tables-into-an-analysis-ready-view">2.4 Joining tables into an analysis-ready view</h2>
+<p>Individual tables answer narrow questions. Real work usually needs them <strong>joined</strong> around the patient. Below we build a per-patient summary combining demographics, encounter counts, condition counts, and mean A1c.</p>
+<div id="c9c8f647" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Real analysis rarely uses one table at a time. This cell JOINS several tables</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># into one "patient view": one row per patient, with extra summary columns.</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Think of a join as: "for this patient_id, go look up extra facts in another table</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># and glue them on as new columns."</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>patients <span class="op">=</span> ehr[<span class="st">"patients"</span>]  <span class="co"># the base table: one row per person</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Count encounters per patient, then name that series "n_encounters"</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># so it becomes a column with a clear name after the join.</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>enc_n  <span class="op">=</span> ehr[<span class="st">"encounters"</span>].groupby(<span class="st">"patient_id"</span>).size().rename(<span class="st">"n_encounters"</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Same idea for diagnoses: how many condition rows does each patient have?</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>cond_n <span class="op">=</span> ehr[<span class="st">"conditions"</span>].groupby(<span class="st">"patient_id"</span>).size().rename(<span class="st">"n_conditions"</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co"># For A1c: keep only Hemoglobin A1c rows, then average the value per patient.</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co"># round(1) keeps one decimal place (e.g. 7.2).</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>a1c <span class="op">=</span> (obs[obs[<span class="st">"observation"</span>] <span class="op">==</span> <span class="st">"Hemoglobin A1c"</span>]</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>       .groupby(<span class="st">"patient_id"</span>)[<span class="st">"value"</span>].mean().<span class="bu">round</span>(<span class="dv">1</span>).rename(<span class="st">"mean_a1c"</span>))</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Now glue the summaries onto the patients table.</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co"># how="left" means: keep EVERY patient, even if they have no A1c / no conditions.</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Patients with no match get a missing value (NaN) in that new column.</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>patient_view <span class="op">=</span> (patients</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    .merge(enc_n, on<span class="op">=</span><span class="st">"patient_id"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    .merge(cond_n, on<span class="op">=</span><span class="st">"patient_id"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    .merge(a1c, on<span class="op">=</span><span class="st">"patient_id"</span>, how<span class="op">=</span><span class="st">"left"</span>))</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Missing encounter/condition counts should mean "zero", not "unknown".</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="co"># fillna(0) replaces NaN with 0; astype(int) turns 0.0 into 0.</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>patient_view[[<span class="st">"n_encounters"</span>, <span class="st">"n_conditions"</span>]] <span class="op">=</span> (</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>    patient_view[[<span class="st">"n_encounters"</span>, <span class="st">"n_conditions"</span>]].fillna(<span class="dv">0</span>).astype(<span class="bu">int</span>))</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the first few rows of the combined view</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>patient_view.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">patient_id</th>
+<th data-quarto-table-cell-role="th">given_name</th>
+<th data-quarto-table-cell-role="th">family_name</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">birth_year</th>
+<th data-quarto-table-cell-role="th">n_encounters</th>
+<th data-quarto-table-cell-role="th">n_conditions</th>
+<th data-quarto-table-cell-role="th">mean_a1c</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>P1000</td>
+<td>Yara</td>
+<td>Khan</td>
+<td>female</td>
+<td>89</td>
+<td>1937</td>
+<td>4</td>
+<td>2</td>
+<td>8.1</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>P1001</td>
+<td>Sam</td>
+<td>Brown</td>
+<td>male</td>
+<td>73</td>
+<td>1953</td>
+<td>4</td>
+<td>1</td>
+<td>9.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>P1002</td>
+<td>Ida</td>
+<td>Cole</td>
+<td>female</td>
+<td>41</td>
+<td>1985</td>
+<td>1</td>
+<td>3</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>P1003</td>
+<td>Noah</td>
+<td>Mora</td>
+<td>female</td>
+<td>87</td>
+<td>1939</td>
+<td>2</td>
+<td>3</td>
+<td>5.2</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>P1004</td>
+<td>Ana</td>
+<td>Iqbal</td>
+<td>male</td>
+<td>53</td>
+<td>1973</td>
+<td>3</td>
+<td>0</td>
+<td>7.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="milestone-2---a-simple-cohort-question" class="level3">
+<h3 class="anchored" data-anchor-id="milestone-2---a-simple-cohort-question">Milestone 2 - a simple cohort question</h3>
+<p>In this section, we demonstrate how to define a simple cohort—a specific group of patients—based on certain criteria in the data. For example, we can select patients with at least one documented medical condition and a mean Hemoglobin A1c (a key diabetes indicator) of 6.5 or above. This is known as a “cohort question”: identifying which individuals meet a set of rules or clinical thresholds for further study.</p>
+<div id="c8d35a08" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A "cohort" is just a filtered list of patients who meet a rule.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Here the rule is: mean A1c at or above 6.5 (a common diabetes threshold)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># AND at least one coded condition.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The &amp; means BOTH conditions must be true.</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Parentheses around each comparison are required when combining with &amp;.</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>cohort <span class="op">=</span> patient_view[(patient_view[<span class="st">"mean_a1c"</span>] <span class="op">&gt;=</span> <span class="fl">6.5</span>) <span class="op">&amp;</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>                      (patient_view[<span class="st">"n_conditions"</span>] <span class="op">&gt;=</span> <span class="dv">1</span>)]</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># How many people made it through the filter, out of everyone?</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Cohort size: </span><span class="sc">{</span><span class="bu">len</span>(cohort)<span class="sc">}</span><span class="ss"> of </span><span class="sc">{</span><span class="bu">len</span>(patient_view)<span class="sc">}</span><span class="ss"> patients"</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Show a few of them, keeping only the columns that explain WHY they qualified</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>cohort[[<span class="st">"patient_id"</span>, <span class="st">"age"</span>, <span class="st">"sex"</span>, <span class="st">"mean_a1c"</span>, <span class="st">"n_conditions"</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Cohort size: 95 of 200 patients</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">patient_id</th>
+<th data-quarto-table-cell-role="th">age</th>
+<th data-quarto-table-cell-role="th">sex</th>
+<th data-quarto-table-cell-role="th">mean_a1c</th>
+<th data-quarto-table-cell-role="th">n_conditions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>P1000</td>
+<td>89</td>
+<td>female</td>
+<td>8.1</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>P1001</td>
+<td>73</td>
+<td>male</td>
+<td>9.0</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">6</th>
+<td>P1006</td>
+<td>49</td>
+<td>female</td>
+<td>8.0</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">9</th>
+<td>P1009</td>
+<td>19</td>
+<td>male</td>
+<td>7.4</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">10</th>
+<td>P1010</td>
+<td>30</td>
+<td>male</td>
+<td>8.7</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="long-vs.-wide-format" class="level2">
+<h2 class="anchored" data-anchor-id="long-vs.-wide-format">2.5 Long vs.&nbsp;wide format</h2>
+<p>In the original data, observations are stored in <strong>long</strong> format. This means that each individual measurement (such as a patient’s single blood pressure or heart rate reading) occupies its own row in the table, identified by the patient, the type of observation, and the recorded value.</p>
+<p>However, many analytic tasks and machine learning models require the data in <strong>wide</strong> format, where there is only one row per subject (such as a patient or an encounter), and each type of measurement gets its own column. For example, instead of having many rows for a patient with different tests, we would have a single row for that patient, with columns for “Body height”, “Body weight”, “Heart rate”, etc.</p>
+<p>Converting between these formats is a common and essential skill in data science—often referred to as “reshaping” or “pivoting” the data. The process of moving from long to wide format is known as “pivoting,” while moving from wide back to long format is called “melting” or “unpivoting.”</p>
+<div id="9e3d5df7" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Long -&gt; wide: mean value per patient per observation type</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>wide <span class="op">=</span> (obs.pivot_table(index<span class="op">=</span><span class="st">"patient_id"</span>,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                        columns<span class="op">=</span><span class="st">"observation"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                        values<span class="op">=</span><span class="st">"value"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                        aggfunc<span class="op">=</span><span class="st">"mean"</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>          .<span class="bu">round</span>(<span class="dv">1</span>))</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"WIDE format (one row per patient):"</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>wide.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>WIDE format (one row per patient):</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">observation</th>
+<th data-quarto-table-cell-role="th">Body height</th>
+<th data-quarto-table-cell-role="th">Body weight</th>
+<th data-quarto-table-cell-role="th">Heart rate</th>
+<th data-quarto-table-cell-role="th">Hemoglobin A1c</th>
+<th data-quarto-table-cell-role="th">Systolic blood pressure</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">patient_id</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">P1000</th>
+<td>163.5</td>
+<td>74.0</td>
+<td>81.7</td>
+<td>8.1</td>
+<td>140.5</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">P1001</th>
+<td>169.7</td>
+<td>77.2</td>
+<td>94.2</td>
+<td>9.0</td>
+<td>109.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">P1002</th>
+<td>151.6</td>
+<td>62.3</td>
+<td>78.2</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">P1003</th>
+<td>178.2</td>
+<td>75.4</td>
+<td>80.6</td>
+<td>5.2</td>
+<td>130.1</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">P1004</th>
+<td>169.7</td>
+<td>93.3</td>
+<td>60.3</td>
+<td>7.0</td>
+<td>147.4</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="750b35d3" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This cell does the reverse reshape: WIDE -&gt; LONG.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># reset_index() turns patient_id from an index back into a normal column,</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># which melt needs.</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># melt "unpivots" the table:</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   id_vars    = columns to leave as-is (patient_id)</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co">#   var_name   = name for the column that will hold the old column headers</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">#                (those observation names become values in a column called "observation")</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   value_name = name for the column that will hold the numbers</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co"># dropna() drops rows where the value is missing — a patient who never had</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="co"># a height recorded should not get a blank height row in the long table.</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>long_again <span class="op">=</span> (wide.reset_index()</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>                  .melt(id_vars<span class="op">=</span><span class="st">"patient_id"</span>,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>                        var_name<span class="op">=</span><span class="st">"observation"</span>,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>                        value_name<span class="op">=</span><span class="st">"mean_value"</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>                  .dropna())</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"LONG format (one row per patient-observation):"</span>)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>long_again.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>LONG format (one row per patient-observation):</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">patient_id</th>
+<th data-quarto-table-cell-role="th">observation</th>
+<th data-quarto-table-cell-role="th">mean_value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>P1000</td>
+<td>Body height</td>
+<td>163.5</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>P1001</td>
+<td>Body height</td>
+<td>169.7</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>P1002</td>
+<td>Body height</td>
+<td>151.6</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>P1003</td>
+<td>Body height</td>
+<td>178.2</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>P1004</td>
+<td>Body height</td>
+<td>169.7</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>Build an <strong>encounter-level</strong> wide table (index = <code>encounter_id</code>) instead of patient-level, and note why the missingness pattern changes.</li>
+<li>For each patient, compute the <strong>time span</strong> between first and last encounter.</li>
+<li>Flag patients whose systolic BP <strong>increased</strong> across their readings (a naive trend feature) and count them.</li>
+</ol>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key takeaways</h2>
+<ul>
+<li>Health data comes <strong>structured, unstructured, and semi-structured</strong> — each needs a different tool.</li>
+<li>The EHR is a <strong>relational model</strong> hubbed on encounters and linked by patient.</li>
+<li>Health data is <strong>longitudinal</strong>; reshaping <strong>long ↔︎ wide</strong> is routine.</li>
+</ul>
+<hr>
+<p><em>Next: Module 3 - Clinical Terminologies and Coding Systems.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/zia207\.github\.io\/Health-informatics\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html" class="pagination-link" aria-label="01 · What Health Informatics Is">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">01 · What Health Informatics Is</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.html" class="pagination-link" aria-label="03 · Clinical Terminologies">
+        <span class="nav-page-text">03 · Clinical Terminologies</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© CC-By Zia Ahmed, Upatta Analytics, 2026</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

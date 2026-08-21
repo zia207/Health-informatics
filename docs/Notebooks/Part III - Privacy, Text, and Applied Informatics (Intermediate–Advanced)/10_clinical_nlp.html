@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>clinical_nlp – Health Informatics in Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/11_clinical_decision_support.html" rel="next">
+<link href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html" rel="prev">
+<link href="../../Image/chapter_logo_health_informatics.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c5c3ec5290bf6b57b4a42a3553f76d36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://cdn.jsdelivr.net/npm/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Health Informatics in Python</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/zia207/Health-informatics"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/zia-ahmed207"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="mailto:zia207@gmail.com"> 
+<span class="menu-text">zia207@gmail.com</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html">**Part III — Privacy, Text &amp; Applied Informatics**</a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.html">10 · Clinical NLP</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html">**Part III — Privacy, Text &amp; Applied Informatics**</a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.html">10 · Clinical NLP</a></li></ol></nav></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Health Informatics in Python</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Health Informatics in Python</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part I — Foundations</strong> (Beginner)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 · What Health Informatics Is</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Health Data Types and Structure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Clinical Terminologies</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/04_health_data_standards_and_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Standards and Formats</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part II — Interoperability &amp; Data Engineering</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/05_fhir_in_depth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · FHIR in Depth</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/06_data_ingestion_etl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 · Data Ingestion and ETL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/07_omop_common_data_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 · OMOP Common Data Model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/08_data_quality_and_validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 · Data Quality and Validation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part III — Privacy, Text &amp; Applied Informatics</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">09 · Privacy and De-identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">10 · Clinical NLP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/11_clinical_decision_support.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">11 · Clinical Decision Support</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part IV — Advanced Topics</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">12 · Public Health Informatics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">13 · Claims Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">14 · Clinical Data Warehousing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">15 · Interoperability at Scale</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/16_emerging_directions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">16 · Emerging Directions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#module-10-clinical-natural-language-processing" id="toc-module-10-clinical-natural-language-processing" class="nav-link active" data-scroll-target="#module-10-clinical-natural-language-processing">Module 10: Clinical Natural Language Processing</a>
+  <ul class="collapse">
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#why-clinical-nlp-is-hard" id="toc-why-clinical-nlp-is-hard" class="nav-link" data-scroll-target="#why-clinical-nlp-is-hard">10.1 Why clinical NLP is hard</a></li>
+  <li><a href="#tokenization-and-sentence-segmentation" id="toc-tokenization-and-sentence-segmentation" class="nav-link" data-scroll-target="#tokenization-and-sentence-segmentation">10.2 Tokenization and sentence segmentation</a></li>
+  <li><a href="#concept-extraction-with-a-clinical-gazetteer" id="toc-concept-extraction-with-a-clinical-gazetteer" class="nav-link" data-scroll-target="#concept-extraction-with-a-clinical-gazetteer">10.3 Concept extraction with a clinical gazetteer</a></li>
+  <li><a href="#negation-and-context-detection" id="toc-negation-and-context-detection" class="nav-link" data-scroll-target="#negation-and-context-detection">10.4 Negation and context detection</a>
+  <ul class="collapse">
+  <li><a href="#milestone-1---asserted-vs-negated-problems" id="toc-milestone-1---asserted-vs-negated-problems" class="nav-link" data-scroll-target="#milestone-1---asserted-vs-negated-problems">Milestone 1 - asserted vs negated problems</a></li>
+  </ul></li>
+  <li><a href="#mapping-mentions-to-terminology-codes" id="toc-mapping-mentions-to-terminology-codes" class="nav-link" data-scroll-target="#mapping-mentions-to-terminology-codes">10.5 Mapping mentions to terminology codes</a></li>
+  <li><a href="#section-detection" id="toc-section-detection" class="nav-link" data-scroll-target="#section-detection">10.6 Section detection</a></li>
+  <li><a href="#production-tooling" id="toc-production-tooling" class="nav-link" data-scroll-target="#production-tooling">Production tooling</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key takeaways</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Image/chapter-banner.png" class="img-fluid figure-img"></p>
+<figcaption>Health-Informatics: A Python Tutorial</figcaption>
+</figure>
+</div>
+<section id="module-10-clinical-natural-language-processing" class="level1">
+<h1>Module 10: Clinical Natural Language Processing</h1>
+<p><strong>Health Informatics in Python</strong> · Part III: Privacy, Text &amp; Applied Informatics · Module 10 of 16</p>
+<hr>
+<p>Roughly <strong>80% of clinical information lives in free text</strong> - notes, reports, discharge summaries. Turning that text into structured, coded facts is the job of <strong>clinical NLP</strong>. This module builds a rule-based clinical NLP pipeline: sentence segmentation, concept extraction, <strong>negation/context</strong> detection, and mapping to terminology codes.</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this module you will be able to:</p>
+<ol type="1">
+<li>Explain why clinical text needs <strong>specialized</strong> NLP (abbreviations, negation, structure).</li>
+<li>Tokenize and <strong>sentence-segment</strong> clinical notes with spaCy.</li>
+<li>Extract <strong>clinical concepts</strong> with a dictionary/<code>PhraseMatcher</code> approach.</li>
+<li>Detect <strong>negation and context</strong> (asserted vs negated vs historical/family) with a rule engine.</li>
+<li><strong>Map</strong> extracted mentions to SNOMED/RxNorm codes and detect <strong>note sections</strong>.</li>
+</ol>
+</section>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
+<p>The two fabricated clinical notes from Module 9. No real patients; the point is the <em>shape</em> of clinical language (abbreviations like “h/o”, negations like “denies”, family-history mentions).</p>
+<div id="c399d07b" class="cell" data-execution_count="55">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Synthetic clinical notes containing FABRICATED identifiers (no real people)</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>notes <span class="op">=</span> [</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"note_id"</span>:<span class="st">"N001"</span>,<span class="st">"patient_id"</span>:<span class="st">"P1000"</span>,<span class="st">"text"</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>     <span class="st">"Ava Khan (MRN 4471982) seen on 03/12/2024. Contact 607-555-0148. "</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>     <span class="st">"58 yo F with h/o hypertension and type 2 diabetes presents for follow-up. "</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>     <span class="st">"BP 148/88. Denies chest pain. No shortness of breath. Continue lisinopril; "</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>     <span class="st">"recheck A1c in 3 months. Lives at 12 Elm St, Ithaca NY."</span>},</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"note_id"</span>:<span class="st">"N002"</span>,<span class="st">"patient_id"</span>:<span class="st">"P1001"</span>,<span class="st">"text"</span>:</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>     <span class="st">"Liam Ortiz, DOB 07/22/1969, MRN 5580321. Presents with acute bronchitis. "</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>     <span class="st">"Reports cough x5 days. Negative for fever. Family history of asthma. "</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>     <span class="st">"Started amoxicillin. Follow up if not improving. Email liam.o@example.com."</span>},</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> notes:</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(n[<span class="st">"note_id"</span>], <span class="st">"-"</span>, n[<span class="st">"text"</span>][:<span class="dv">70</span>], <span class="st">"..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>N001 - Ava Khan (MRN 4471982) seen on 03/12/2024. Contact 607-555-0148. 58 yo ...
+N002 - Liam Ortiz, DOB 07/22/1969, MRN 5580321. Presents with acute bronchiti ...</code></pre>
+</div>
+</div>
+</section>
+<section id="why-clinical-nlp-is-hard" class="level2">
+<h2 class="anchored" data-anchor-id="why-clinical-nlp-is-hard">10.1 Why clinical NLP is hard</h2>
+<p>General-purpose NLP stumbles on clinical text because of:</p>
+<ul>
+<li><strong>Abbreviations &amp; jargon</strong> —-“h/o”, “SOB”, “BP”, “x5 days”.</li>
+<li><strong>Negation</strong> - “denies chest pain” asserts the <em>absence</em> of a finding; naive keyword search would wrongly flag chest pain.</li>
+<li><strong>Context</strong> - “family history of asthma” is about a <em>relative</em>, not the patient.</li>
+<li><strong>Structure</strong> - notes have sections (HPI, PMH, Meds, Assessment) that change meaning.</li>
+</ul>
+<p>A pipeline that ignores negation and context produces dangerously wrong structured data.</p>
+</section>
+<section id="tokenization-and-sentence-segmentation" class="level2">
+<h2 class="anchored" data-anchor-id="tokenization-and-sentence-segmentation">10.2 Tokenization and sentence segmentation</h2>
+<p>Tokenization and sentence segmentation are foundational pre-processing steps in NLP. - <strong>Tokenization</strong> splits text into smaller units called tokens (typically words, numbers, punctuation). In clinical text, this must robustly handle abbreviations, medical terms, and identifiers (e.g., “h/o”, “03/12/2024”, “A1c”). - <strong>Sentence segmentation</strong> (sentence boundary detection) divides text into sentences. This can be tricky in clinical notes due to telegraphic style (missing periods), bulleted lists, or fragmentary findings. spaCy can handle both steps and is easily extended for clinical nuances.</p>
+<div id="082ca06f" class="cell" data-execution_count="56">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This block demonstrates how to perform sentence segmentation (splitting text into sentences) with spaCy.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> spacy</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Try to load the small English spaCy model with NLP pipeline, which includes sentence segmenter.</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    nlp <span class="op">=</span> spacy.load(<span class="st">"en_core_web_sm"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If the model is unavailable (for example, not previously downloaded), </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># create a blank English pipeline.</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    nlp <span class="op">=</span> spacy.blank(<span class="st">"en"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If it lacks a sentence boundary detector ("sentencizer"), add it.</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">"sentencizer"</span> <span class="kw">not</span> <span class="kw">in</span> nlp.pipe_names:</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        nlp.add_pipe(<span class="st">"sentencizer"</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Process the first clinical note to produce a spaCy Doc object.</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>doc <span class="op">=</span> nlp(notes[<span class="dv">0</span>][<span class="st">"text"</span>])</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Sentences detected:"</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate over the detected sentence spans and print each one.</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, sent <span class="kw">in</span> <span class="bu">enumerate</span>(doc.sents, <span class="dv">1</span>):</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">. </span><span class="sc">{</span>sent<span class="sc">.</span>text<span class="sc">.</span>strip()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Sentences detected:
+  1. Ava Khan (MRN 4471982) seen on 03/12/2024.
+  2. Contact 607-555-0148.
+  3. 58 yo F with h/o hypertension and type 2 diabetes presents for follow-up.
+  4. BP 148/88.
+  5. Denies chest pain.
+  6. No shortness of breath.
+  7. Continue lisinopril; recheck A1c in 3 months.
+  8. Lives at 12 Elm St, Ithaca NY.</code></pre>
+</div>
+</div>
+</section>
+<section id="concept-extraction-with-a-clinical-gazetteer" class="level2">
+<h2 class="anchored" data-anchor-id="concept-extraction-with-a-clinical-gazetteer">10.3 Concept extraction with a clinical gazetteer</h2>
+<p>A cornerstone technique in rule-based clinical NLP is the <strong>dictionary lookup</strong> approach. Here, a pre-defined, curated list of relevant clinical terms, known as a gazetteer, is matched directly to text using exact or near-exact string matches. This enables quick identification of medical problems, medications, symptoms, and other entities of interest. spaCy’s <code>PhraseMatcher</code> component is a highly efficient tool designed for this task: - It allows for matching entire multi-word phrases (not just single tokens). - Matching can be performed in a case-insensitive manner by specifying the appropriate attribute (like “LOWER”). - It is optimized for speed, which is important when scanning large sets of clinical notes. With PhraseMatcher, the pipeline can rapidly flag the presence of terms from the clinical gazetteer, providing a foundation for further semantic analysis.</p>
+<div id="66bcd331" class="cell" data-execution_count="57">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This code demonstrates how to extract clinically relevant concepts—such as problems and medications—</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># from clinical text using spaCy's PhraseMatcher with a simple gazetteer (dictionary lookup approach).</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> spacy.matcher <span class="im">import</span> PhraseMatcher</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a small clinical gazetteer (dictionary):</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># It maps semantic type labels (like "problem" and "medication") to lists of term strings representing clinical entities.</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>GAZETTEER <span class="op">=</span> {</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"problem"</span>: [</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"hypertension"</span>, <span class="st">"type 2 diabetes"</span>, <span class="st">"acute bronchitis"</span>, <span class="st">"asthma"</span>,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"chest pain"</span>, <span class="st">"shortness of breath"</span>, <span class="st">"fever"</span>, <span class="st">"cough"</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"medication"</span>: [</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"lisinopril"</span>, <span class="st">"amoxicillin"</span>, <span class="st">"metformin"</span>, <span class="st">"atorvastatin"</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize a PhraseMatcher to efficiently search for these multi-word phrases within a spaCy Doc,</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># matching terms in a case-insensitive ("LOWER") way.</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>matcher <span class="op">=</span> PhraseMatcher(nlp.vocab, attr<span class="op">=</span><span class="st">"LOWER"</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co"># For each semantic type and its associated terms, add the group of phrases to the matcher.</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> semtype, terms <span class="kw">in</span> GAZETTEER.items():</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># nlp.make_doc(t) converts each phrase to a spaCy Doc object for accurate matching.</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    matcher.add(semtype, [nlp.make_doc(t) <span class="cf">for</span> t <span class="kw">in</span> terms])</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to extract concepts from input text using the matcher:</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_concepts(text):</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Process text into a spaCy Doc object.</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> nlp(text)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> []</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># For every match found, extract info:</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> match_id, start, end <span class="kw">in</span> matcher(d):</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>        span <span class="op">=</span> d[start:end]</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Construct a dictionary for each concept match:</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>        out.append({</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>            <span class="st">"text"</span>: span.text,                            <span class="co"># matched phrase as-is in text</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>            <span class="st">"type"</span>: nlp.vocab.strings[match_id],          <span class="co"># "problem" or "medication"</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>            <span class="st">"start"</span>: span.start_char,                     <span class="co"># character offset where phrase starts</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>            <span class="st">"end"</span>: span.end_char,                         <span class="co"># character offset where phrase ends</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>            <span class="st">"sent"</span>: span.sent.text.strip()                <span class="co"># full sentence containing this match</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return a list of concept matches (dictionaries) and the spaCy Doc object.</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out, d</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract concepts from the first note in our clinical notes collection.</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>concepts, doc0 <span class="op">=</span> extract_concepts(notes[<span class="dv">0</span>][<span class="st">"text"</span>])</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Concepts extracted from note N001:"</span>)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the extracted concepts, showing only the phrase and its type.</span></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame(concepts)[[<span class="st">"text"</span>, <span class="st">"type"</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Concepts extracted from note N001:
+               text       type
+       hypertension    problem
+    type 2 diabetes    problem
+         chest pain    problem
+shortness of breath    problem
+         lisinopril medication</code></pre>
+</div>
+</div>
+</section>
+<section id="negation-and-context-detection" class="level2">
+<h2 class="anchored" data-anchor-id="negation-and-context-detection">10.4 Negation and context detection</h2>
+<p>Extracting clinical concepts is only the first step: we also need to determine the context in which a concept appears. For example, in sentences like “<strong>Denies</strong> chest pain” or “<strong>no</strong> shortness of breath”, the clinical problem is actually <em>negated</em>—the patient does not have the problem. To address this, we implement a simple <strong>ConText-style</strong> rule engine. This approach involves scanning the words before (and sometimes after) each concept in its sentence, searching for specific cue words or phrases—known as <em>triggers</em>—that change the assertion status of the concept. Common triggers can indicate that a finding is negated (e.g., “no”, “denies”), historical, or related to family history. By detecting these triggers, we can assign each identified concept an assertion status, such as “present”, “negated”, “historical”, or “family”, thereby capturing more accurate clinical meaning from the text.</p>
+<div id="c831ec71" class="cell" data-execution_count="58">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Negation and context triggers for clinical concept assertion detection.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>NEG_TRIGGERS    <span class="op">=</span> [<span class="st">"denies"</span>, <span class="st">"no"</span>, <span class="st">"not"</span>, <span class="st">"negative for"</span>, <span class="st">"without"</span>, <span class="st">"rules out"</span>, <span class="st">"never"</span>]       <span class="co"># Indicative of negation (the patient does NOT have the problem)</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>FAMILY_TRIGGERS <span class="op">=</span> [<span class="st">"family history"</span>, <span class="st">"mother"</span>, <span class="st">"father"</span>, <span class="st">"sibling"</span>, <span class="st">"parent"</span>]                   <span class="co"># Indicates the problem relates to family, not the patient</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>HIST_TRIGGERS   <span class="op">=</span> [<span class="st">"h/o"</span>, <span class="st">"history of"</span>, <span class="st">"previous"</span>, <span class="st">"prior"</span>, <span class="st">"past"</span>]                           <span class="co"># Indicates a historical problem, not currently present</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> assert_status(concept, doc):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Determines the assertion status (e.g., present, negated, family, historical) of a clinical concept </span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">    within a document using simple keyword-based (ConText-style) rules.</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">    - Looks to the left of a concept mention in its sentence for cue words.</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">    - Returns a string indicating context status (family, negated, historical, or present).</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    sent <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Find the sentence that contains the concept's mention based on character offsets.</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> doc.sents:</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> s.start_char <span class="op">&lt;=</span> concept[<span class="st">"start"</span>] <span class="op">&lt;</span> s.end_char:</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>            sent <span class="op">=</span> s</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Examine the sentence fragment to the left of the mention, lowercased for easier matching.</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    window <span class="op">=</span> doc.text[sent.start_char:concept[<span class="st">"start"</span>]].lower() <span class="cf">if</span> sent <span class="cf">else</span> <span class="st">""</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Assign assertion status based on which trigger words are found in the window.</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">any</span>(t <span class="kw">in</span> window <span class="cf">for</span> t <span class="kw">in</span> FAMILY_TRIGGERS):</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"family"</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">any</span>(t <span class="kw">in</span> window <span class="cf">for</span> t <span class="kw">in</span> NEG_TRIGGERS):</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"negated"</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">any</span>(t <span class="kw">in</span> window <span class="cf">for</span> t <span class="kw">in</span> HIST_TRIGGERS):</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">"historical"</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"present"</span>  <span class="co"># Default: the problem is actively present</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply assertion classification to each detected concept in the note.</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> concepts:</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    c[<span class="st">"assertion"</span>] <span class="op">=</span> assert_status(c, doc0)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="milestone-1---asserted-vs-negated-problems" class="level3">
+<h3 class="anchored" data-anchor-id="milestone-1---asserted-vs-negated-problems">Milestone 1 - asserted vs negated problems</h3>
+<p>In clinical NLP, it’s important to distinguish between problems that are actively present (asserted) and those that are specifically stated to be absent (negated) in the documentation.</p>
+<p><em>Asserted problems</em> are conditions explicitly documented as affecting the patient (e.g., “Patient has hypertension”).</p>
+<p><em>Negated problems</em> are conditions the patient specifically denies or is documented as not having (e.g., “Denies chest pain”; “No shortness of breath”).</p>
+<p>This distinction is made possible by using contextual rules that look for negation cues (like “no”, “denies”) near mentions of clinical problems, ensuring more accurate extraction and interpretation of the patient’s medical status.</p>
+<div id="4e9c1b86" class="cell" data-execution_count="59">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The following code block creates a DataFrame to organize all detected clinical concepts,</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># displays each concept with its type and assertion status, and then summarizes which problems</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># are currently active versus those explicitly marked as absent (negated).</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Convert the list of concept dictionaries into a DataFrame for easier inspection/manipulation.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(concepts)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Print all concepts, showing their textual mention, their type (e.g., problem, medication), and their assertion status</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#    (such as "present", "negated", etc.).</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Concepts with assertion status (note N001):"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[[<span class="st">"text"</span>, <span class="st">"type"</span>, <span class="st">"assertion"</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Extract and print the list of problems that are actively present (not negated, not family, not historical).</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Active problems (present only):"</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>      df.query(<span class="st">"type=='problem' and assertion=='present'"</span>)[<span class="st">"text"</span>].tolist())</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Extract and print the list of concept mentions that have been classified as explicitly negated.</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Explicitly negated       :"</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>      df.query(<span class="st">"assertion=='negated'"</span>)[<span class="st">"text"</span>].tolist())</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Concepts with assertion status (note N001):
+               text       type  assertion
+       hypertension    problem historical
+    type 2 diabetes    problem historical
+         chest pain    problem    negated
+shortness of breath    problem    negated
+         lisinopril medication    present
+
+Active problems (present only): []
+Explicitly negated       : ['chest pain', 'shortness of breath']</code></pre>
+</div>
+</div>
+<div id="fb44a8db" class="cell" data-execution_count="60">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This code demonstrates how the assertion classification identifies family-history and historical mentions in a clinical note (Note N002).</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Extract clinical concepts and their surrounding spaCy document from the note text.</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>concepts2, doc2 <span class="op">=</span> extract_concepts(notes[<span class="dv">1</span>][<span class="st">"text"</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. For each detected concept, determine the assertion status (such as present, negated, family, or historical).</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> concepts2:</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    c[<span class="st">"assertion"</span>] <span class="op">=</span> assert_status(c, doc2)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Build a DataFrame to organize and display all concepts along with their type and assertion results.</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> pd.DataFrame(concepts2)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Note N002 concepts:"</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df2[[<span class="st">"text"</span>,<span class="st">"type"</span>,<span class="st">"assertion"</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Highlight the tagging of 'asthma' as a 'family' problem, indicating it belongs to a relative, not the patient themself.</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Note 'asthma' is tagged 'family' — it belongs to a relative, not the patient."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Note N002 concepts:
+            text       type assertion
+acute bronchitis    problem   present
+           cough    problem   present
+           fever    problem   negated
+          asthma    problem    family
+     amoxicillin medication   present
+
+Note 'asthma' is tagged 'family' — it belongs to a relative, not the patient.</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="mapping-mentions-to-terminology-codes" class="level2">
+<h2 class="anchored" data-anchor-id="mapping-mentions-to-terminology-codes">10.5 Mapping mentions to terminology codes</h2>
+<p>In the last step, we connect each clinical concept that is currently <em>present</em> in the note to a standardized terminology code (using mapping dictionaries introduced earlier in Module 3). This transforms free-text extractions into structured, coded data that can be consistently interpreted and analyzed across systems.</p>
+<div id="09264a74" class="cell" data-execution_count="61">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>TERM_TO_CODE <span class="op">=</span> {</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"hypertension"</span>:       (<span class="st">"SNOMED"</span>,<span class="st">"38341003"</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"type 2 diabetes"</span>:    (<span class="st">"SNOMED"</span>,<span class="st">"44054006"</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"acute bronchitis"</span>:   (<span class="st">"SNOMED"</span>,<span class="st">"10509002"</span>),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"asthma"</span>:             (<span class="st">"SNOMED"</span>,<span class="st">"195967001"</span>),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"lisinopril"</span>:         (<span class="st">"RxNorm"</span>,<span class="st">"29046"</span>),</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"amoxicillin"</span>:        (<span class="st">"RxNorm"</span>,<span class="st">"723"</span>),</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"metformin"</span>:          (<span class="st">"RxNorm"</span>,<span class="st">"6809"</span>),</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> code_concept(text):</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> TERM_TO_CODE.get(text.lower(), (<span class="va">None</span>,<span class="va">None</span>))</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>present <span class="op">=</span> df.query(<span class="st">"assertion=='present'"</span>).copy()</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>present[[<span class="st">"system"</span>,<span class="st">"code"</span>]] <span class="op">=</span> present[<span class="st">"text"</span>].<span class="bu">apply</span>(</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">lambda</span> t: pd.Series(code_concept(t)))</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Coded structured output from note N001 (present concepts):"</span>)</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(present[[<span class="st">"text"</span>,<span class="st">"type"</span>,<span class="st">"assertion"</span>,<span class="st">"system"</span>,<span class="st">"code"</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coded structured output from note N001 (present concepts):
+      text       type assertion system  code
+lisinopril medication   present RxNorm 29046</code></pre>
+</div>
+</div>
+</section>
+<section id="section-detection" class="level2">
+<h2 class="anchored" data-anchor-id="section-detection">10.6 Section detection</h2>
+<p>Clinical notes are divided into <strong>sections</strong>, each identified by a header such as “HPI”, “Assessment”, or “Medications”. The meaning of information found in a note often depends on which section it appears in—e.g., “Family History” indicates a condition applies to a relative, while “History of Present Illness” applies to the patient now. To analyze notes accurately, it’s important to detect and segment these sections. A straightforward approach uses pattern matching to locate standard headers and split the note accordingly, so each segment can be interpreted with the proper clinical context.</p>
+<div id="7b96c095" class="cell" data-execution_count="62">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>SECTION_HEADERS <span class="op">=</span> [<span class="st">"HPI"</span>,<span class="st">"History of Present Illness"</span>,<span class="st">"PMH"</span>,<span class="st">"Past Medical History"</span>,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"Medications"</span>,<span class="st">"Assessment"</span>,<span class="st">"Plan"</span>,<span class="st">"Family History"</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> (<span class="st">"HPI: 58 yo F with hypertension. "</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Medications: lisinopril 10mg daily. "</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Assessment: BP suboptimal, uptitrate."</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>parts <span class="op">=</span> re.split(<span class="vs">r"</span><span class="kw">(</span><span class="vs">"</span> <span class="op">+</span> <span class="st">"|"</span>.join(SECTION_HEADERS) <span class="op">+</span> <span class="vs">r"</span><span class="er">)</span><span class="dv">\s</span><span class="op">*</span><span class="vs">:"</span>, sample)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>sections <span class="op">=</span> {parts[i].strip(): parts[i<span class="op">+</span><span class="dv">1</span>].strip() <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="bu">len</span>(parts)<span class="op">-</span><span class="dv">1</span>,<span class="dv">2</span>)}</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, content <span class="kw">in</span> sections.items():</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"[</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>content<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[HPI] 58 yo F with hypertension.
+[Medications] lisinopril 10mg daily.
+[Assessment] BP suboptimal, uptitrate.</code></pre>
+</div>
+</div>
+</section>
+<section id="production-tooling" class="level2">
+<h2 class="anchored" data-anchor-id="production-tooling">Production tooling</h2>
+<p>This module intentionally uses simple rule-based Python, but real-world clinical NLP leverages more robust production-ready toolkits:</p>
+<ul>
+<li><strong>medspaCy</strong>: Adds clinical-specific extensions to spaCy, including a powerful and mature implementation of the ConText algorithm for asserting presence, negation, temporality, and experiencer within clinical text. It is designed for easy customization and integration into clinical workflows.</li>
+<li><strong>scispaCy</strong>: — Provides spaCy pipelines trained on large biomedical corpora and includes functionality for fast named entity recognition (NER) and entity linking, especially mapping terms to standardized vocabularies like UMLS, SNOMED, or RxNorm.</li>
+<li><strong>Transformer models</strong> (e.g., ClinicalBERT, GatorTron) — State-of-the-art neural network architectures pre-trained on large clinical corpora. These models achieve advanced context-sensitive understanding and are fine-tuned for tasks such as NER, assertion status detection, and contextual relation extraction. They enable extraction of subtle relationships and nuanced meanings in clinical documentation.</li>
+</ul>
+<p>Regardless of toolkit, the underlying pipeline — <em>extract entities → determine assertion status → map to codes → segment into sections</em> — remains the same. Production NLP tools primarily differ in breadth of terminology handled, segmentation precision, negation/context accuracy, scalability, support for newer standards, and integration with medical ontologies.</p>
+<div id="ac8bfc36" class="cell" data-execution_count="63">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 1: medspaCy</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># medspaCy extends spaCy with clinical sentence splitting and ConText (negation / historical / family).</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The default pipeline includes a target matcher, but you still have to tell it which concepts to find.</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> medspacy</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> medspacy.ner <span class="im">import</span> TargetRule</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>nlp_medspacy <span class="op">=</span> medspacy.load()</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>matcher <span class="op">=</span> nlp_medspacy.get_pipe(<span class="st">"medspacy_target_matcher"</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>matcher.add([</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    TargetRule(<span class="st">"MI"</span>, <span class="st">"PROBLEM"</span>),</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    TargetRule(<span class="st">"hypertension"</span>, <span class="st">"PROBLEM"</span>),</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>doc <span class="op">=</span> nlp_medspacy(<span class="st">"No history of MI. The patient has hypertension."</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ent <span class="kw">in</span> doc.ents:</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Entity: </span><span class="sc">{</span>ent<span class="sc">.</span>text<span class="sc">}</span><span class="ss"> | negated: </span><span class="sc">{</span>ent<span class="sc">.</span>_<span class="sc">.</span>is_negated<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">2026-08-20 21:35:31.405</span> | <span class="ansi-blue-fg ansi-bold">DEBUG   </span> | <span class="ansi-cyan-fg">PyRuSH.PyRuSHSentencizer</span>:<span class="ansi-cyan-fg">predict</span>:<span class="ansi-cyan-fg">100</span> - <span class="ansi-blue-fg ansi-bold">[cpredict_split_gaps|call_id=4] [doc 0] Token 0 'No' marked as sentence start (span begin)</span>
+
+<span class="ansi-green-fg">2026-08-20 21:35:31.406</span> | <span class="ansi-blue-fg ansi-bold">DEBUG   </span> | <span class="ansi-cyan-fg">PyRuSH.PyRuSHSentencizer</span>:<span class="ansi-cyan-fg">predict</span>:<span class="ansi-cyan-fg">100</span> - <span class="ansi-blue-fg ansi-bold">[cpredict_split_gaps|call_id=4] [doc 0] Token 5 'The' marked as sentence start (span end next token)</span>
+
+<span class="ansi-green-fg">2026-08-20 21:35:31.407</span> | <span class="ansi-blue-fg ansi-bold">DEBUG   </span> | <span class="ansi-cyan-fg">PyRuSH.PyRuSHSentencizer</span>:<span class="ansi-cyan-fg">predict</span>:<span class="ansi-cyan-fg">100</span> - <span class="ansi-blue-fg ansi-bold">[cpredict_split_gaps|call_id=4] [doc 0] Token 5 'The' marked as sentence start (span begin)</span>
+
+<span class="ansi-green-fg">2026-08-20 21:35:31.407</span> | <span class="ansi-blue-fg ansi-bold">DEBUG   </span> | <span class="ansi-cyan-fg">PyRuSH.PyRuSHSentencizer</span>:<span class="ansi-cyan-fg">predict</span>:<span class="ansi-cyan-fg">100</span> - <span class="ansi-blue-fg ansi-bold">[cpredict_split_gaps|call_id=4] Token/tag mapping: [(No, True), (history, False), (of, False), (MI, False), (., False), (The, True), (patient, False), (has, False), (hypertension, False), (., False)]</span>
+
+Entity: MI | negated: True
+
+Entity: hypertension | negated: False
+</pre>
+</div>
+</div>
+</div>
+<div id="27a9823e" class="cell" data-execution_count="64">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2: scispaCy</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Biomedical spaCy model trained on scientific/clinical text. Mentions are</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># generic entity spans (drugs, diseases, procedures) rather than PERSON/GPE.</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Full UMLS linking is omitted here: the EntityLinker downloads a ~1 GB</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># knowledge base on first use.</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> spacy</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scispacy  <span class="co"># registers scispaCy tokenizers / components</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>nlp_scispacy <span class="op">=</span> spacy.load(<span class="st">"en_core_sci_sm"</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>doc2 <span class="op">=</span> nlp_scispacy(<span class="st">"Patient administered acetaminophen. History of diabetes mellitus."</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"spaCy"</span>, spacy.__version__)</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Biomedical mentions (en_core_sci_sm):"</span>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ent <span class="kw">in</span> doc2.ents:</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>ent<span class="sc">.</span>text<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>spaCy 3.8.15
+Biomedical mentions (en_core_sci_sm):
+  Patient
+  administered
+  acetaminophen
+  History
+  diabetes mellitus</code></pre>
+</div>
+</div>
+<div id="9de97025" class="cell" data-execution_count="65">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 3: Transformer NER</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Raw ClinicalBERT (emilyalsentzer/Bio_ClinicalBERT) is a language model, not an</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># NER tagger — loading it as TokenClassification randomly initializes the head.</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use a model fine-tuned for biomedical token classification instead.</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> pipeline</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>nlp_bert <span class="op">=</span> pipeline(</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"token-classification"</span>,</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span><span class="st">"d4data/biomedical-ner-all"</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    aggregation_strategy<span class="op">=</span><span class="st">"simple"</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">"No chest pain. The patient is on metformin."</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> res <span class="kw">in</span> nlp_bert(text):</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Entity: </span><span class="sc">{</span>res[<span class="st">'word'</span>]<span class="sc">}</span><span class="ss"> | type: </span><span class="sc">{</span>res[<span class="st">'entity_group'</span>]<span class="sc">}</span><span class="ss"> | score: </span><span class="sc">{</span>res[<span class="st">'score'</span>]<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"588aca5d5a1c494ab1f6023ac6915f70","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Entity: chest | type: Biological_structure | score: 1.00
+Entity: met | type: Medication | score: 1.00</code></pre>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>Add “SOB” and “h/o” expansions to the gazetteer/preprocessing so abbreviations are matched.</li>
+<li>Improve the negation engine to stop at conjunctions (“but”, “however”) so scope doesn’t leak across a sentence.</li>
+<li>Extend <code>TERM_TO_CODE</code> and report the share of extracted concepts that were successfully coded (a coverage metric).</li>
+</ol>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key takeaways</h2>
+<ul>
+<li>Clinical NLP must handle <strong>abbreviations, negation, context, and sections</strong> — naive keyword search is unsafe.</li>
+<li>A practical pipeline is <strong>segment → extract → assert → code → sectionize</strong>.</li>
+<li><strong>Negation/context detection</strong> is what separates “patient has X” from “patient denies X” — clinically decisive.</li>
+</ul>
+<hr>
+<p><em>Next: Module 11 — Clinical Decision Support Systems.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/zia207\.github\.io\/Health-informatics\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html" class="pagination-link" aria-label="09 · Privacy and De-identification">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">09 · Privacy and De-identification</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/11_clinical_decision_support.html" class="pagination-link" aria-label="11 · Clinical Decision Support">
+        <span class="nav-page-text">11 · Clinical Decision Support</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© CC-By Zia Ahmed, Upatta Analytics, 2026</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

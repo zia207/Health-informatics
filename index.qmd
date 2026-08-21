@@ -1,0 +1,55 @@
+---
+title: "Health Informatics in Python"
+subtitle: "From Health Data Standards to Interoperability, Privacy, and Emerging AI"
+---
+
+![](Image/chapter-banner.png){fig-align="center" width="100%"}
+
+Welcome to **Health Informatics in Python** — a tutorial series for health informatics professionals, clinical data scientists, and graduate students who want to work with health data as it actually exists: coded, standardized, exchanged, governed, and reused.
+
+Health informatics is the discipline concerned with how health information is **captured, structured, stored, exchanged, and used**. This series starts with that infrastructure — EHRs, terminologies, HL7/FHIR, OMOP — and then applies Python to privacy, clinical text, decision support, claims, warehousing, bulk data, and emerging AI.
+
+**Modules:** 4 parts · 16 notebooks  
+**Level:** Beginner through advanced · healthcare or public-health background helpful  
+**Language:** Python 3.10+ · Jupyter-compatible  
+**Dataset:** Synthetic throughout · no real patients  
+**Author:** Dr. Zia U. Ahmed · [Upatta Analytics](https://github.com/zia207)
+
+## Why Health Informatics in Python?
+
+Analytics is only as good as the data infrastructure feeding it. **This series focuses on the informatics layer that most analytics courses skip:**
+
+1. **Representation first** — ICD-10, SNOMED CT, LOINC, CPT, and FHIR resources are treated as data types, not footnotes.
+2. **Systems that talk to each other** — ingestion, ETL, OMOP CDM, data quality, and bulk FHIR are the path from a hospital system to an analysis-ready table.
+3. **Use with care** — de-identification, clinical NLP, decision support, claims, and warehousing are shown as applied informatics, not isolated algorithms.
+
+## Series Architecture
+
+The sixteen modules form four parts. Work through them in order, or jump to a part that matches your role.
+
+| Part | Modules | Focus |
+|------|---------|-------|
+| **I — Foundations** | 01–04 | What informatics is · health data types · clinical terminologies · standards and formats |
+| **II — Interoperability & Data Engineering** | 05–08 | FHIR in depth · ingestion and ETL · OMOP CDM · data quality |
+| **III — Privacy, Text & Applied Informatics** | 09–11 | De-identification and governance · clinical NLP · clinical decision support |
+| **IV — Advanced Topics** | 12–16 | Public health · claims · data warehousing · bulk data · emerging AI |
+
+Each module follows a consistent arc: **concepts → Python demonstration → interpretation**.
+
+## Getting Started
+
+1. Browse notebooks using the **sidebar** on the left — modules are organised by part.
+2. Clone the [GitHub repository](https://github.com/zia207/Health-informatics) to run notebooks locally or in Jupyter.
+3. Start with [Module 01 · What Health Informatics Is](Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.ipynb) for the mental model of the series.
+
+```bash
+git clone https://github.com/zia207/Health-informatics.git
+cd Health-informatics
+jupyter lab
+```
+
+## Who Is This For?
+
+> Health informatics professionals, clinical data scientists, public health analysts, and graduate students who want to understand how health data is structured, exchanged, and governed — and then work with it in Python.
+
+If you already know Python and want prediction, causal inference, or geospatial epidemiology, see [Health Analytics with Python](https://zia207.github.io/Health-Analytics-with-Python/).

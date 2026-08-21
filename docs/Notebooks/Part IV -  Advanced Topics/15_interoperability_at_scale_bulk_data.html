@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>interoperability_at_scale_bulk_data – Health Informatics in Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Notebooks/Part IV -  Advanced Topics/16_emerging_directions.html" rel="next">
+<link href="../../Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.html" rel="prev">
+<link href="../../Image/chapter_logo_health_informatics.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c5c3ec5290bf6b57b4a42a3553f76d36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Health Informatics in Python</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/zia207/Health-informatics"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/zia-ahmed207"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="mailto:zia207@gmail.com"> 
+<span class="menu-text">zia207@gmail.com</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html"><strong>Part IV — Advanced Topics</strong></a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.html">15 · Interoperability at Scale</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html"><strong>Part IV — Advanced Topics</strong></a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.html">15 · Interoperability at Scale</a></li></ol></nav></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Health Informatics in Python</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Health Informatics in Python</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part I — Foundations</strong> (Beginner)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 · What Health Informatics Is</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Health Data Types and Structure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Clinical Terminologies</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/04_health_data_standards_and_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Standards and Formats</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part II — Interoperability &amp; Data Engineering</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/05_fhir_in_depth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · FHIR in Depth</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/06_data_ingestion_etl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 · Data Ingestion and ETL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/07_omop_common_data_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 · OMOP Common Data Model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/08_data_quality_and_validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 · Data Quality and Validation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part III — Privacy, Text &amp; Applied Informatics</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">09 · Privacy and De-identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">10 · Clinical NLP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/11_clinical_decision_support.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">11 · Clinical Decision Support</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part IV — Advanced Topics</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">12 · Public Health Informatics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">13 · Claims Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">14 · Clinical Data Warehousing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">15 · Interoperability at Scale</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/16_emerging_directions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">16 · Emerging Directions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#module-15-interoperability-at-scale-and-bulk-data" id="toc-module-15-interoperability-at-scale-and-bulk-data" class="nav-link active" data-scroll-target="#module-15-interoperability-at-scale-and-bulk-data">Module 15: Interoperability at Scale and Bulk Data</a>
+  <ul class="collapse">
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#why-bulk-data" id="toc-why-bulk-data" class="nav-link" data-scroll-target="#why-bulk-data">15.1 Why bulk data</a></li>
+  <li><a href="#the-asynchronous-export-flow" id="toc-the-asynchronous-export-flow" class="nav-link" data-scroll-target="#the-asynchronous-export-flow">15.2 The asynchronous export flow</a></li>
+  <li><a href="#producing-ndjson" id="toc-producing-ndjson" class="nav-link" data-scroll-target="#producing-ndjson">15.3 Producing NDJSON</a>
+  <ul class="collapse">
+  <li><a href="#milestone-1---parse-ndjson-back-into-a-table" id="toc-milestone-1---parse-ndjson-back-into-a-table" class="nav-link" data-scroll-target="#milestone-1---parse-ndjson-back-into-a-table">Milestone 1 - parse NDJSON back into a table</a></li>
+  <li><a href="#milestone-2---a-mini-end-to-end-bulk-client" id="toc-milestone-2---a-mini-end-to-end-bulk-client" class="nav-link" data-scroll-target="#milestone-2---a-mini-end-to-end-bulk-client">Milestone 2 - a mini end-to-end bulk client</a></li>
+  </ul></li>
+  <li><a href="#the-network-layer-hies-qhins-and-tefca" id="toc-the-network-layer-hies-qhins-and-tefca" class="nav-link" data-scroll-target="#the-network-layer-hies-qhins-and-tefca">15.4 The network layer: HIEs, QHINs, and TEFCA</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key takeaways</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Image/chapter-banner.png" class="img-fluid figure-img"></p>
+<figcaption>Health-Informatics: A Python Tutorial</figcaption>
+</figure>
+</div>
+<section id="module-15-interoperability-at-scale-and-bulk-data" class="level1">
+<h1>Module 15: Interoperability at Scale and Bulk Data</h1>
+<p><strong>Health Informatics in Python</strong> · Part IV: Advanced Topics · Module 15 of 16</p>
+<hr>
+<p>Module 5’s FHIR search retrieves one patient at a time — fine for an app, hopeless for population analytics across millions of records. This module covers <strong>FHIR Bulk Data</strong> (Flat FHIR), the <strong>asynchronous export</strong> pattern, the <strong>NDJSON</strong> format it produces, and the network layer: <strong>HIEs</strong> and <strong>TEFCA</strong>.</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this module you will be able to:</p>
+<ol type="1">
+<li>Explain why <strong>bulk export</strong> exists and how it differs from per-resource search.</li>
+<li>Describe the <strong>asynchronous kickoff → poll → download</strong> Bulk Data flow.</li>
+<li>Produce and parse <strong>NDJSON</strong> (newline-delimited JSON), the bulk export format.</li>
+<li>Reassemble bulk NDJSON back into <strong>analytics tables</strong>.</li>
+<li>Place <strong>HIEs, QHINs, and TEFCA</strong> in the national interoperability picture.</li>
+</ol>
+</section>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
+<p>We convert the synthetic EHR into <strong>FHIR NDJSON</strong> exactly as a <code>$export</code> would emit it, then parse it back — simulating both ends of a bulk data exchange locally.</p>
+<div id="b92f91a0" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Self-contained synthetic EHR generator (identical to earlier parts) ---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># This function synthesizes a realistic EHR (Electronic Health Record) dataset.</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_synthetic_ehr(n_patients<span class="op">=</span><span class="dv">200</span>, seed<span class="op">=</span><span class="dv">42</span>):</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use a random generator for reproducibility.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define pools of first and last names.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    first <span class="op">=</span> [<span class="st">"Ava"</span>,<span class="st">"Liam"</span>,<span class="st">"Noah"</span>,<span class="st">"Mia"</span>,<span class="st">"Zoe"</span>,<span class="st">"Omar"</span>,<span class="st">"Ivan"</span>,<span class="st">"Sara"</span>,<span class="st">"Leo"</span>,<span class="st">"Nina"</span>,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Ruth"</span>,<span class="st">"Kai"</span>,<span class="st">"Yara"</span>,<span class="st">"Theo"</span>,<span class="st">"Ida"</span>,<span class="st">"Sam"</span>,<span class="st">"Ana"</span>,<span class="st">"Eli"</span>,<span class="st">"Rex"</span>,<span class="st">"Uma"</span>]</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    last  <span class="op">=</span> [<span class="st">"Khan"</span>,<span class="st">"Ortiz"</span>,<span class="st">"Chen"</span>,<span class="st">"Diaz"</span>,<span class="st">"Patel"</span>,<span class="st">"Ali"</span>,<span class="st">"Brown"</span>,<span class="st">"Nash"</span>,<span class="st">"Reed"</span>,<span class="st">"Vega"</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Cole"</span>,<span class="st">"Frost"</span>,<span class="st">"Grant"</span>,<span class="st">"Hale"</span>,<span class="st">"Iqbal"</span>,<span class="st">"Jain"</span>,<span class="st">"Kerr"</span>,<span class="st">"Lund"</span>,<span class="st">"Mora"</span>,<span class="st">"Park"</span>]</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Randomly assign demographic details to each patient.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    ages  <span class="op">=</span> rng.integers(<span class="dv">18</span>, <span class="dv">90</span>, size<span class="op">=</span>n_patients)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    patients <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"patient_id"</span>: [<span class="ss">f"P</span><span class="sc">{</span><span class="dv">1000</span><span class="op">+</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_patients)],          <span class="co"># Unique patient IDs</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"given_name"</span>: rng.choice(first, size<span class="op">=</span>n_patients),                 <span class="co"># Given names</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"family_name"</span>: rng.choice(last, size<span class="op">=</span>n_patients),                 <span class="co"># Family (last) names</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"sex"</span>: rng.choice([<span class="st">"male"</span>,<span class="st">"female"</span>], size<span class="op">=</span>n_patients, p<span class="op">=</span>[<span class="fl">0.49</span>,<span class="fl">0.51</span>]), <span class="co"># Biological sex</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"age"</span>: ages,                                                      <span class="co"># Age in years</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"birth_year"</span>: <span class="dv">2026</span> <span class="op">-</span> ages,                                        <span class="co"># Calculated birth year (anchor to year 2026)</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate encounter (“visit”) events for each patient.</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    enc_rows, enc_types <span class="op">=</span> [], [<span class="st">"ambulatory"</span>,<span class="st">"emergency"</span>,<span class="st">"inpatient"</span>,<span class="st">"wellness"</span>]</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pid <span class="kw">in</span> patients[<span class="st">"patient_id"</span>]:</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(rng.integers(<span class="dv">1</span>, <span class="dv">5</span>)):  <span class="co"># Each patient has 1–4 encounters</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>            day <span class="op">=</span> rng.integers(<span class="dv">0</span>, <span class="dv">365</span><span class="op">*</span><span class="dv">3</span>)  <span class="co"># Encounter within a 3-year range</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>            enc_rows.append({<span class="st">"encounter_id"</span>: <span class="ss">f"E</span><span class="sc">{</span><span class="bu">len</span>(enc_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:05d}</span><span class="ss">"</span>, <span class="st">"patient_id"</span>: pid,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                <span class="st">"encounter_type"</span>: rng.choice(enc_types, p<span class="op">=</span>[<span class="fl">0.55</span>,<span class="fl">0.15</span>,<span class="fl">0.10</span>,<span class="fl">0.20</span>]),  <span class="co"># Most visits are ambulatory</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>                <span class="st">"date"</span>: (pd.Timestamp(<span class="st">"2023-01-01"</span>) <span class="op">+</span> pd.Timedelta(days<span class="op">=</span><span class="bu">int</span>(day))).date()}) <span class="co"># Random date</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    encounters <span class="op">=</span> pd.DataFrame(enc_rows)</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define common observations (vital signs, labs) and synthesize them for encounters.</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    obs_defs <span class="op">=</span> [(<span class="st">"Body height"</span>,<span class="st">"cm"</span>,<span class="dv">150</span>,<span class="dv">195</span>),(<span class="st">"Body weight"</span>,<span class="st">"kg"</span>,<span class="dv">50</span>,<span class="dv">110</span>),</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>                (<span class="st">"Systolic blood pressure"</span>,<span class="st">"mmHg"</span>,<span class="dv">100</span>,<span class="dv">165</span>),(<span class="st">"Heart rate"</span>,<span class="st">"/min"</span>,<span class="dv">55</span>,<span class="dv">100</span>),</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>                (<span class="st">"Hemoglobin A1c"</span>,<span class="st">"%"</span>,<span class="fl">4.8</span>,<span class="fl">9.5</span>)]</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>    obs_rows <span class="op">=</span> []</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, e <span class="kw">in</span> encounters.iterrows():</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name, unit, lo, hi <span class="kw">in</span> obs_defs:</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> rng.random() <span class="op">&lt;</span> <span class="fl">0.7</span>:  <span class="co"># 70% chance of having each observation per encounter</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>                obs_rows.append({<span class="st">"observation_id"</span>: <span class="ss">f"O</span><span class="sc">{</span><span class="bu">len</span>(obs_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:06d}</span><span class="ss">"</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"encounter_id"</span>: e[<span class="st">"encounter_id"</span>], <span class="st">"patient_id"</span>: e[<span class="st">"patient_id"</span>],</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"observation"</span>: name, <span class="st">"value"</span>: <span class="bu">round</span>(<span class="bu">float</span>(rng.uniform(lo,hi)),<span class="dv">1</span>),</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"unit"</span>: unit, <span class="st">"date"</span>: e[<span class="st">"date"</span>]})</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    observations <span class="op">=</span> pd.DataFrame(obs_rows)</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Assign up to 3 random conditions (problems/diagnoses) to each patient.</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    cond_pool <span class="op">=</span> [<span class="st">"Essential hypertension"</span>,<span class="st">"Type 2 diabetes mellitus"</span>,<span class="st">"Asthma"</span>,</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Acute bronchitis"</span>,<span class="st">"Major depressive disorder"</span>,<span class="st">"Osteoarthritis"</span>,</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Chronic kidney disease"</span>,<span class="st">"Anemia"</span>]</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    cond_rows <span class="op">=</span> []</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pid <span class="kw">in</span> patients[<span class="st">"patient_id"</span>]:</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> c <span class="kw">in</span> rng.choice(cond_pool, size<span class="op">=</span>rng.integers(<span class="dv">0</span>,<span class="dv">4</span>), replace<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>            cond_rows.append({<span class="st">"condition_id"</span>: <span class="ss">f"C</span><span class="sc">{</span><span class="bu">len</span>(cond_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:05d}</span><span class="ss">"</span>,</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"patient_id"</span>: pid, <span class="st">"condition"</span>: c})</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    conditions <span class="op">=</span> pd.DataFrame(cond_rows)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Assign up to 3 random medications to each patient.</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    med_pool <span class="op">=</span> [<span class="st">"Lisinopril"</span>,<span class="st">"Metformin"</span>,<span class="st">"Albuterol"</span>,<span class="st">"Atorvastatin"</span>,<span class="st">"Sertraline"</span>,</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Amoxicillin"</span>,<span class="st">"Ibuprofen"</span>,<span class="st">"Hydrochlorothiazide"</span>]</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>    med_rows <span class="op">=</span> []</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pid <span class="kw">in</span> patients[<span class="st">"patient_id"</span>]:</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> m <span class="kw">in</span> rng.choice(med_pool, size<span class="op">=</span>rng.integers(<span class="dv">0</span>,<span class="dv">4</span>), replace<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>            med_rows.append({<span class="st">"medication_id"</span>: <span class="ss">f"M</span><span class="sc">{</span><span class="bu">len</span>(med_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:05d}</span><span class="ss">"</span>,</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"patient_id"</span>: pid, <span class="st">"medication"</span>: m})</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    medications <span class="op">=</span> pd.DataFrame(med_rows)</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return the synthetic tables as a dictionary keyed by resource type.</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"patients"</span>:patients,<span class="st">"encounters"</span>:encounters,<span class="st">"observations"</span>:observations,</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>            <span class="st">"conditions"</span>:conditions,<span class="st">"medications"</span>:medications}</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate the synthetic EHR dataset (all tables).</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>ehr <span class="op">=</span> make_synthetic_ehr()</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="co"># Print table names and their respective row counts.</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Tables:"</span>, <span class="st">", "</span>.join(<span class="ss">f"</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(v)<span class="sc">}</span><span class="ss">)"</span> <span class="cf">for</span> k,v <span class="kw">in</span> ehr.items()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tables: patients (200), encounters (511), observations (1804), conditions (304), medications (276)</code></pre>
+</div>
+</div>
+</section>
+<section id="why-bulk-data" class="level2">
+<h2 class="anchored" data-anchor-id="why-bulk-data">15.1 Why bulk data</h2>
+<p>Using per-resource REST (such as <code>GET /Patient/123</code>) is highly inefficient for retrieving data about many individuals: pulling a large patient population could require millions of repeated API calls, which is slow and places heavy load on the server.</p>
+<p>To solve this, <strong>FHIR Bulk Data</strong> (also known as Flat FHIR) allows exporting entire resource types in a single operation. The server packages data—such as all Patient records, Observations, or Conditions—into compressed <strong>NDJSON</strong> (newline-delimited JSON) files. Each line in these files is a single resource, making them easy to process in parallel or with big data tools.</p>
+<p>This capability is foundational for scenarios like population health analysis, clinical quality reporting, and large-scale payer–provider data exchanges, where working with an entire cohort is necessary rather than accessing records one at a time.</p>
+</section>
+<section id="the-asynchronous-export-flow" class="level2">
+<h2 class="anchored" data-anchor-id="the-asynchronous-export-flow">15.2 The asynchronous export flow</h2>
+<p>Bulk export in FHIR is designed to be <strong>asynchronous</strong> because exporting large datasets can be resource-intensive and time-consuming, often taking several minutes or more. Rather than tying up server resources and leaving the client waiting for a response, an asynchronous workflow allows efficient handling for both client and server. Here’s how the asynchronous export flow works in detail:</p>
+<ol type="1">
+<li><strong>Kickoff</strong> — The client initiates the export by making a request such as <code>GET [base]/$export</code>, and includes the <code>Prefer: respond-async</code> HTTP header. This header signals to the server that the client is willing to receive an asynchronous response.</li>
+<li><strong>Poll for Status</strong> — Instead of immediately returning the full response, the server replies with a <code>202 Accepted</code> status and provides a <em>content-location</em> header containing the URL where the client can check on the progress of the export job.</li>
+<li><strong>Completion and Manifest</strong> — The client periodically polls the content-location endpoint. Once the job has finished, the server responds with a manifest JSON document describing the output. This manifest lists URLs to one or more NDJSON files, typically one file per resource type (e.g., one for all Patient records, one for Observations, etc.).</li>
+<li><strong>Download NDJSON Files</strong> — The client then downloads the bulk data by retrieving the NDJSON files from the provided URLs. These files contain the exported data, with each line representing a single resource instance as a JSON object.</li>
+</ol>
+<p>In this notebook, we simulate the manifest that a server would return at the completion of a bulk data export job.</p>
+<div id="0e02c979" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This code simulates a FHIR Bulk Data (Flat FHIR) export manifest,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># which is the response a client receives from the server when a bulk</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># data export job completes. The manifest describes the exported data files.</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The manifest is a dictionary containing:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#  - "transactionTime": When the export was completed.</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#  - "request": The URL used to initiate the export job.</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#  - "requiresAccessToken": Whether the result URLs require authentication.</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#  - "output": A list of exported resource files, each specifying:</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#       - the resource "type" (e.g., Patient, Observation, Condition)</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#       - and the downloadable "url" for each NDJSON file.</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#  - "error": Any errors (empty in this simulated manifest).</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>manifest <span class="op">=</span> {</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"transactionTime"</span>: <span class="st">"2026-08-20T00:00:00Z"</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"request"</span>: <span class="st">"https://ehr.example/fhir/$export"</span>,</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"requiresAccessToken"</span>: <span class="va">True</span>,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"output"</span>: [</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"type"</span>: <span class="st">"Patient"</span>, <span class="st">"url"</span>: <span class="st">"https://ehr.example/bulk/Patient.ndjson"</span>},</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"type"</span>: <span class="st">"Observation"</span>, <span class="st">"url"</span>: <span class="st">"https://ehr.example/bulk/Observation.ndjson"</span>},</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        {<span class="st">"type"</span>: <span class="st">"Condition"</span>, <span class="st">"url"</span>: <span class="st">"https://ehr.example/bulk/Condition.ndjson"</span>},</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"error"</span>: [],</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the manifest in a readable JSON format</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Bulk export manifest (returned when the async job completes):"</span>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(manifest, indent<span class="op">=</span><span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Bulk export manifest (returned when the async job completes):
+{
+  "transactionTime": "2026-08-20T00:00:00Z",
+  "request": "https://ehr.example/fhir/$export",
+  "requiresAccessToken": true,
+  "output": [
+    {
+      "type": "Patient",
+      "url": "https://ehr.example/bulk/Patient.ndjson"
+    },
+    {
+      "type": "Observation",
+      "url": "https://ehr.example/bulk/Observation.ndjson"
+    },
+    {
+      "type": "Condition",
+      "url": "https://ehr.example/bulk/Condition.ndjson"
+    }
+  ],
+  "error": []
+}</code></pre>
+</div>
+</div>
+</section>
+<section id="producing-ndjson" class="level2">
+<h2 class="anchored" data-anchor-id="producing-ndjson">15.3 Producing NDJSON</h2>
+<p><strong>NDJSON</strong> stands for Newline Delimited JSON, a format where each line in a text file is a separate JSON object, with no enclosing array or commas between records. This approach has several advantages for large-scale data handling: - <strong>Efficient Streaming:</strong> Clients and servers can read and write data one object at a time without needing to load the entire file into memory. - <strong>Easy Sharding and Parallelism:</strong> Files can be split and processed in chunks by simply dividing on newline characters. - <strong>Append-friendly:</strong> New records can easily be appended as new lines. For these reasons, FHIR bulk export utilizes NDJSON files to export large collections of resources efficiently. In the next cell, we demonstrate how to output FHIR <code>Patient</code> resources using the NDJSON format, with each patient represented as a separate line.</p>
+<div id="e47db1ad" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select the "patients" table from the synthetic EHR dataset.</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>patients <span class="op">=</span> ehr[<span class="st">"patients"</span>]</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to convert each row of the DataFrame</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># into a FHIR-compliant Patient resource (dictionary).</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_fhir_patient(row):</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"resourceType"</span>: <span class="st">"Patient"</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"id"</span>: row[<span class="st">"patient_id"</span>],</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"name"</span>: [{</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"family"</span>: row[<span class="st">"family_name"</span>],  <span class="co"># Last name</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            <span class="st">"given"</span>: [row[<span class="st">"given_name"</span>]]   <span class="co"># First name as a list</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        }],</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"gender"</span>: row[<span class="st">"sex"</span>],              <span class="co"># HL7/FHIR uses 'gender' field</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"birthDate"</span>: <span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'birth_year'</span>]<span class="sc">}</span><span class="ss">-01-01"</span>  <span class="co"># Use only the year for privacy</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Take the first 200 patients. For each, serialize the FHIR resource</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># as a JSON string (one per line), following NDJSON format.</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>ndjson_lines <span class="op">=</span> [</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    json.dumps(to_fhir_patient(r))</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, r <span class="kw">in</span> patients.head(<span class="dv">200</span>).iterrows()</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Join lines together with newline characters to form the NDJSON document.</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>patient_ndjson <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(ndjson_lines)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first 3 NDJSON lines to show the format, and summary stats.</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Patient.ndjson — first 3 lines:"</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> line <span class="kw">in</span> ndjson_lines[:<span class="dv">3</span>]:</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(line)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"...</span><span class="ch">\n</span><span class="sc">{</span><span class="bu">len</span>(ndjson_lines)<span class="sc">}</span><span class="ss"> total resources, </span><span class="sc">{</span><span class="bu">len</span>(patient_ndjson)<span class="sc">}</span><span class="ss"> bytes"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Patient.ndjson — first 3 lines:
+{"resourceType": "Patient", "id": "P1000", "name": [{"family": "Park", "given": ["Sara"]}], "gender": "female", "birthDate": "2002-01-01"}
+{"resourceType": "Patient", "id": "P1001", "name": [{"family": "Jain", "given": ["Rex"]}], "gender": "male", "birthDate": "1953-01-01"}
+{"resourceType": "Patient", "id": "P1002", "name": [{"family": "Brown", "given": ["Nina"]}], "gender": "female", "birthDate": "1961-01-01"}
+...
+200 total resources, 27545 bytes</code></pre>
+</div>
+</div>
+<section id="milestone-1---parse-ndjson-back-into-a-table" class="level3">
+<h3 class="anchored" data-anchor-id="milestone-1---parse-ndjson-back-into-a-table">Milestone 1 - parse NDJSON back into a table</h3>
+<p>In this milestone, we’ll demonstrate how to read a bulk FHIR NDJSON file, where each line is a JSON-encoded resource—and convert it back into a tabular DataFrame. This allows us to round-trip structured FHIR data: exporting it using the NDJSON standard, and then parsing it back for analysis or visualization in Python.</p>
+<div id="66cf76a3" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function that takes NDJSON text (each line a JSON-encoded Patient resource)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and parses it back into a pandas DataFrame for further analysis or visualization.</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> parse_patient_ndjson(text):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split the text into lines, strip whitespace, and process each line</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> line <span class="kw">in</span> text.strip().split(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>):</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Each line is a JSON string representing a FHIR Patient resource</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> json.loads(line)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Extract fields of interest from the FHIR structure and save as a dictionary</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        rows.append({</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>            <span class="st">"id"</span>: r[<span class="st">"id"</span>],</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            <span class="st">"family"</span>: r[<span class="st">"name"</span>][<span class="dv">0</span>][<span class="st">"family"</span>],        <span class="co"># Family name (last name)</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            <span class="st">"given"</span>: r[<span class="st">"name"</span>][<span class="dv">0</span>][<span class="st">"given"</span>][<span class="dv">0</span>],       <span class="co"># First given name</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>            <span class="st">"gender"</span>: r[<span class="st">"gender"</span>],                   <span class="co"># Gender field</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"birthDate"</span>: r[<span class="st">"birthDate"</span>]              <span class="co"># Birth date</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return as a DataFrame for easy manipulation</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Parse the NDJSON (bulk exported) patient data back into a DataFrame</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>parsed <span class="op">=</span> parse_patient_ndjson(patient_ndjson)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Display a preview of the round-tripped table and report how many patients were parsed</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Round-tripped NDJSON -&gt; DataFrame:"</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(parsed.head().to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Parsed </span><span class="sc">{</span><span class="bu">len</span>(parsed)<span class="sc">}</span><span class="ss"> patients back from bulk NDJSON."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Round-tripped NDJSON -&gt; DataFrame:
+   id family given gender  birthDate
+P1000   Park  Sara female 2002-01-01
+P1001   Jain   Rex   male 1953-01-01
+P1002  Brown  Nina female 1961-01-01
+P1003   Park  Theo female 1977-01-01
+P1004   Vega  Nina female 1977-01-01
+
+Parsed 200 patients back from bulk NDJSON.</code></pre>
+</div>
+</div>
+</section>
+<section id="milestone-2---a-mini-end-to-end-bulk-client" class="level3">
+<h3 class="anchored" data-anchor-id="milestone-2---a-mini-end-to-end-bulk-client">Milestone 2 - a mini end-to-end bulk client</h3>
+<p>This section demonstrates a miniature, end-to-end “bulk client” for FHIR data, showing how to handle downloading, parsing, and performing population-level queries across large sets of simulated bulk export files.</p>
+<div id="b8ab1a6e" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Explanation of Code for Bulk FHIR Observation Export and Bulk Query ---</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Emit Observations as NDJSON.</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># We take the 'observations' table from our simulated EHR data.</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>obs <span class="op">=</span> ehr[<span class="st">"observations"</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. Define key LOINC codes for common observation types.</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co"># LOINC codes standardize lab/measurement concepts in FHIR.</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>LOINC <span class="op">=</span> {</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Hemoglobin A1c"</span>: <span class="st">"4548-4"</span>,</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Systolic blood pressure"</span>: <span class="st">"8480-6"</span>,</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Heart rate"</span>: <span class="st">"8867-4"</span>,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Body weight"</span>: <span class="st">"29463-7"</span>,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Body height"</span>: <span class="st">"8302-2"</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. Serialize each Observation into a line of NDJSON.</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Each line is a FHIR Observation resource in JSON, representing a different clinical measurement.</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>obs_ndjson <span class="op">=</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    json.dumps({</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="st">"resourceType"</span>: <span class="st">"Observation"</span>,</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">"status"</span>: <span class="st">"final"</span>,</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        <span class="st">"code"</span>: {</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>            <span class="st">"coding"</span>: [{</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">"system"</span>: <span class="st">"http://loinc.org"</span>,</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>                <span class="st">"code"</span>: LOINC[o[<span class="st">"observation"</span>]],</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>                <span class="st">"display"</span>: o[<span class="st">"observation"</span>]</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>            }]</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>        <span class="st">"subject"</span>: {<span class="st">"reference"</span>: <span class="ss">f"Patient/</span><span class="sc">{</span>o[<span class="st">'patient_id'</span>]<span class="sc">}</span><span class="ss">"</span>},</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>        <span class="st">"valueQuantity"</span>: {<span class="st">"value"</span>: <span class="bu">float</span>(o[<span class="st">"value"</span>]), <span class="st">"unit"</span>: o[<span class="st">"unit"</span>]}</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, o <span class="kw">in</span> obs.iterrows()</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. Simulate Bulk Download</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bulk_download(manifest_output, local_files):</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="co">    Given a manifest describing bulk export files, look up each corresponding</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="co">    NDJSON string in 'local_files', parse each line as JSON, and</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="co">    collect them under their FHIR resource type.</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    tables <span class="op">=</span> {}</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> entry <span class="kw">in</span> manifest_output:</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>        text <span class="op">=</span> local_files.get(entry[<span class="st">"type"</span>])</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> text:</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Split NDJSON into a list of JSON objects:</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a>            tables[entry[<span class="st">"type"</span>]] <span class="op">=</span> [json.loads(l) <span class="cf">for</span> l <span class="kw">in</span> text.strip().split(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)]</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> tables</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. Prepare the 'local' exports (Patient and Observation), representing files you might download in bulk.</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>local <span class="op">=</span> {<span class="st">"Patient"</span>: patient_ndjson, <span class="st">"Observation"</span>: obs_ndjson}</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="co"># 6. Run the simulated bulk download process,</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="co"># which will fetch and parse the NDJSON back into Python objects by type.</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>downloaded <span class="op">=</span> bulk_download(manifest[<span class="st">"output"</span>], local)</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Show counts for each resource type downloaded.</span></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Downloaded resource counts:"</span>, {k: <span class="bu">len</span>(v) <span class="cf">for</span> k, v <span class="kw">in</span> downloaded.items()})</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a><span class="co"># 7. Perform a population-level query: compute the mean Hemoglobin A1c value.</span></span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a><span class="co"># This emulates an analytic use-case enabled by bulk export.</span></span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>a1c_vals <span class="op">=</span> [</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    o[<span class="st">"valueQuantity"</span>][<span class="st">"value"</span>]</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> o <span class="kw">in</span> downloaded.get(<span class="st">"Observation"</span>, [])</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> o[<span class="st">"code"</span>][<span class="st">"coding"</span>][<span class="dv">0</span>][<span class="st">"code"</span>] <span class="op">==</span> <span class="st">"4548-4"</span>  <span class="co"># LOINC for HbA1c</span></span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Population mean A1c from bulk export: </span><span class="sc">{</span><span class="bu">sum</span>(a1c_vals)<span class="op">/</span><span class="bu">len</span>(a1c_vals)<span class="sc">:.2f}</span><span class="ss"> % "</span></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>      <span class="ss">f"(n=</span><span class="sc">{</span><span class="bu">len</span>(a1c_vals)<span class="sc">}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Downloaded resource counts: {'Patient': 200, 'Observation': 1804}
+Population mean A1c from bulk export: 7.10 % (n=356)</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="the-network-layer-hies-qhins-and-tefca" class="level2">
+<h2 class="anchored" data-anchor-id="the-network-layer-hies-qhins-and-tefca">15.4 The network layer: HIEs, QHINs, and TEFCA</h2>
+<p>While bulk data export helps move large volumes of health data within a single organization, exchanging data <em>across</em> organizations requires a more advanced network infrastructure. Here are the main components enabling such nationwide interoperability in the U.S.:</p>
+<ul>
+<li><p><strong>HIE (Health Information Exchange)</strong>: These are typically regional networks that facilitate the sharing of clinical data (such as lab results, encounters, and medications) among multiple healthcare providers, hospitals, and health systems. HIEs help reduce duplication, improve care coordination, and enable providers to access patient information regardless of where care was delivered.</p></li>
+<li><p><strong>TEFCA (Trusted Exchange Framework and Common Agreement)</strong>: TEFCA is a federal initiative designed to standardize the rules and technical requirements for health information exchange across the entire country. It provides a “network of networks” by creating a shared trust framework, data sharing policies, and technical standards, ensuring that all participants can rely on common ground rules and interoperability.</p></li>
+<li><p><strong>QHIN (Qualified Health Information Network)</strong>: QHINs are large, certified networks that connect directly to TEFCA. They serve as hubs that link together different HIEs, health systems, payers, and other qualified entities. Once connected, a data request made in one region or network can securely reach and retrieve data from other regions through the mesh created by these QHINs.</p></li>
+</ul>
+<p><strong>Direction of travel:</strong> With the adoption of modern standards like FHIR and the national trust framework of TEFCA, exchanging health information across the U.S. is moving from custom-built solutions to standardized, routine interoperability at scale.</p>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>Add a <code>Condition</code> NDJSON stream and extend <code>bulk_download</code> to compute condition prevalence across the export.</li>
+<li>Implement a <strong><code>_since</code> parameter</strong>: filter the export to resources after a given date (incremental/delta export).</li>
+<li>Gzip the NDJSON (<code>gzip</code> module) and report the compression ratio — bulk files are always compressed in practice.</li>
+</ol>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key takeaways</h2>
+<ul>
+<li><strong>Bulk Data / Flat FHIR</strong> exports whole populations as <strong>NDJSON</strong>, unlike chatty per-resource search.</li>
+<li>The flow is <strong>async</strong>: kickoff → poll → manifest → download.</li>
+<li><strong>NDJSON</strong> streams and shards; parsing it back yields analytics tables.</li>
+<li><strong>HIEs, QHINs, and TEFCA</strong> carry exchange <em>across</em> organizations nationwide.</li>
+</ul>
+<hr>
+<p><em>Next: Module 16 - Emerging Directions.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/zia207\.github\.io\/Health-informatics\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.html" class="pagination-link" aria-label="14 · Clinical Data Warehousing">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">14 · Clinical Data Warehousing</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Notebooks/Part IV -  Advanced Topics/16_emerging_directions.html" class="pagination-link" aria-label="16 · Emerging Directions">
+        <span class="nav-page-text">16 · Emerging Directions</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© CC-By Zia Ahmed, Upatta Analytics, 2026</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>privacy_deidentification – Health Informatics in Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.html" rel="next">
+<link href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/08_data_quality_and_validation.html" rel="prev">
+<link href="../../Image/chapter_logo_health_informatics.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c5c3ec5290bf6b57b4a42a3553f76d36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Health Informatics in Python</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/zia207/Health-informatics"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/zia-ahmed207"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="mailto:zia207@gmail.com"> 
+<span class="menu-text">zia207@gmail.com</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html">**Part III — Privacy, Text &amp; Applied Informatics**</a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html">09 · Privacy and De-identification</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html">**Part III — Privacy, Text &amp; Applied Informatics**</a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html">09 · Privacy and De-identification</a></li></ol></nav></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Health Informatics in Python</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Health Informatics in Python</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part I — Foundations</strong> (Beginner)</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 · What Health Informatics Is</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Health Data Types and Structure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">03 · Clinical Terminologies</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/04_health_data_standards_and_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Standards and Formats</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part II — Interoperability &amp; Data Engineering</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/05_fhir_in_depth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · FHIR in Depth</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/06_data_ingestion_etl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 · Data Ingestion and ETL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/07_omop_common_data_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 · OMOP Common Data Model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/08_data_quality_and_validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 · Data Quality and Validation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part III — Privacy, Text &amp; Applied Informatics</strong></span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">09 · Privacy and De-identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">10 · Clinical NLP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/11_clinical_decision_support.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">11 · Clinical Decision Support</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part IV — Advanced Topics</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">12 · Public Health Informatics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">13 · Claims Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">14 · Clinical Data Warehousing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">15 · Interoperability at Scale</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/16_emerging_directions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">16 · Emerging Directions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#module-9-privacy-de-identification-and-governance" id="toc-module-9-privacy-de-identification-and-governance" class="nav-link active" data-scroll-target="#module-9-privacy-de-identification-and-governance">Module 9: Privacy, De-identification, and Governance</a>
+  <ul class="collapse">
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#the-two-hipaa-de-identification-standards" id="toc-the-two-hipaa-de-identification-standards" class="nav-link" data-scroll-target="#the-two-hipaa-de-identification-standards">9.1 The two HIPAA de-identification standards</a></li>
+  <li><a href="#de-identifying-structured-data" id="toc-de-identifying-structured-data" class="nav-link" data-scroll-target="#de-identifying-structured-data">9.2 De-identifying structured data</a></li>
+  <li><a href="#de-identifying-free-text" id="toc-de-identifying-free-text" class="nav-link" data-scroll-target="#de-identifying-free-text">9.3 De-identifying free text</a>
+  <ul class="collapse">
+  <li><a href="#milestone-1---redact-a-clinical-note" id="toc-milestone-1---redact-a-clinical-note" class="nav-link" data-scroll-target="#milestone-1---redact-a-clinical-note">Milestone 1 - redact a clinical note</a></li>
+  </ul></li>
+  <li><a href="#k-anonymity" id="toc-k-anonymity" class="nav-link" data-scroll-target="#k-anonymity">9.4 k-anonymity</a></li>
+  <li><a href="#synthetic-data-and-governance" id="toc-synthetic-data-and-governance" class="nav-link" data-scroll-target="#synthetic-data-and-governance">9.5 Synthetic data and governance</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key takeaways</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Image/chapter-banner.png" class="img-fluid figure-img"></p>
+<figcaption>Health-Informatics: A Python Tutorial</figcaption>
+</figure>
+</div>
+<section id="module-9-privacy-de-identification-and-governance" class="level1">
+<h1>Module 9: Privacy, De-identification, and Governance</h1>
+<p><strong>Health Informatics in Python</strong> · Part III: Privacy, Text &amp; Applied Informatics · Module 9 of 16</p>
+<hr>
+<p>Health data is among the most sensitive data there is, and its use is governed by law. Before data can be shared for research or analytics, <strong>protected health information (PHI)</strong> usually has to be removed. This module covers the <strong>HIPAA</strong> de-identification standards and implements de-identification for both structured tables and free text.</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this module you will be able to:</p>
+<ol type="1">
+<li>Distinguish HIPAA <strong>Safe Harbor</strong> (the 18 identifiers) from <strong>Expert Determination</strong>.</li>
+<li>De-identify <strong>structured</strong> data by suppressing, generalizing, and hashing identifiers.</li>
+<li>De-identify <strong>free text</strong> using regex plus spaCy named-entity recognition.</li>
+<li>Measure <strong>k-anonymity</strong> over quasi-identifiers and generalize to reach a target <em>k</em>.</li>
+<li>Explain <strong>synthetic data</strong> and governance controls (IRB, DUA, minimum necessary).</li>
+</ol>
+<blockquote class="blockquote">
+<p><strong>Ethics note.</strong> All names, MRNs, dates, and contacts in this notebook are <strong>fabricated</strong>. De-identification is safety-critical: the methods here are educational, and production systems should use validated tooling and expert review.</p>
+</blockquote>
+</section>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
+<p>The synthetic EHR plus two <strong>fabricated</strong> clinical notes seeded with PHI-shaped tokens (names, MRNs, dates, phone, email, address) so the de-identification code has realistic targets.</p>
+<div id="a89a0156" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Self-contained synthetic EHR generator (identical to Parts I-II) ---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_synthetic_ehr(n_patients<span class="op">=</span><span class="dv">200</span>, seed<span class="op">=</span><span class="dv">42</span>):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    first <span class="op">=</span> [<span class="st">"Ava"</span>,<span class="st">"Liam"</span>,<span class="st">"Noah"</span>,<span class="st">"Mia"</span>,<span class="st">"Zoe"</span>,<span class="st">"Omar"</span>,<span class="st">"Ivan"</span>,<span class="st">"Sara"</span>,<span class="st">"Leo"</span>,<span class="st">"Nina"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Ruth"</span>,<span class="st">"Kai"</span>,<span class="st">"Yara"</span>,<span class="st">"Theo"</span>,<span class="st">"Ida"</span>,<span class="st">"Sam"</span>,<span class="st">"Ana"</span>,<span class="st">"Eli"</span>,<span class="st">"Rex"</span>,<span class="st">"Uma"</span>]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    last  <span class="op">=</span> [<span class="st">"Khan"</span>,<span class="st">"Ortiz"</span>,<span class="st">"Chen"</span>,<span class="st">"Diaz"</span>,<span class="st">"Patel"</span>,<span class="st">"Ali"</span>,<span class="st">"Brown"</span>,<span class="st">"Nash"</span>,<span class="st">"Reed"</span>,<span class="st">"Vega"</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Cole"</span>,<span class="st">"Frost"</span>,<span class="st">"Grant"</span>,<span class="st">"Hale"</span>,<span class="st">"Iqbal"</span>,<span class="st">"Jain"</span>,<span class="st">"Kerr"</span>,<span class="st">"Lund"</span>,<span class="st">"Mora"</span>,<span class="st">"Park"</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    ages  <span class="op">=</span> rng.integers(<span class="dv">18</span>, <span class="dv">90</span>, size<span class="op">=</span>n_patients)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    patients <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"patient_id"</span>: [<span class="ss">f"P</span><span class="sc">{</span><span class="dv">1000</span><span class="op">+</span>i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_patients)],</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"given_name"</span>: rng.choice(first, size<span class="op">=</span>n_patients),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"family_name"</span>: rng.choice(last, size<span class="op">=</span>n_patients),</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"sex"</span>: rng.choice([<span class="st">"male"</span>,<span class="st">"female"</span>], size<span class="op">=</span>n_patients, p<span class="op">=</span>[<span class="fl">0.49</span>,<span class="fl">0.51</span>]),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"age"</span>: ages, <span class="st">"birth_year"</span>: <span class="dv">2026</span> <span class="op">-</span> ages,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    enc_rows, enc_types <span class="op">=</span> [], [<span class="st">"ambulatory"</span>,<span class="st">"emergency"</span>,<span class="st">"inpatient"</span>,<span class="st">"wellness"</span>]</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pid <span class="kw">in</span> patients[<span class="st">"patient_id"</span>]:</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(rng.integers(<span class="dv">1</span>, <span class="dv">5</span>)):</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            day <span class="op">=</span> rng.integers(<span class="dv">0</span>, <span class="dv">365</span><span class="op">*</span><span class="dv">3</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            enc_rows.append({<span class="st">"encounter_id"</span>: <span class="ss">f"E</span><span class="sc">{</span><span class="bu">len</span>(enc_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:05d}</span><span class="ss">"</span>, <span class="st">"patient_id"</span>: pid,</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>                <span class="st">"encounter_type"</span>: rng.choice(enc_types, p<span class="op">=</span>[<span class="fl">0.55</span>,<span class="fl">0.15</span>,<span class="fl">0.10</span>,<span class="fl">0.20</span>]),</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                <span class="st">"date"</span>: (pd.Timestamp(<span class="st">"2023-01-01"</span>) <span class="op">+</span> pd.Timedelta(days<span class="op">=</span><span class="bu">int</span>(day))).date()})</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    encounters <span class="op">=</span> pd.DataFrame(enc_rows)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    obs_defs <span class="op">=</span> [(<span class="st">"Body height"</span>,<span class="st">"cm"</span>,<span class="dv">150</span>,<span class="dv">195</span>),(<span class="st">"Body weight"</span>,<span class="st">"kg"</span>,<span class="dv">50</span>,<span class="dv">110</span>),</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>                (<span class="st">"Systolic blood pressure"</span>,<span class="st">"mmHg"</span>,<span class="dv">100</span>,<span class="dv">165</span>),(<span class="st">"Heart rate"</span>,<span class="st">"/min"</span>,<span class="dv">55</span>,<span class="dv">100</span>),</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>                (<span class="st">"Hemoglobin A1c"</span>,<span class="st">"%"</span>,<span class="fl">4.8</span>,<span class="fl">9.5</span>)]</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    obs_rows <span class="op">=</span> []</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> _, e <span class="kw">in</span> encounters.iterrows():</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> name, unit, lo, hi <span class="kw">in</span> obs_defs:</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> rng.random() <span class="op">&lt;</span> <span class="fl">0.7</span>:</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                obs_rows.append({<span class="st">"observation_id"</span>: <span class="ss">f"O</span><span class="sc">{</span><span class="bu">len</span>(obs_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:06d}</span><span class="ss">"</span>,</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"encounter_id"</span>: e[<span class="st">"encounter_id"</span>], <span class="st">"patient_id"</span>: e[<span class="st">"patient_id"</span>],</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"observation"</span>: name, <span class="st">"value"</span>: <span class="bu">round</span>(<span class="bu">float</span>(rng.uniform(lo,hi)),<span class="dv">1</span>),</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"unit"</span>: unit, <span class="st">"date"</span>: e[<span class="st">"date"</span>]})</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    observations <span class="op">=</span> pd.DataFrame(obs_rows)</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    cond_pool <span class="op">=</span> [<span class="st">"Essential hypertension"</span>,<span class="st">"Type 2 diabetes mellitus"</span>,<span class="st">"Asthma"</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Acute bronchitis"</span>,<span class="st">"Major depressive disorder"</span>,<span class="st">"Osteoarthritis"</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>                 <span class="st">"Chronic kidney disease"</span>,<span class="st">"Anemia"</span>]</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    cond_rows <span class="op">=</span> []</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pid <span class="kw">in</span> patients[<span class="st">"patient_id"</span>]:</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> c <span class="kw">in</span> rng.choice(cond_pool, size<span class="op">=</span>rng.integers(<span class="dv">0</span>,<span class="dv">4</span>), replace<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>            cond_rows.append({<span class="st">"condition_id"</span>: <span class="ss">f"C</span><span class="sc">{</span><span class="bu">len</span>(cond_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:05d}</span><span class="ss">"</span>,</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"patient_id"</span>: pid, <span class="st">"condition"</span>: c})</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    conditions <span class="op">=</span> pd.DataFrame(cond_rows)</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    med_pool <span class="op">=</span> [<span class="st">"Lisinopril"</span>,<span class="st">"Metformin"</span>,<span class="st">"Albuterol"</span>,<span class="st">"Atorvastatin"</span>,<span class="st">"Sertraline"</span>,</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>                <span class="st">"Amoxicillin"</span>,<span class="st">"Ibuprofen"</span>,<span class="st">"Hydrochlorothiazide"</span>]</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    med_rows <span class="op">=</span> []</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pid <span class="kw">in</span> patients[<span class="st">"patient_id"</span>]:</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> m <span class="kw">in</span> rng.choice(med_pool, size<span class="op">=</span>rng.integers(<span class="dv">0</span>,<span class="dv">4</span>), replace<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>            med_rows.append({<span class="st">"medication_id"</span>: <span class="ss">f"M</span><span class="sc">{</span><span class="bu">len</span>(med_rows)<span class="op">+</span><span class="dv">1</span><span class="sc">:05d}</span><span class="ss">"</span>,</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"patient_id"</span>: pid, <span class="st">"medication"</span>: m})</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    medications <span class="op">=</span> pd.DataFrame(med_rows)</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {<span class="st">"patients"</span>:patients,<span class="st">"encounters"</span>:encounters,<span class="st">"observations"</span>:observations,</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>            <span class="st">"conditions"</span>:conditions,<span class="st">"medications"</span>:medications}</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>ehr <span class="op">=</span> make_synthetic_ehr()</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Tables:"</span>, <span class="st">", "</span>.join(<span class="ss">f"</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span><span class="bu">len</span>(v)<span class="sc">}</span><span class="ss">)"</span> <span class="cf">for</span> k,v <span class="kw">in</span> ehr.items()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tables: patients (200), encounters (511), observations (1804), conditions (304), medications (276)</code></pre>
+</div>
+</div>
+<div id="deb65c56" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Synthetic clinical notes containing FABRICATED identifiers (no real people)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>notes <span class="op">=</span> [</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"note_id"</span>:<span class="st">"N001"</span>,<span class="st">"patient_id"</span>:<span class="st">"P1000"</span>,<span class="st">"text"</span>:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>     <span class="st">"Ava Khan (MRN 4471982) seen on 03/12/2024. Contact 607-555-0148. "</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>     <span class="st">"58 yo F with h/o hypertension and type 2 diabetes presents for follow-up. "</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>     <span class="st">"BP 148/88. Denies chest pain. No shortness of breath. Continue lisinopril; "</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>     <span class="st">"recheck A1c in 3 months. Lives at 12 Elm St, Ithaca NY."</span>},</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    {<span class="st">"note_id"</span>:<span class="st">"N002"</span>,<span class="st">"patient_id"</span>:<span class="st">"P1001"</span>,<span class="st">"text"</span>:</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>     <span class="st">"Liam Ortiz, DOB 07/22/1969, MRN 5580321. Presents with acute bronchitis. "</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>     <span class="st">"Reports cough x5 days. Negative for fever. Family history of asthma. "</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>     <span class="st">"Started amoxicillin. Follow up if not improving. Email liam.o@example.com."</span>},</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> notes:</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(n[<span class="st">"note_id"</span>], <span class="st">"-"</span>, n[<span class="st">"text"</span>][:<span class="dv">70</span>], <span class="st">"..."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>N001 - Ava Khan (MRN 4471982) seen on 03/12/2024. Contact 607-555-0148. 58 yo ...
+N002 - Liam Ortiz, DOB 07/22/1969, MRN 5580321. Presents with acute bronchiti ...</code></pre>
+</div>
+</div>
+</section>
+<section id="the-two-hipaa-de-identification-standards" class="level2">
+<h2 class="anchored" data-anchor-id="the-two-hipaa-de-identification-standards">9.1 The two HIPAA de-identification standards</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 52%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Standard</th>
+<th>How it works</th>
+<th>Trade-off</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Safe Harbor</strong></td>
+<td>Remove <strong>18 specific identifiers</strong> named by HIPAA regulations from all data.</td>
+<td>Straightforward, rule-based; may remove useful data along with identifiers.</td>
+</tr>
+<tr class="even">
+<td><strong>Expert Determination</strong></td>
+<td>An expert assesses and documents that the risk of re-identification is “very small,” allowing custom methods to reduce such risk.</td>
+<td>Allows more data utility and context sensitivity; requires specialized knowledge and thorough documentation.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Safe Harbor:</strong><br>
+Relies on a strict list of 18 personal identifiers (such as names, addresses smaller than state, full dates, and contact info) that must be removed to consider data de-identified. This method is relatively easy to apply and does not require specialized statistical or privacy expertise. However, it can inadvertently remove more information than strictly necessary for privacy, potentially harming research utility.</p>
+<p><strong>Expert Determination:</strong><br>
+Involves hiring or relying on a qualified expert in statistical and scientific methods who will identify direct and indirect identifiers in the dataset and certify that the likelihood of someone being re-identified from the data is very small. This approach allows for nuanced balancing between privacy and information loss, accommodating unique data situations, but it is more complex and requires expert oversight and documentation.</p>
+<p><strong>18 Safe Harbor identifiers</strong> (must be removed or generalized): names, any small-area geographic indicator (smaller than a state, e.g.&nbsp;city, zip code except for the initial 3 digits in some cases), all dates directly related to an individual (other than year), ages over 89, phone/fax numbers, emails, social security numbers, medical record/account/license numbers, vehicle/device identifiers, URLs, IP addresses, biometric identifiers, full-face photographs/images, and any other unique identifying code or characteristic.</p>
+<div id="a20a6eec" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>SAFE_HARBOR_18 <span class="op">=</span> [</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Names"</span>,<span class="st">"Geographic subdivisions &lt; state"</span>,<span class="st">"Dates (finer than year); ages &gt; 89"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Telephone numbers"</span>,<span class="st">"Fax numbers"</span>,<span class="st">"Email addresses"</span>,<span class="st">"Social Security numbers"</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Medical record numbers"</span>,<span class="st">"Health plan beneficiary numbers"</span>,<span class="st">"Account numbers"</span>,</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Certificate/license numbers"</span>,<span class="st">"Vehicle identifiers"</span>,<span class="st">"Device identifiers"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Web URLs"</span>,<span class="st">"IP addresses"</span>,<span class="st">"Biometric identifiers"</span>,<span class="st">"Full-face photos"</span>,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Any other unique identifying number/characteristic/code"</span>,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"HIPAA Safe Harbor identifiers (</span><span class="sc">{</span><span class="bu">len</span>(SAFE_HARBOR_18)<span class="sc">}</span><span class="ss">):"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, ident <span class="kw">in</span> <span class="bu">enumerate</span>(SAFE_HARBOR_18, <span class="dv">1</span>):</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>i<span class="sc">:2d}</span><span class="ss">. </span><span class="sc">{</span>ident<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>HIPAA Safe Harbor identifiers (18):
+ 1. Names
+ 2. Geographic subdivisions &lt; state
+ 3. Dates (finer than year); ages &gt; 89
+ 4. Telephone numbers
+ 5. Fax numbers
+ 6. Email addresses
+ 7. Social Security numbers
+ 8. Medical record numbers
+ 9. Health plan beneficiary numbers
+10. Account numbers
+11. Certificate/license numbers
+12. Vehicle identifiers
+13. Device identifiers
+14. Web URLs
+15. IP addresses
+16. Biometric identifiers
+17. Full-face photos
+18. Any other unique identifying number/characteristic/code</code></pre>
+</div>
+</div>
+</section>
+<section id="de-identifying-structured-data" class="level2">
+<h2 class="anchored" data-anchor-id="de-identifying-structured-data">9.2 De-identifying structured data</h2>
+<p>When working with structured (tabular) data, removing identifiers is a column-by-column process. Each column containing an identifier should have an appropriate de-identification strategy assigned to it. Common strategies include: - <strong>Suppress</strong> (drop): Remove the column entirely if it directly identifies a person (e.g., name). - <strong>Generalize</strong> (reduce precision): Broaden the information so it’s less specific, such as reporting age groups instead of exact ages, or using birth year instead of full birth date. - <strong>Pseudonymize</strong> (hash to a consistent token): Replace an identifier, like a patient ID, with a generated code (using a hash function and possibly a secret salt) that is stable within the dataset but cannot be used to recover the original value. This approach balances privacy protection with the need to retain useful, analyzable data.</p>
+<div id="1127ab20" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hashlib</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>patients <span class="op">=</span> ehr[<span class="st">"patients"</span>].copy()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pseudonymize(value, salt<span class="op">=</span><span class="st">"study-2026"</span>):</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"PT-"</span> <span class="op">+</span> hashlib.sha256((salt<span class="op">+</span><span class="bu">str</span>(value)).encode()).hexdigest()[:<span class="dv">10</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>deid <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># pseudonymize the direct identifier (stable across the dataset, not reversible without salt)</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"study_id"</span>: patients[<span class="st">"patient_id"</span>].<span class="bu">map</span>(pseudonymize),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># suppress names entirely</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># generalize: age &gt; 89 collapses to '90+' per Safe Harbor; keep birth YEAR only</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"age_group"</span>: pd.cut(patients[<span class="st">"age"</span>], [<span class="dv">0</span>,<span class="dv">18</span>,<span class="dv">40</span>,<span class="dv">65</span>,<span class="dv">89</span>,<span class="dv">200</span>],</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                        labels<span class="op">=</span>[<span class="st">"&lt;18"</span>,<span class="st">"18-39"</span>,<span class="st">"40-64"</span>,<span class="st">"65-89"</span>,<span class="st">"90+"</span>]),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sex"</span>: patients[<span class="st">"sex"</span>],</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"De-identified structured table (names suppressed, id hashed, age generalized):"</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>deid.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>De-identified structured table (names suppressed, id hashed, age generalized):</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">study_id</th>
+<th data-quarto-table-cell-role="th">age_group</th>
+<th data-quarto-table-cell-role="th">sex</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>PT-4e1ad65a22</td>
+<td>18-39</td>
+<td>female</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>PT-29aad3ddf2</td>
+<td>65-89</td>
+<td>male</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>PT-5a1b9690e7</td>
+<td>40-64</td>
+<td>female</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>PT-99115d1b96</td>
+<td>40-64</td>
+<td>female</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>PT-cabe50e931</td>
+<td>40-64</td>
+<td>female</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="de-identifying-free-text" class="level2">
+<h2 class="anchored" data-anchor-id="de-identifying-free-text">9.3 De-identifying free text</h2>
+<p>De-identifying free text is more complex than structured data because personal identifiers may appear anywhere within unstructured prose. To address this, we use a combination of: - <strong>Regular expressions (regex):</strong> These can reliably detect well-defined patterns such as Medical Record Numbers (MRNs), phone numbers, emails, dates, and similar structured strings. - <strong>spaCy Named Entity Recognition (NER):</strong> This tool detects names of people and places (like “John Smith” or “New York”) in natural language, even if their format is less predictable.</p>
+<p>For maximum portability, the code attempts to load the spaCy NER model, but if it is not available (e.g., on a new system), the notebook will still run, simply skipping the NER step.</p>
+<div id="842e6ee9" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> spacy</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    nlp <span class="op">=</span> spacy.load(<span class="st">"en_core_web_sm"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    NER <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    nlp <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    NER <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"spaCy NER model available:"</span>, NER)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>PATTERNS <span class="op">=</span> {</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"MRN"</span>:   re.<span class="bu">compile</span>(<span class="vs">r"</span><span class="dv">\b</span><span class="vs">MRN</span><span class="dv">\s</span><span class="op">*</span><span class="dv">\d</span><span class="op">{5,}</span><span class="dv">\b</span><span class="vs">"</span>, re.I),</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"PHONE"</span>: re.<span class="bu">compile</span>(<span class="vs">r"</span><span class="dv">\b\d</span><span class="op">{3}</span><span class="vs">-</span><span class="dv">\d</span><span class="op">{3}</span><span class="vs">-</span><span class="dv">\d</span><span class="op">{4}</span><span class="dv">\b</span><span class="vs">"</span>),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"EMAIL"</span>: re.<span class="bu">compile</span>(<span class="vs">r"</span><span class="dv">\b</span><span class="pp">[</span><span class="dv">\w</span><span class="pp">.]</span><span class="op">+</span><span class="vs">@</span><span class="pp">[</span><span class="dv">\w</span><span class="pp">.]</span><span class="op">+</span><span class="ch">\.</span><span class="dv">\w</span><span class="op">+</span><span class="dv">\b</span><span class="vs">"</span>),</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DATE"</span>:  re.<span class="bu">compile</span>(<span class="vs">r"</span><span class="dv">\b\d</span><span class="op">{1,2}</span><span class="vs">/</span><span class="dv">\d</span><span class="op">{1,2}</span><span class="vs">/</span><span class="dv">\d</span><span class="op">{2,4}</span><span class="dv">\b</span><span class="vs">"</span>),</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SSN"</span>:   re.<span class="bu">compile</span>(<span class="vs">r"</span><span class="dv">\b\d</span><span class="op">{3}</span><span class="vs">-</span><span class="dv">\d</span><span class="op">{2}</span><span class="vs">-</span><span class="dv">\d</span><span class="op">{4}</span><span class="dv">\b</span><span class="vs">"</span>),</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> deidentify_text(text):</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    redactions <span class="op">=</span> []</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1) regex-based structured identifiers</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tag, pat <span class="kw">in</span> PATTERNS.items():</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> m <span class="kw">in</span> pat.finditer(text):</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>            redactions.append((m.start(), m.end(), tag))</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2) NER-based names and places</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> NER:</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> ent <span class="kw">in</span> nlp(text).ents:</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> ent.label_ <span class="kw">in</span> {<span class="st">"PERSON"</span>,<span class="st">"GPE"</span>,<span class="st">"LOC"</span>,<span class="st">"FAC"</span>}:</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>                redactions.append((ent.start_char, ent.end_char, ent.label_))</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># apply right-to-left so offsets stay valid</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> text</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> start, end, tag <span class="kw">in</span> <span class="bu">sorted</span>(redactions, key<span class="op">=</span><span class="kw">lambda</span> r: r[<span class="dv">0</span>], reverse<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> out[:start] <span class="op">+</span> <span class="ss">f"[</span><span class="sc">{</span>tag<span class="sc">}</span><span class="ss">]"</span> <span class="op">+</span> out[end:]</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>spaCy NER model available: True</code></pre>
+</div>
+</div>
+<section id="milestone-1---redact-a-clinical-note" class="level3">
+<h3 class="anchored" data-anchor-id="milestone-1---redact-a-clinical-note">Milestone 1 - redact a clinical note</h3>
+<div id="d5aeb31b" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>original <span class="op">=</span> notes[<span class="dv">0</span>][<span class="st">"text"</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>redacted <span class="op">=</span> deidentify_text(original)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ORIGINAL:</span><span class="ch">\n</span><span class="st">"</span>, original)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">DE-IDENTIFIED:</span><span class="ch">\n</span><span class="st">"</span>, redacted)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>ORIGINAL:
+ Ava Khan (MRN 4471982) seen on 03/12/2024. Contact 607-555-0148. 58 yo F with h/o hypertension and type 2 diabetes presents for follow-up. BP 148/88. Denies chest pain. No shortness of breath. Continue lisinopril; recheck A1c in 3 months. Lives at 12 Elm St, Ithaca NY.
+
+DE-IDENTIFIED:
+ [PERSON] ([MRN]) seen on [DATE]. Contact [PHONE]. 58 yo F with h/o hypertension and type 2 diabetes presents for follow-up. BP 148/88. Denies chest pain. No shortness of breath. Continue lisinopril; recheck A1c in 3 months. Lives at 12 [FAC].</code></pre>
+</div>
+</div>
+<div id="cedd1e3a" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># quick check: did the obvious identifiers get masked?</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> token <span class="kw">in</span> [<span class="st">"4471982"</span>,<span class="st">"607-555-0148"</span>,<span class="st">"03/12/2024"</span>,<span class="st">"Ava"</span>,<span class="st">"Ithaca"</span>]:</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>token<span class="sc">:14s}</span><span class="ss"> redacted: </span><span class="sc">{</span>token <span class="kw">not</span> <span class="kw">in</span> redacted<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  4471982        redacted: True
+  607-555-0148   redacted: True
+  03/12/2024     redacted: True
+  Ava            redacted: True
+  Ithaca         redacted: True</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="k-anonymity" class="level2">
+<h2 class="anchored" data-anchor-id="k-anonymity">9.4 k-anonymity</h2>
+<p><strong>k-anonymity</strong> is a privacy concept that addresses the risk of re-identifying individuals in a dataset, even after obvious identifiers (like names or SSNs) are removed. It recognizes that combinations of seemingly harmless features—such as age, sex, or ZIP code—can still uniquely identify people when combined. These features are known as <strong>quasi-identifiers</strong>.</p>
+<p>A dataset is considered <strong>k-anonymous</strong> if every unique combination of quasi-identifiers appears in at least <em>k</em> different records. This means each individual is hidden in a crowd of at least <em>k</em> people sharing the same quasi-identifier values. The higher the value of <em>k</em>, the stronger the privacy guarantee: it’s harder to pick out an individual from the group.</p>
+<p>Achieving k-anonymity often requires generalizing or coarsening the data (for example, grouping ages into ranges, or truncating ZIP codes) so that more records look alike, increasing the minimum group size. The following sections show how to measure and improve k-anonymity using real and generalized data.</p>
+<p>Removing direct identifiers isn’t enough: <strong>quasi-identifiers</strong> (age, sex, ZIP) can re-identify people by combination. A dataset is <strong>k-anonymous</strong> if every combination of quasi-identifiers is shared by at least <em>k</em> records. We measure it, then generalize to raise the minimum <em>k</em>.</p>
+<div id="8b283f4e" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>qi <span class="op">=</span> ehr[<span class="st">"patients"</span>][[<span class="st">"age"</span>,<span class="st">"sex"</span>]].copy()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>qi[<span class="st">"zip3"</span>] <span class="op">=</span> rng.choice([<span class="st">"148"</span>,<span class="st">"149"</span>,<span class="st">"130"</span>], size<span class="op">=</span><span class="bu">len</span>(qi))   <span class="co"># coarse ZIP (first 3)</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> min_k(df, cols):</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.groupby(cols).size().<span class="bu">min</span>()</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Using exact age as a quasi-identifier:"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  smallest group size (k):"</span>, min_k(qi, [<span class="st">"age"</span>,<span class="st">"sex"</span>,<span class="st">"zip3"</span>]))</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="co"># generalize age into bands -&gt; larger groups -&gt; higher k</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>qi[<span class="st">"age_band"</span>] <span class="op">=</span> pd.cut(qi[<span class="st">"age"</span>], [<span class="dv">0</span>,<span class="dv">40</span>,<span class="dv">65</span>,<span class="dv">120</span>], labels<span class="op">=</span>[<span class="st">"&lt;40"</span>,<span class="st">"40-64"</span>,<span class="st">"65+"</span>])</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>k2 <span class="op">=</span> min_k(qi, [<span class="st">"age_band"</span>,<span class="st">"sex"</span>,<span class="st">"zip3"</span>])</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"After generalizing age into bands:"</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  smallest group size (k):"</span>, k2, <span class="st">"-&gt;"</span>, <span class="st">"meets k&gt;=5"</span> <span class="cf">if</span> k2<span class="op">&gt;=</span><span class="dv">5</span> <span class="cf">else</span> <span class="st">"still too small"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Using exact age as a quasi-identifier:
+  smallest group size (k): 1
+After generalizing age into bands:
+  smallest group size (k): 6 -&gt; meets k&gt;=5
+/tmp/ipykernel_64707/1139078976.py:6: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+  return df.groupby(cols).size().min()</code></pre>
+</div>
+</div>
+</section>
+<section id="synthetic-data-and-governance" class="level2">
+<h2 class="anchored" data-anchor-id="synthetic-data-and-governance">9.5 Synthetic data and governance</h2>
+<p>The safest way to <em>share</em> is often not to share real records at all but a <strong>synthetic</strong> dataset that preserves statistical structure without mapping to real people — exactly what this series’ generator does.</p>
+<p>Beyond technical methods, health data use sits inside a <strong>governance</strong> framework:</p>
+<ul>
+<li><strong>IRB approval</strong> for human-subjects research</li>
+<li><strong>Data Use Agreements (DUAs)</strong> governing what a recipient may do</li>
+<li><strong>Minimum necessary</strong> — access only the data required for the purpose</li>
+<li><strong>Limited Data Sets</strong> — a middle ground retaining dates/geography under a DUA</li>
+</ul>
+<p>Production de-identification tools worth knowing: <strong>Microsoft Presidio</strong>, <strong>Philter</strong>, and <strong>NLM Scrubber</strong>. Formal privacy guarantees come from <strong>differential privacy</strong>.</p>
+<div id="37d9910c" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The generator IS the privacy strategy: no row maps to a real person.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>synth <span class="op">=</span> make_synthetic_ehr(n_patients<span class="op">=</span><span class="dv">5</span>, seed<span class="op">=</span><span class="dv">99</span>)[<span class="st">"patients"</span>]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Synthetic patients — statistically shaped, entirely fabricated:"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(synth[[<span class="st">"patient_id"</span>,<span class="st">"given_name"</span>,<span class="st">"family_name"</span>,<span class="st">"sex"</span>,<span class="st">"age"</span>]].to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Synthetic patients — statistically shaped, entirely fabricated:
+patient_id given_name family_name    sex  age
+     P1000       Ruth       Brown   male   86
+     P1001        Rex       Frost female   54
+     P1002        Uma       Grant female   72
+     P1003        Uma         Ali   male   58
+     P1004       Yara        Park   male   30</code></pre>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>Add a <strong>street-address</strong> regex to <code>PATTERNS</code> and confirm the address in note N001 is redacted without relying on NER.</li>
+<li>De-identify <strong>note N002</strong> and verify the email and DOB are masked.</li>
+<li>Compute k-anonymity treating <strong>exact ZIP5</strong> as a quasi-identifier, then show which generalization (age band vs ZIP3) buys more anonymity.</li>
+</ol>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key takeaways</h2>
+<ul>
+<li>HIPAA offers two paths: <strong>Safe Harbor</strong> (remove 18 identifiers) and <strong>Expert Determination</strong>.</li>
+<li>Structured de-id = <strong>suppress / generalize / pseudonymize</strong>; free-text de-id needs <strong>regex + NER</strong> together.</li>
+<li><strong>k-anonymity</strong> guards against quasi-identifier re-identification.</li>
+<li><strong>Synthetic data</strong> and <strong>governance</strong> (IRB, DUA, minimum necessary) complete the picture.</li>
+</ul>
+<hr>
+<p><em>Next: Module 10 - Clinical Natural Language Processing.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/zia207\.github\.io\/Health-informatics\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/08_data_quality_and_validation.html" class="pagination-link" aria-label="08 · Data Quality and Validation">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">08 · Data Quality and Validation</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.html" class="pagination-link" aria-label="10 · Clinical NLP">
+        <span class="nav-page-text">10 · Clinical NLP</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© CC-By Zia Ahmed, Upatta Analytics, 2026</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

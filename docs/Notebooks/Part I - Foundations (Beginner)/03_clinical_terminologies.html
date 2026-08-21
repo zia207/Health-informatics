@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>clinical_terminologies – Health Informatics in Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../Notebooks/Part I - Foundations (Beginner)/04_health_data_standards_and_formats.html" rel="next">
+<link href="../../Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.html" rel="prev">
+<link href="../../Image/chapter_logo_health_informatics.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-c5c3ec5290bf6b57b4a42a3553f76d36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Health Informatics in Python</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="../../index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/zia207/Health-informatics"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/zia-ahmed207"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="mailto:zia207@gmail.com"> 
+<span class="menu-text">zia207@gmail.com</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html"><strong>Part I — Foundations</strong> (Beginner)</a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.html">03 · Clinical Terminologies</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html"><strong>Part I — Foundations</strong> (Beginner)</a></li><li class="breadcrumb-item"><a href="../../Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.html">03 · Clinical Terminologies</a></li></ol></nav></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="../../Image/chapter_logo_health_informatics.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Health Informatics in Python</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Health Informatics in Python</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text"><strong>Part I — Foundations</strong> (Beginner)</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/01_what_is_health_informatics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">01 · What Health Informatics Is</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">02 · Health Data Types and Structure</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">03 · Clinical Terminologies</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part I - Foundations (Beginner)/04_health_data_standards_and_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">04 · Standards and Formats</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part II — Interoperability &amp; Data Engineering</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/05_fhir_in_depth.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">05 · FHIR in Depth</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/06_data_ingestion_etl.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">06 · Data Ingestion and ETL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/07_omop_common_data_model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">07 · OMOP Common Data Model</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part II -  Interoperability and Data Engineering (Intermediate)/08_data_quality_and_validation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">08 · Data Quality and Validation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part III — Privacy, Text &amp; Applied Informatics</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/09_privacy_deidentification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">09 · Privacy and De-identification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/10_clinical_nlp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">10 · Clinical NLP</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part III - Privacy, Text, and Applied Informatics (Intermediate–Advanced)/11_clinical_decision_support.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">11 · Clinical Decision Support</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false">
+ <span class="menu-text"><strong>Part IV — Advanced Topics</strong></span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/12_population_public_health.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">12 · Public Health Informatics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/13_claim_data_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">13 · Claims Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/14_clinical_data_warehousing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">14 · Clinical Data Warehousing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/15_interoperability_at_scale_bulk_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">15 · Interoperability at Scale</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Notebooks/Part IV -  Advanced Topics/16_emerging_directions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">16 · Emerging Directions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#module-3-clinical-terminologies-and-coding-systems" id="toc-module-3-clinical-terminologies-and-coding-systems" class="nav-link active" data-scroll-target="#module-3-clinical-terminologies-and-coding-systems">Module 3 : Clinical Terminologies and Coding Systems</a>
+  <ul class="collapse">
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#dataset" id="toc-dataset" class="nav-link" data-scroll-target="#dataset">Dataset</a></li>
+  <li><a href="#why-controlled-vocabularies-exist" id="toc-why-controlled-vocabularies-exist" class="nav-link" data-scroll-target="#why-controlled-vocabularies-exist">3.1 Why controlled vocabularies exist</a></li>
+  <li><a href="#the-major-coding-systems" id="toc-the-major-coding-systems" class="nav-link" data-scroll-target="#the-major-coding-systems">3.2 The major coding systems</a></li>
+  <li><a href="#crosswalking-a-local-label-to-standard-codes" id="toc-crosswalking-a-local-label-to-standard-codes" class="nav-link" data-scroll-target="#crosswalking-a-local-label-to-standard-codes">3.3 Crosswalking a local label to standard codes</a>
+  <ul class="collapse">
+  <li><a href="#milestone-1---apply-the-crosswalk-to-ehr-conditions" id="toc-milestone-1---apply-the-crosswalk-to-ehr-conditions" class="nav-link" data-scroll-target="#milestone-1---apply-the-crosswalk-to-ehr-conditions">Milestone 1 - apply the crosswalk to EHR conditions</a></li>
+  </ul></li>
+  <li><a href="#code-hierarchies" id="toc-code-hierarchies" class="nav-link" data-scroll-target="#code-hierarchies">3.4 Code hierarchies</a>
+  <ul class="collapse">
+  <li><a href="#milestone-2---a-snomed-is-a-walk" id="toc-milestone-2---a-snomed-is-a-walk" class="nav-link" data-scroll-target="#milestone-2---a-snomed-is-a-walk">Milestone 2 - a SNOMED <em>is-a</em> walk</a></li>
+  </ul></li>
+  <li><a href="#value-sets" id="toc-value-sets" class="nav-link" data-scroll-target="#value-sets">3.5 Value sets</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#key-takeaways" id="toc-key-takeaways" class="nav-link" data-scroll-target="#key-takeaways">Key takeaways</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../Image/chapter-banner.png" class="img-fluid figure-img"></p>
+<figcaption>Health-Informatics: A Python Tutorial</figcaption>
+</figure>
+</div>
+<section id="module-3-clinical-terminologies-and-coding-systems" class="level1">
+<h1>Module 3 : Clinical Terminologies and Coding Systems</h1>
+<p><strong>Health Informatics in Python</strong> · Part I: Foundations · Module 3 of 16</p>
+<hr>
+<p>Free-text disease names don’t compute reliably: “high blood pressure”, “hypertension”, and “HTN” are the same concept to a human and three different strings to a machine. <strong>Controlled terminologies</strong> solve this by giving every clinical concept a stable code. This module is about those code systems and how to work with them in Python.</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this module you will be able to:</p>
+<ol type="1">
+<li>Explain <strong>why</strong> standardized vocabularies exist and what breaks without them.</li>
+<li>Identify the major coding systems, - <strong>ICD-10, SNOMED CT, LOINC, RxNorm, CPT</strong>, and what each is <em>for</em>.</li>
+<li><strong>Map / crosswalk</strong> between a local label and standard codes.</li>
+<li>Navigate <strong>code hierarchies</strong> (parent–child relationships).</li>
+<li>Define and apply a <strong>value set</strong> to a clinical dataset.</li>
+</ol>
+</section>
+<section id="dataset" class="level2">
+<h2 class="anchored" data-anchor-id="dataset">Dataset</h2>
+<p>We use small <strong>illustrative code tables</strong> built inline. These are real, verifiable codes for common concepts, deliberately kept to a handful per system, a teaching subset, <strong>not</strong> a complete terminology.</p>
+<blockquote class="blockquote">
+<p><strong>Licensing note.</strong> SNOMED CT (via UMLS), CPT (AMA), and others require licenses for production use and bulk distribution. Using individual codes to learn is fine; shipping full code sets is a licensing matter covered in the series appendix.</p>
+</blockquote>
+</section>
+<section id="why-controlled-vocabularies-exist" class="level2">
+<h2 class="anchored" data-anchor-id="why-controlled-vocabularies-exist">3.1 Why controlled vocabularies exist</h2>
+<p>Without a shared code, the same clinical idea fragments across strings, spellings, and abbreviations — making counting, exchange, and analysis unreliable.</p>
+<div id="22c47a8a" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This cell shows WHY we need codes instead of free-text disease names.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Five clinicians can type the SAME idea five different ways. A computer</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># treats those as five different strings, so counts and joins break.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># A list of strings that all mean "high blood pressure" to a human</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>free_text <span class="op">=</span> [<span class="st">"Hypertension"</span>, <span class="st">"high blood pressure"</span>, <span class="st">"HTN"</span>, <span class="st">"htn"</span>, <span class="st">"Essential HTN"</span>]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># set(...) keeps only unique values. len(...) counts how many unique strings remain.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Result: 5 distinct strings for ONE clinical concept.</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Distinct strings for ONE concept:"</span>, <span class="bu">len</span>(<span class="bu">set</span>(free_text)))</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"A coded system collapses all of these to a single identifier, e.g."</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  ICD-10-CM  I10          (Essential hypertension)"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  SNOMED CT  38341003     (Hypertensive disorder)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Distinct strings for ONE concept: 5
+A coded system collapses all of these to a single identifier, e.g.
+  ICD-10-CM  I10          (Essential hypertension)
+  SNOMED CT  38341003     (Hypertensive disorder)</code></pre>
+</div>
+</div>
+</section>
+<section id="the-major-coding-systems" class="level2">
+<h2 class="anchored" data-anchor-id="the-major-coding-systems">3.2 The major coding systems</h2>
+<ol type="1">
+<li><strong>ICD-10-CM (International Classification of Diseases, 10th Revision, Clinical Modification)</strong>
+<ul>
+<li><strong>Purpose:</strong> Used primarily for diagnoses in billing, epidemiology, and health statistics reporting in the United States.<br>
+</li>
+<li><strong>Governs:</strong> Diagnoses (billing/reporting)<br>
+</li>
+<li><strong>Who Maintains:</strong> World Health Organization (WHO), with clinical modification by the U.S.<br>
+</li>
+<li><strong>Types of Concepts:</strong> Disorders, diseases, injuries, causes of death<br>
+</li>
+<li><strong>Code Example:</strong> <code>E11.9</code> (Type 2 diabetes mellitus without complications)<br>
+</li>
+<li><strong>Notes:</strong> Codes are alphanumeric; hierarchical structure; widely required for insurance claims and public health reporting.</li>
+</ul></li>
+<li><strong>SNOMED CT (Systematized Nomenclature of Medicine—Clinical Terms)</strong>
+<ul>
+<li><strong>Purpose:</strong> Comprehensive clinical terminology for recording clinical data in electronic health records (EHRs).<br>
+</li>
+<li><strong>Governs:</strong> Clinical concepts (fine-grained)<br>
+</li>
+<li><strong>Who Maintains:</strong> SNOMED International<br>
+</li>
+<li><strong>Types of Concepts:</strong> Signs, symptoms, diagnoses, procedures, findings, body structures, organisms, substances, etc.<br>
+</li>
+<li><strong>Code Example:</strong> <code>44054006</code> (Diabetes mellitus type 2)<br>
+</li>
+<li><strong>Notes:</strong> Provides full semantic relationships; enables decision support, data analytics, and data exchange internationally; often used within EHRs to capture clinical meaning at the bedside.</li>
+</ul></li>
+<li><strong>LOINC (Logical Observation Identifiers Names and Codes)</strong>
+<ul>
+<li><strong>Purpose:</strong> Universal standard for identifying health measurements, observations, and documents.<br>
+</li>
+<li><strong>Governs:</strong> Laboratories, clinical observations, and measurements<br>
+</li>
+<li><strong>Who Maintains:</strong> Regenstrief Institute<br>
+</li>
+<li><strong>Types of Concepts:</strong> Laboratory tests, clinical measurements, survey panels, vital signs<br>
+</li>
+<li><strong>Code Example:</strong> <code>4548-4</code> (Hemoglobin A1c in blood)<br>
+</li>
+<li><strong>Notes:</strong> Extensively used for reporting lab test results and exchanging clinical data between institutions.</li>
+</ul></li>
+<li><strong>RxNorm</strong>
+<ul>
+<li><strong>Purpose:</strong> Provides normalized names and unique identifiers for medications (clinical drugs), supporting electronic prescribing, pharmacy management, and data exchange.<br>
+</li>
+<li><strong>Governs:</strong> Medications (ingredients/products)<br>
+</li>
+<li><strong>Who Maintains:</strong> U.S. National Library of Medicine (NLM)<br>
+</li>
+<li><strong>Types of Concepts:</strong> Medication ingredients, products, brand names, formulations<br>
+</li>
+<li><strong>Code Example:</strong> <code>6809</code> (Metformin)<br>
+</li>
+<li><strong>Notes:</strong> Connects different drug vocabularies in pharmacy systems and EHRs; facilitates e-prescribing and clinical decision support.</li>
+</ul></li>
+<li><strong>CPT (Current Procedural Terminology) / HCPCS (Healthcare Common Procedure Coding System)</strong>
+<ul>
+<li><strong>Purpose:</strong> Standardized codes for medical procedures, diagnostic services, and supplies; used mainly for billing and insurance claims in the U.S.<br>
+</li>
+<li><strong>Governs:</strong> Procedures and services<br>
+</li>
+<li><strong>Who Maintains:</strong> CPT: American Medical Association (AMA); HCPCS: Centers for Medicare &amp; Medicaid Services (CMS)<br>
+</li>
+<li><strong>Types of Concepts:</strong> Office visits, surgeries, radiology, lab tests, durable medical equipment, ambulance services<br>
+</li>
+<li><strong>Code Example:</strong> <code>99213</code> (Office or other outpatient visit for the evaluation and management of an established patient)<br>
+</li>
+<li><strong>Notes:</strong> CPT is widely used for medical billing; HCPCS extends CPT to cover Medicare, Medicaid, and supplies not included in CPT.</li>
+</ul></li>
+</ol>
+<p>The table below summarizes the five systems:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 28%">
+<col style="width: 38%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>System</th>
+<th>Governs</th>
+<th>Example concept</th>
+<th>Example code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>ICD-10-CM</strong></td>
+<td>Diagnoses (billing/reporting)</td>
+<td>Type 2 diabetes w/o complications</td>
+<td><code>E11.9</code></td>
+</tr>
+<tr class="even">
+<td><strong>SNOMED CT</strong></td>
+<td>Clinical concepts (fine-grained)</td>
+<td>Diabetes mellitus type 2</td>
+<td><code>44054006</code></td>
+</tr>
+<tr class="odd">
+<td><strong>LOINC</strong></td>
+<td>Labs &amp; observations</td>
+<td>Hemoglobin A1c in blood</td>
+<td><code>4548-4</code></td>
+</tr>
+<tr class="even">
+<td><strong>RxNorm</strong></td>
+<td>Medications (ingredients/products)</td>
+<td>Metformin</td>
+<td><code>6809</code></td>
+</tr>
+<tr class="odd">
+<td><strong>CPT / HCPCS</strong></td>
+<td>Procedures &amp; services</td>
+<td>Office visit, established</td>
+<td><code>99213</code></td>
+</tr>
+</tbody>
+</table>
+<div id="daab17a7" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This cell builds tiny LOOKUP TABLES for four coding systems.</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Each table has two columns:</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   code    = the stable identifier a computer uses</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   display = the human-readable name</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># These are real, verifiable codes — but only a teaching handful, not the full</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># dictionaries (those have tens or hundreds of thousands of entries).</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ICD-10-CM: diagnosis codes used for billing and reporting</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>icd10 <span class="op">=</span> pd.DataFrame([</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"I10"</span>,     <span class="st">"Essential (primary) hypertension"</span>),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"E11.9"</span>,   <span class="st">"Type 2 diabetes mellitus without complications"</span>),</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"J45.909"</span>, <span class="st">"Unspecified asthma, uncomplicated"</span>),</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"J20.9"</span>,   <span class="st">"Acute bronchitis, unspecified"</span>),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"F32.9"</span>,   <span class="st">"Major depressive disorder, single episode, unspecified"</span>),</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>], columns<span class="op">=</span>[<span class="st">"code"</span>, <span class="st">"display"</span>])</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># SNOMED CT: finer-grained clinical concepts used inside the EHR</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>snomed <span class="op">=</span> pd.DataFrame([</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"38341003"</span>,  <span class="st">"Hypertensive disorder"</span>),</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"44054006"</span>,  <span class="st">"Diabetes mellitus type 2"</span>),</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"195967001"</span>, <span class="st">"Asthma"</span>),</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"10509002"</span>,  <span class="st">"Acute bronchitis"</span>),</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"370143000"</span>, <span class="st">"Major depressive disorder"</span>),</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>], columns<span class="op">=</span>[<span class="st">"code"</span>, <span class="st">"display"</span>])</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="co"># LOINC: names for labs and observations ("what was measured")</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>loinc <span class="op">=</span> pd.DataFrame([</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"4548-4"</span>, <span class="st">"Hemoglobin A1c/Hemoglobin.total in Blood"</span>),</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"8480-6"</span>, <span class="st">"Systolic blood pressure"</span>),</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"8867-4"</span>, <span class="st">"Heart rate"</span>),</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"29463-7"</span>, <span class="st">"Body weight"</span>),</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"8302-2"</span>, <span class="st">"Body height"</span>),</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>], columns<span class="op">=</span>[<span class="st">"code"</span>, <span class="st">"display"</span>])</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a><span class="co"># RxNorm: names for medications (ingredients / products)</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>rxnorm <span class="op">=</span> pd.DataFrame([</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"29046"</span>, <span class="st">"Lisinopril"</span>),</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"6809"</span>,  <span class="st">"Metformin"</span>),</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"435"</span>,   <span class="st">"Albuterol"</span>),</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"83367"</span>, <span class="st">"Atorvastatin"</span>),</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"36437"</span>, <span class="st">"Sertraline"</span>),</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>], columns<span class="op">=</span>[<span class="st">"code"</span>, <span class="st">"display"</span>])</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> display, Markdown</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Show all coding system tables in a single composite view</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### ICD-10-CM (Diagnosis Codes)"</span>))</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>display(icd10)</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### SNOMED CT (Clinical Concepts)"</span>))</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>display(snomed)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### LOINC (Labs &amp; Observations)"</span>))</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>display(loinc)</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>display(Markdown(<span class="st">"### RxNorm (Medications)"</span>))</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>display(rxnorm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="icd-10-cm-diagnosis-codes" class="level3 cell-output cell-output-display cell-output-markdown">
+<h3 class="anchored" data-anchor-id="icd-10-cm-diagnosis-codes">ICD-10-CM (Diagnosis Codes)</h3>
+</section>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">code</th>
+<th data-quarto-table-cell-role="th">display</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>I10</td>
+<td>Essential (primary) hypertension</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>E11.9</td>
+<td>Type 2 diabetes mellitus without complications</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>J45.909</td>
+<td>Unspecified asthma, uncomplicated</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>J20.9</td>
+<td>Acute bronchitis, unspecified</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>F32.9</td>
+<td>Major depressive disorder, single episode, uns...</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<section id="snomed-ct-clinical-concepts" class="level3 cell-output cell-output-display cell-output-markdown">
+<h3 class="anchored" data-anchor-id="snomed-ct-clinical-concepts">SNOMED CT (Clinical Concepts)</h3>
+</section>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">code</th>
+<th data-quarto-table-cell-role="th">display</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>38341003</td>
+<td>Hypertensive disorder</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>44054006</td>
+<td>Diabetes mellitus type 2</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>195967001</td>
+<td>Asthma</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>10509002</td>
+<td>Acute bronchitis</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>370143000</td>
+<td>Major depressive disorder</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<section id="loinc-labs-observations" class="level3 cell-output cell-output-display cell-output-markdown">
+<h3 class="anchored" data-anchor-id="loinc-labs-observations">LOINC (Labs &amp; Observations)</h3>
+</section>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">code</th>
+<th data-quarto-table-cell-role="th">display</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>4548-4</td>
+<td>Hemoglobin A1c/Hemoglobin.total in Blood</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>8480-6</td>
+<td>Systolic blood pressure</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>8867-4</td>
+<td>Heart rate</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>29463-7</td>
+<td>Body weight</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>8302-2</td>
+<td>Body height</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<section id="rxnorm-medications" class="level3 cell-output cell-output-display cell-output-markdown">
+<h3 class="anchored" data-anchor-id="rxnorm-medications">RxNorm (Medications)</h3>
+</section>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">code</th>
+<th data-quarto-table-cell-role="th">display</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>29046</td>
+<td>Lisinopril</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>6809</td>
+<td>Metformin</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>435</td>
+<td>Albuterol</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>83367</td>
+<td>Atorvastatin</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>36437</td>
+<td>Sertraline</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="crosswalking-a-local-label-to-standard-codes" class="level2">
+<h2 class="anchored" data-anchor-id="crosswalking-a-local-label-to-standard-codes">3.3 Crosswalking a local label to standard codes</h2>
+<p>In most real-world scenarios, data collected from clinical sources such as electronic health records (EHRs) is not already standardized with codes; instead, diagnoses and conditions are often recorded as free-text descriptions or local hospital-specific labels. The initial step in preparing this data for broader use is to “map” or “crosswalk” these local strings to universal standard code systems—such as ICD-10 for diagnoses or SNOMED CT for clinical concepts. This mapping process creates a bridge (the crosswalk) from each local term to the appropriate code(s) so that the information can be shared, analyzed, and compared in a consistent way across different organizations. In the example below, we demonstrate how to build such a crosswalk for a set of synthetic clinical condition names, linking each local label to its corresponding ICD-10 and SNOMED CT codes.</p>
+<div id="fa3126ad" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A "crosswalk" is a mapping table: local hospital label -&gt; standard codes.</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Real EHR data often arrives as local strings ("Essential hypertension").</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to attach the ICD-10 and SNOMED codes that the rest of the world uses.</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Each row: one local name, its ICD-10 code, and its SNOMED code</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>crosswalk <span class="op">=</span> pd.DataFrame([</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Essential hypertension"</span>,      <span class="st">"I10"</span>,     <span class="st">"38341003"</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Type 2 diabetes mellitus"</span>,    <span class="st">"E11.9"</span>,   <span class="st">"44054006"</span>),</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Asthma"</span>,                      <span class="st">"J45.909"</span>, <span class="st">"195967001"</span>),</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Acute bronchitis"</span>,            <span class="st">"J20.9"</span>,   <span class="st">"10509002"</span>),</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Major depressive disorder"</span>,   <span class="st">"F32.9"</span>,   <span class="st">"370143000"</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>], columns<span class="op">=</span>[<span class="st">"local_label"</span>, <span class="st">"icd10"</span>, <span class="st">"snomed"</span>])</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we JOIN the human-readable displays onto those codes so the table is readable.</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co"># rename(...) first so the join keys match:</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   icd10["code"]    becomes icd10["icd10"]     — then we merge on "icd10"</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   snomed["code"]   becomes snomed["snomed"]   — then we merge on "snomed"</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># After the joins, each row has both codes AND both display names.</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>mapped <span class="op">=</span> (crosswalk</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    .merge(icd10.rename(columns<span class="op">=</span>{<span class="st">"code"</span>: <span class="st">"icd10"</span>, <span class="st">"display"</span>: <span class="st">"icd10_display"</span>}), on<span class="op">=</span><span class="st">"icd10"</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    .merge(snomed.rename(columns<span class="op">=</span>{<span class="st">"code"</span>: <span class="st">"snomed"</span>, <span class="st">"display"</span>: <span class="st">"snomed_display"</span>}), on<span class="op">=</span><span class="st">"snomed"</span>))</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>mapped</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">local_label</th>
+<th data-quarto-table-cell-role="th">icd10</th>
+<th data-quarto-table-cell-role="th">snomed</th>
+<th data-quarto-table-cell-role="th">icd10_display</th>
+<th data-quarto-table-cell-role="th">snomed_display</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Essential hypertension</td>
+<td>I10</td>
+<td>38341003</td>
+<td>Essential (primary) hypertension</td>
+<td>Hypertensive disorder</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Type 2 diabetes mellitus</td>
+<td>E11.9</td>
+<td>44054006</td>
+<td>Type 2 diabetes mellitus without complications</td>
+<td>Diabetes mellitus type 2</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Asthma</td>
+<td>J45.909</td>
+<td>195967001</td>
+<td>Unspecified asthma, uncomplicated</td>
+<td>Asthma</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Acute bronchitis</td>
+<td>J20.9</td>
+<td>10509002</td>
+<td>Acute bronchitis, unspecified</td>
+<td>Acute bronchitis</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Major depressive disorder</td>
+<td>F32.9</td>
+<td>370143000</td>
+<td>Major depressive disorder, single episode, uns...</td>
+<td>Major depressive disorder</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="milestone-1---apply-the-crosswalk-to-ehr-conditions" class="level3">
+<h3 class="anchored" data-anchor-id="milestone-1---apply-the-crosswalk-to-ehr-conditions">Milestone 1 - apply the crosswalk to EHR conditions</h3>
+<p>To apply the crosswalk to EHR conditions, we start with a dataset of condition records from an EHR, where diagnoses are recorded as local human-readable strings (such as “Essential hypertension” or “Asthma”). The crosswalk table we built maps each local label to the appropriate standard codes (ICD-10 and SNOMED). We use a LEFT JOIN to merge the EHR conditions with the crosswalk: - For each EHR record, pandas searches for a matching local label in the crosswalk. - If it finds one, it attaches the corresponding ICD-10 and SNOMED codes. - If it does not find a match, the standard code fields will be empty (np.nan), revealing any unmatched/unmapped data. This process simulates the real-world workflow in data integration projects, where standardized coding is essential for interoperability, research, and analytics.</p>
+<div id="47597f06" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the crosswalk to a small fake "conditions" table — the same idea as</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># taking a hospital's diagnosis list and stamping standard codes onto it.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)  <span class="co"># fixed seed so everyone gets the same fake patients</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># pool = the local labels we know how to map (from the crosswalk table above)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>pool <span class="op">=</span> crosswalk[<span class="st">"local_label"</span>].tolist()</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Build 30 fake condition rows:</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#   patient_id: random IDs from P1000 to P1119</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#   condition:  a random local label from the pool</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>cond <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"patient_id"</span>: [<span class="ss">f"P</span><span class="sc">{</span><span class="dv">1000</span> <span class="op">+</span> i<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> rng.integers(<span class="dv">0</span>, <span class="dv">120</span>, size<span class="op">=</span><span class="dv">30</span>)],</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"condition"</span>:  rng.choice(pool, size<span class="op">=</span><span class="dv">30</span>),</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="co"># LEFT join: keep every condition row; if a label has no match in the crosswalk,</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="co"># the icd10 / snomed columns will be empty (NaN). That is how you find unmapped data.</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>coded <span class="op">=</span> cond.merge(crosswalk, left_on<span class="op">=</span><span class="st">"condition"</span>, right_on<span class="op">=</span><span class="st">"local_label"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Coded conditions (first 8):"</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coded[[<span class="st">"patient_id"</span>, <span class="st">"condition"</span>, <span class="st">"icd10"</span>, <span class="st">"snomed"</span>]].head(<span class="dv">8</span>).to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># isna().sum() counts how many rows failed to get an ICD-10 code.</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># 0 unmapped rows means every local label was in the crosswalk.</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Unmapped rows:"</span>, coded[<span class="st">"icd10"</span>].isna().<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Coded conditions (first 8):
+patient_id                 condition   icd10    snomed
+     P1010                    Asthma J45.909 195967001
+     P1092  Type 2 diabetes mellitus   E11.9  44054006
+     P1078    Essential hypertension     I10  38341003
+     P1052                    Asthma J45.909 195967001
+     P1051 Major depressive disorder   F32.9 370143000
+     P1103    Essential hypertension     I10  38341003
+     P1010 Major depressive disorder   F32.9 370143000
+     P1083 Major depressive disorder   F32.9 370143000
+
+Unmapped rows: 0</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="code-hierarchies" class="level2">
+<h2 class="anchored" data-anchor-id="code-hierarchies">3.4 Code hierarchies</h2>
+<p>Clinical terminologies are organized as hierarchical structures rather than simple flat lists. This means that each individual diagnosis or concept is part of a larger, nested system of groupings.</p>
+<p>For example, in the ICD-10 coding system, the hierarchy consists of several levels: - At the highest level are <em>chapters</em>, which encompass broad classes of conditions (such as “Diseases of the circulatory system”). - Within each chapter are <em>blocks</em> or ranges, which group together related categories (e.g., all types of diabetes-related conditions). - Each block contains multiple <em>categories</em>, which correspond to more specific disease groupings (e.g., Type 2 diabetes). - Finally, the lowest level includes the actual detailed <em>codes</em> that are recorded for patient diagnoses.</p>
+<p>SNOMED CT, another widely used terminology, also employs a hierarchy, but it is structured using <em>is-a</em> relationships. In this system, every specific medical concept is connected “upward” to a more general parent concept (for example, “Type 2 diabetes mellitus” is a type of “Diabetes mellitus”, which itself is a type of “Endocrine disorder”, and so on).</p>
+<p>These hierarchical relationships are powerful because they allow us to “roll up” or aggregate more specific codes into broader categories. This is essential for analyzing clinical data, creating reports (such as counts by chapter or disease group), and building value sets to identify all diagnoses that fall within a certain domain without needing to list every individual code.</p>
+<div id="0c25da1e" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Terminologies are trees, not flat lists. This tiny table shows one ICD-10</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># "family tree" fragment for a few of our codes:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   code     = the specific diagnosis (what was recorded)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   category = a slightly broader bucket (e.g. E11 = type 2 diabetes)</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#   block    = a range of related categories</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#   chapter  = the high-level grouping used in reports (e.g. "Circulatory")</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Rolling specific codes UP the tree is how you produce chapter-level counts</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co"># without writing a separate rule for every detailed code.</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>icd_hier <span class="op">=</span> pd.DataFrame([</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"E11.9"</span>,  <span class="st">"E11"</span>,  <span class="st">"E08-E13 (Diabetes mellitus)"</span>,        <span class="st">"Ch.IV Endocrine/metabolic"</span>),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"I10"</span>,    <span class="st">"I10"</span>,  <span class="st">"I10-I16 (Hypertensive diseases)"</span>,    <span class="st">"Ch.IX Circulatory"</span>),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"J45.909"</span>,<span class="st">"J45"</span>,  <span class="st">"J40-J4A (Chronic lower respiratory)"</span>, <span class="st">"Ch.X Respiratory"</span>),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"J20.9"</span>,  <span class="st">"J20"</span>,  <span class="st">"J00-J06/J20-J22 (Acute respiratory)"</span>, <span class="st">"Ch.X Respiratory"</span>),</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>], columns<span class="op">=</span>[<span class="st">"code"</span>, <span class="st">"category"</span>, <span class="st">"block"</span>, <span class="st">"chapter"</span>])</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>icd_hier</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">code</th>
+<th data-quarto-table-cell-role="th">category</th>
+<th data-quarto-table-cell-role="th">block</th>
+<th data-quarto-table-cell-role="th">chapter</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>E11.9</td>
+<td>E11</td>
+<td>E08-E13 (Diabetes mellitus)</td>
+<td>Ch.IV Endocrine/metabolic</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>I10</td>
+<td>I10</td>
+<td>I10-I16 (Hypertensive diseases)</td>
+<td>Ch.IX Circulatory</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>J45.909</td>
+<td>J45</td>
+<td>J40-J4A (Chronic lower respiratory)</td>
+<td>Ch.X Respiratory</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>J20.9</td>
+<td>J20</td>
+<td>J00-J06/J20-J22 (Acute respiratory)</td>
+<td>Ch.X Respiratory</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="18693524" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the hierarchy to ROLL UP coded diagnoses to chapter level for a report.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Merge our coded EHR rows with the hierarchy table, matching on ICD-10 code.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">#    left_on="icd10" is the column in `coded`; right_on="code" is the column in icd_hier.</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. groupby("chapter").size() counts how many diagnosis rows fall in each chapter.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. rename("n") gives that count a short column name; reset_index() makes it a table.</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>report <span class="op">=</span> (coded.merge(icd_hier[[<span class="st">"code"</span>, <span class="st">"chapter"</span>]],</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                      left_on<span class="op">=</span><span class="st">"icd10"</span>, right_on<span class="op">=</span><span class="st">"code"</span>, how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>              .groupby(<span class="st">"chapter"</span>).size().rename(<span class="st">"n"</span>).reset_index())</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Diagnoses grouped by ICD-10 chapter:"</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(report.to_string(index<span class="op">=</span><span class="va">False</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Diagnoses grouped by ICD-10 chapter:
+                  chapter  n
+Ch.IV Endocrine/metabolic  4
+        Ch.IX Circulatory  7
+         Ch.X Respiratory 14</code></pre>
+</div>
+</div>
+<section id="milestone-2---a-snomed-is-a-walk" class="level3">
+<h3 class="anchored" data-anchor-id="milestone-2---a-snomed-is-a-walk">Milestone 2 - a SNOMED <em>is-a</em> walk</h3>
+<p>One of SNOMED CT’s core strengths is its use of a subsumption (or “is-a”) hierarchy. In this structure, every specific medical concept (like “Diabetes mellitus type 2”) is linked upward to increasingly broader concepts (such as “Diabetes mellitus”, then “Disorder of endocrine system”, ultimately up to “Disease” and then to the topmost root concept). This allows us to reason about clinical data at different levels of specificity: for example, we can easily group diagnoses by parent concept to answer questions like “how many patients have any kind of diabetes or endocrine disorder?” The code fragment below demonstrates a small, hand-constructed example of this hierarchical chaining.</p>
+<div id="51a0b96e" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>isa <span class="op">=</span> {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"44054006"</span>:  <span class="st">"73211009"</span>,   <span class="co"># Diabetes mellitus type 2 IS-A Diabetes mellitus</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"73211009"</span>:  <span class="st">"362969004"</span>,  <span class="co"># Diabetes mellitus IS-A Disorder of endocrine system</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"362969004"</span>: <span class="st">"64572001"</span>,   <span class="co"># ... IS-A Disease</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> {<span class="st">"44054006"</span>:<span class="st">"Diabetes mellitus type 2"</span>,<span class="st">"73211009"</span>:<span class="st">"Diabetes mellitus"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>          <span class="st">"362969004"</span>:<span class="st">"Disorder of endocrine system"</span>,<span class="st">"64572001"</span>:<span class="st">"Disease"</span>}</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> walk_up(code):</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> [code]</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> code <span class="kw">in</span> isa:</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        code <span class="op">=</span> isa[code]<span class="op">;</span> path.append(code)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> path</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> walk_up(<span class="st">"44054006"</span>):</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>c<span class="sc">:12s}</span><span class="ss"> </span><span class="sc">{</span>labels[c]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>44054006     Diabetes mellitus type 2
+73211009     Diabetes mellitus
+362969004    Disorder of endocrine system
+64572001     Disease</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="value-sets" class="level2">
+<h2 class="anchored" data-anchor-id="value-sets">3.5 Value sets</h2>
+<p>A <strong>value set</strong> is a named, reusable list of codes that defines a clinical idea for a specific purpose - e.g.&nbsp;“all codes that count as diabetes.” Value sets power cohort definitions, quality measures, and decision-support rules.</p>
+<div id="a5134754" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A VALUE SET is a named list of codes that means "this clinical idea"</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for a specific purpose (a quality measure, a cohort, an alert).</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Real diabetes value sets include hundreds of ICD and SNOMED codes.</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Ours is tiny on purpose: one ICD code and two SNOMED codes.</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>diabetes_valueset <span class="op">=</span> {</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ICD-10-CM"</span>: [<span class="st">"E11.9"</span>],                    <span class="co"># (real sets include E08-E13.*)</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"SNOMED CT"</span>: [<span class="st">"44054006"</span>, <span class="st">"73211009"</span>],     <span class="co"># type 2 diabetes + parent "diabetes mellitus"</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Value set: Diabetes"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> system, codes <span class="kw">in</span> diabetes_valueset.items():</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>system<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>codes<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply it to our coded EHR rows:</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co"># isin(...) keeps rows whose icd10 value is in the ICD list of the value set.</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>in_set <span class="op">=</span> coded[coded[<span class="st">"icd10"</span>].isin(diabetes_valueset[<span class="st">"ICD-10-CM"</span>])]</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">EHR condition rows matching the Diabetes value set: </span><span class="sc">{</span><span class="bu">len</span>(in_set)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co"># nunique() counts distinct patient IDs (one patient can have several matching rows)</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Distinct patients:"</span>, in_set[<span class="st">"patient_id"</span>].nunique())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Value set: Diabetes
+  ICD-10-CM: ['E11.9']
+  SNOMED CT: ['44054006', '73211009']
+
+EHR condition rows matching the Diabetes value set: 4
+Distinct patients: 4</code></pre>
+</div>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<ol type="1">
+<li>Add <strong>CPT</strong> codes to the module (e.g.&nbsp;<code>99213</code>, <code>83036</code>) and describe how a procedure code differs from a diagnosis code.</li>
+<li>Extend the crosswalk with a condition the EHR generator can produce but the table currently omits, and confirm the unmapped count drops to zero.</li>
+<li>Build a <strong>“respiratory conditions”</strong> value set from the ICD-10 chapter rollup and count matching patients.</li>
+</ol>
+</section>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key takeaways</h2>
+<ul>
+<li>Controlled vocabularies replace ambiguous <strong>strings</strong> with stable <strong>codes</strong>.</li>
+<li>Each system has a job: <strong>ICD</strong> (billing dx), <strong>SNOMED</strong> (clinical meaning), <strong>LOINC</strong> (measurements), <strong>RxNorm</strong> (drugs), <strong>CPT</strong> (procedures).</li>
+<li><strong>Crosswalks</strong>, <strong>hierarchies</strong>, and <strong>value sets</strong> are the three moves you’ll repeat constantly.</li>
+</ul>
+<hr>
+<p><em>Next: Module 4 - Health Data Standards and Formats.</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/zia207\.github\.io\/Health-informatics\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../Notebooks/Part I - Foundations (Beginner)/02_health_data_types_and_structure.html" class="pagination-link" aria-label="02 · Health Data Types and Structure">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">02 · Health Data Types and Structure</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../Notebooks/Part I - Foundations (Beginner)/04_health_data_standards_and_formats.html" class="pagination-link" aria-label="04 · Standards and Formats">
+        <span class="nav-page-text">04 · Standards and Formats</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© CC-By Zia Ahmed, Upatta Analytics, 2026</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/zia207/Health-informatics/blob/main/Notebooks/Part I - Foundations (Beginner)/03_clinical_terminologies.ipynb" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/zia207/Health-informatics/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with <a href="https://quarto.org/">Quarto</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
